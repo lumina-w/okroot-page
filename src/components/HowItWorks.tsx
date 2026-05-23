@@ -1,119 +1,135 @@
-import type { ReactNode } from "react";
 import { useReveal } from "@/hooks/useReveal";
-import { SectionLabel } from "./SectionLabel";
-import { Button } from "./ui/button";
-import { ScanIcon, BowlCheck, TrendIcon, ArrowRight } from "./icons";
-import { PhoneScanMock, RecipeGrid, DashboardMock } from "./mockups";
-import { APP_URL } from "@/lib/utils";
+import { ScannerIllo, RecipesIllo, InsightsIllo } from "./mockups";
+
+/* ─── Atom: Feature number badge + eyebrow ──────────────────────────────── */
+
+function FeatureLabel({ idx, eyebrow }: { idx: string; eyebrow: string }) {
+  return (
+    <div className="flex items-center gap-3.5">
+      <div
+        className="flex h-[38px] w-[38px] items-center justify-center rounded-xl font-display text-sm font-extrabold"
+        style={{ background: "var(--root-violet-soft)", color: "var(--root-violet)" }}
+      >
+        {idx}
+      </div>
+      <div
+        className="text-[11px] font-bold uppercase tracking-[0.22em]"
+        style={{ color: "var(--root-violet)" }}
+      >
+        {eyebrow}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Section ────────────────────────────────────────────────────────────── */
 
 export function HowItWorks() {
   const ref = useReveal<HTMLDivElement>();
 
   return (
-    <section id="how-it-works" className="py-20 lg:py-28">
-      <div
-        ref={ref}
-        className="mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10"
-      >
-        <div className="reveal max-w-2xl">
-          <SectionLabel index="02">Cómo funciona</SectionLabel>
-          <h2 className="mt-5 font-display text-3xl font-bold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
-            De la incertidumbre a la confianza, en tres pasos
-          </h2>
+    <section
+      id="how-it-works"
+      className="py-24 lg:py-32"
+      style={{ background: "var(--root-cream-warm)" }}
+    >
+      <div ref={ref} className="mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10">
+        {/* Header */}
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div className="max-w-[620px]">
+            <div className="reveal">
+              <div
+                className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold"
+                style={{ background: "rgba(148,51,234,0.10)", color: "var(--root-purple)" }}
+              >
+                <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--root-violet)" }} />
+                Cómo funciona
+              </div>
+            </div>
+            <h2
+              className="reveal mt-5 font-display font-extrabold leading-[1.02] tracking-[-0.04em]"
+              style={{ fontSize: "clamp(2rem, 4.5vw, 3.75rem)", color: "var(--root-ink)" }}
+            >
+              Tres pasos.
+              <br />
+              Cero{" "}
+              <span style={{ fontStyle: "italic", color: "var(--root-violet)" }}>guesswork</span>.
+            </h2>
+          </div>
+          <p
+            className="reveal max-w-[280px] text-sm leading-relaxed"
+            style={{ color: "var(--root-mute)" }}
+          >
+            Diseñado para celíacos, diabéticos e intolerantes a la lactosa. Funciona desde el primer escaneo.
+          </p>
         </div>
 
-        <div className="mt-16 flex flex-col gap-20 lg:gap-28">
-          {/* Feature 1 — Scanner */}
-          <Feature
-            Icon={ScanIcon}
-            kicker="Scanner"
-            title="Analiza en segundos"
-            copy="Fotografía la etiqueta. Nuestro análisis te dice si es seguro PARA TI, según tu condición."
-            visual={<PhoneScanMock compact />}
+        {/* Feature grid */}
+        <div className="mt-16 grid gap-5 lg:grid-cols-2">
+          {/* 01 Scanner */}
+          <div
+            className="reveal grid min-h-[380px] items-center gap-8 overflow-hidden rounded-[28px] border bg-white p-10 sm:p-12"
+            style={{ borderColor: "var(--root-line)", ["--reveal-delay" as string]: "0ms" }}
           >
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => (window.location.href = APP_URL)}
-            >
-              Prueba el scanner
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Feature>
+            <div>
+              <FeatureLabel idx="01" eyebrow="Scanner" />
+              <h3
+                className="mt-6 font-display font-extrabold leading-[1.05] tracking-[-0.035em]"
+                style={{ fontSize: "clamp(1.75rem, 2.5vw, 2.75rem)", color: "var(--root-ink)" }}
+              >
+                Analiza en segundos
+              </h3>
+              <p className="mt-4 text-[17px] leading-relaxed" style={{ color: "var(--root-mute)" }}>
+                Fotografía la etiqueta. Nuestro análisis te dice si es seguro{" "}
+                <strong style={{ color: "var(--root-ink)" }}>PARA TI</strong>, según tu condición.
+              </p>
+            </div>
+            <ScannerIllo />
+          </div>
 
-          {/* Feature 2 — Recetas verificadas */}
-          <Feature
-            Icon={BowlCheck}
-            kicker="Recetas verificadas"
-            title="Menú que confías"
-            copy="Recetas curadas específicamente para celíacos, diabéticos e intolerantes a la lactosa. No es “apto para”… es verificado."
-            visual={<RecipeGrid />}
-            reverse
-            wideVisual
-          />
+          {/* 02 Recetas */}
+          <div
+            className="reveal grid min-h-[380px] items-center gap-8 overflow-hidden rounded-[28px] border bg-white p-10 sm:p-12"
+            style={{ borderColor: "var(--root-line)", ["--reveal-delay" as string]: "100ms" }}
+          >
+            <RecipesIllo />
+            <div>
+              <FeatureLabel idx="02" eyebrow="Recetas verificadas" />
+              <h3
+                className="mt-6 font-display font-extrabold leading-[1.05] tracking-[-0.035em]"
+                style={{ fontSize: "clamp(1.75rem, 2.5vw, 2.75rem)", color: "var(--root-ink)" }}
+              >
+                Menú que confías
+              </h3>
+              <p className="mt-4 text-[17px] leading-relaxed" style={{ color: "var(--root-mute)" }}>
+                Recetas curadas para celíacos, diabéticos e intolerantes a la lactosa. No es{" "}
+                <em style={{ fontStyle: "normal", color: "var(--root-violet)" }}>"apto para"</em>… es verificado.
+              </p>
+            </div>
+          </div>
 
-          {/* Feature 3 — Insights */}
-          <Feature
-            Icon={TrendIcon}
-            kicker="Insights"
-            title="Entiende tu patrón"
-            copy="Ve cómo tu cuerpo responde. Macros, racha, alertas personalizadas (Pro)."
-            visual={<DashboardMock />}
-          />
+          {/* 03 Insights — full width */}
+          <div
+            className="reveal grid min-h-[320px] items-center gap-8 overflow-hidden rounded-[28px] border bg-white p-10 sm:p-12 lg:col-span-2 lg:grid-cols-2 lg:gap-14"
+            style={{ borderColor: "var(--root-line)", ["--reveal-delay" as string]: "200ms" }}
+          >
+            <div>
+              <FeatureLabel idx="03" eyebrow="Insights" />
+              <h3
+                className="mt-6 font-display font-extrabold leading-[1.05] tracking-[-0.035em]"
+                style={{ fontSize: "clamp(1.75rem, 2.5vw, 2.75rem)", color: "var(--root-ink)" }}
+              >
+                Entiende tu patrón
+              </h3>
+              <p className="mt-4 max-w-[460px] text-[17px] leading-relaxed" style={{ color: "var(--root-mute)" }}>
+                Ve cómo tu cuerpo responde. Macros, racha, alertas personalizadas{" "}
+                <span className="font-semibold" style={{ color: "var(--root-violet)" }}>(Pro)</span>.
+              </p>
+            </div>
+            <InsightsIllo />
+          </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function Feature({
-  Icon,
-  kicker,
-  title,
-  copy,
-  visual,
-  children,
-  reverse = false,
-  wideVisual = false,
-}: {
-  Icon: (p: { className?: string }) => ReactNode;
-  kicker: string;
-  title: string;
-  copy: string;
-  visual: ReactNode;
-  children?: ReactNode;
-  reverse?: boolean;
-  wideVisual?: boolean;
-}) {
-  return (
-    <div
-      className={`reveal grid items-center gap-10 lg:gap-16 ${
-        wideVisual
-          ? "lg:grid-cols-[0.85fr_1.15fr]"
-          : "lg:grid-cols-2"
-      }`}
-    >
-      <div className={reverse ? "lg:order-2" : ""}>
-        <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-          <Icon className="h-7 w-7" />
-        </span>
-        <span className="mt-5 block text-sm font-semibold uppercase tracking-wide text-primary">
-          {kicker}
-        </span>
-        <h3 className="mt-2 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-          {title}
-        </h3>
-        <p className="mt-4 max-w-md text-[17px] leading-relaxed text-muted">
-          {copy}
-        </p>
-        {children && <div className="mt-5">{children}</div>}
-      </div>
-
-      <div
-        className={`flex justify-center ${reverse ? "lg:order-1 lg:justify-start" : "lg:justify-end"}`}
-      >
-        {visual}
-      </div>
-    </div>
   );
 }
