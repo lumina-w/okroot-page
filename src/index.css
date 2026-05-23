@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette — violeta / púrpura / crema cálido */
+  --color-primary: rgb(148, 51, 234);
+  --color-primary-hover: rgb(124, 40, 200);
+  --color-accent: rgb(88, 28, 135);
+  --color-neutral: rgb(250, 248, 245);
+  --color-cream: rgb(250, 248, 245);
+  --color-cream-deep: rgb(244, 240, 234);
+  --color-ink: rgb(20, 20, 20);
+  --color-muted: rgb(100, 100, 100);
+
+  --color-line: rgb(232, 226, 218);
+
+  /* Tipografía */
+  --font-display: "Bricolage Grotesque", sans-serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+
+  /* Movimiento */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv01";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Atmosphere: a warm gradient mesh so the page reads as paper, not a flat fill */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(
+      42rem 42rem at 8% -8%,
+      color-mix(in srgb, var(--color-primary) 13%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      38rem 38rem at 104% 6%,
+      color-mix(in srgb, var(--color-accent) 13%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      52rem 30rem at 50% 116%,
+      color-mix(in srgb, var(--color-primary) 9%, transparent),
+      transparent 60%
+    ),
+    var(--color-cream);
+}
+
+/* Fine film grain for tactile depth */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+/* Accessible focus ring on keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--color-primary) 22%, transparent);
+}
+
+/* ----------------------------------------------------------------------- */
+/* Animations (CSS only — no JS animation deps)                            */
+/* ----------------------------------------------------------------------- */
+
+@keyframes scanner-pulse {
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.015);
+  }
+}
+
+@keyframes scanner-line {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes draw-underline {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.underline-draw {
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+  animation: draw-underline 1s var(--ease-soft) 0.65s forwards;
+}
+
+.animate-scanner-pulse {
+  animation: scanner-pulse 1.5s var(--ease-soft) infinite;
+}
+
+.animate-scanner-line {
+  animation: scanner-line 2.6s var(--ease-soft) infinite;
+}
+
+/* Orchestrated hero load — staggered via inline animation-delay */
+.load-rise {
+  opacity: 0;
+  animation: rise-in 0.8s var(--ease-soft) both;
+}
+
+/* Reveal-on-scroll utility — toggled via IntersectionObserver */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.6s var(--ease-soft),
+    transform 0.6s var(--ease-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-scanner-pulse,
+  .animate-scanner-line {
+    animation: none;
+  }
+  .load-rise {
+    opacity: 1;
+    animation: none;
+  }
+  .underline-draw {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
