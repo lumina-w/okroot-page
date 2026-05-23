@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useReveal } from "@/hooks/useReveal";
+import { SectionLabel } from "./SectionLabel";
 import { Button } from "./ui/button";
 import { ScanIcon, BowlCheck, TrendIcon, ArrowRight } from "./icons";
 import { PhoneScanMock, RecipeGrid, DashboardMock } from "./mockups";
@@ -15,10 +16,8 @@ export function HowItWorks() {
         className="mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10"
       >
         <div className="reveal max-w-2xl">
-          <span className="text-sm font-semibold uppercase tracking-wide text-primary">
-            Cómo funciona
-          </span>
-          <h2 className="mt-3 font-display text-3xl font-bold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
+          <SectionLabel index="02">Cómo funciona</SectionLabel>
+          <h2 className="mt-5 font-display text-3xl font-bold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
             De la incertidumbre a la confianza, en tres pasos
           </h2>
         </div>

@@ -1,4 +1,5 @@
 import { useReveal } from "@/hooks/useReveal";
+import { SectionLabel } from "./SectionLabel";
 import { FounderAvatar } from "./mockups";
 
 export function SocialProof() {
@@ -10,6 +11,9 @@ export function SocialProof() {
         ref={ref}
         className="mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10"
       >
+        <div className="reveal mb-8">
+          <SectionLabel index="04">Por qué existe Root</SectionLabel>
+        </div>
         <div className="reveal relative overflow-hidden rounded-3xl border border-line bg-white/70 p-8 sm:p-12 lg:p-16">
           <div
             aria-hidden

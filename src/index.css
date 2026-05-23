@@ -40,6 +40,43 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Atmosphere: a warm gradient mesh so the page reads as paper, not a flat fill */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(
+      42rem 42rem at 8% -8%,
+      color-mix(in srgb, var(--color-primary) 13%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      38rem 38rem at 104% 6%,
+      color-mix(in srgb, var(--color-accent) 13%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      52rem 30rem at 50% 116%,
+      color-mix(in srgb, var(--color-primary) 9%, transparent),
+      transparent 60%
+    ),
+    var(--color-cream);
+}
+
+/* Fine film grain for tactile depth */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
 /* Accessible focus ring on keyboard navigation */
 :focus-visible {
   outline: 2px solid var(--color-primary);
@@ -95,12 +132,30 @@ body {
   }
 }
 
+@keyframes draw-underline {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.underline-draw {
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+  animation: draw-underline 1s var(--ease-soft) 0.65s forwards;
+}
+
 .animate-scanner-pulse {
   animation: scanner-pulse 1.5s var(--ease-soft) infinite;
 }
 
 .animate-scanner-line {
   animation: scanner-line 2.6s var(--ease-soft) infinite;
+}
+
+/* Orchestrated hero load — staggered via inline animation-delay */
+.load-rise {
+  opacity: 0;
+  animation: rise-in 0.8s var(--ease-soft) both;
 }
 
 /* Reveal-on-scroll utility — toggled via IntersectionObserver */
@@ -125,6 +180,14 @@ body {
   }
   .animate-scanner-pulse,
   .animate-scanner-line {
+    animation: none;
+  }
+  .load-rise {
+    opacity: 1;
+    animation: none;
+  }
+  .underline-draw {
+    stroke-dashoffset: 0;
     animation: none;
   }
   .reveal {

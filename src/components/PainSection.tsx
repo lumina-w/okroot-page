@@ -1,4 +1,5 @@
 import { useReveal } from "@/hooks/useReveal";
+import { SectionLabel } from "./SectionLabel";
 import { WorriedFace, SearchClock, LabelDoubt } from "./icons";
 
 const PAINS = [
@@ -28,7 +29,10 @@ export function PainSection() {
         ref={ref}
         className="mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10"
       >
-        <h2 className="reveal max-w-2xl font-display text-3xl font-bold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
+        <div className="reveal">
+          <SectionLabel index="01">El problema</SectionLabel>
+        </div>
+        <h2 className="reveal mt-5 max-w-2xl font-display text-3xl font-bold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
           ¿Te suena familiar?
         </h2>
         <p
