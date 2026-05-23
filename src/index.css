@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette — violeta / púrpura / crema cálido */
+  --color-primary: rgb(148, 51, 234);
+  --color-primary-hover: rgb(124, 40, 200);
+  --color-accent: rgb(88, 28, 135);
+  --color-neutral: rgb(250, 248, 245);
+  --color-cream: rgb(250, 248, 245);
+  --color-cream-deep: rgb(244, 240, 234);
+  --color-ink: rgb(20, 20, 20);
+  --color-muted: rgb(100, 100, 100);
+
+  --color-line: rgb(232, 226, 218);
+
+  /* Tipografía */
+  --font-display: "Bricolage Grotesque", sans-serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+
+  /* Movimiento */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv01";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Accessible focus ring on keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--color-primary) 22%, transparent);
+}
+
+/* ----------------------------------------------------------------------- */
+/* Animations (CSS only — no JS animation deps)                            */
+/* ----------------------------------------------------------------------- */
+
+@keyframes scanner-pulse {
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.015);
+  }
+}
+
+@keyframes scanner-line {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-scanner-pulse {
+  animation: scanner-pulse 1.5s var(--ease-soft) infinite;
+}
+
+.animate-scanner-line {
+  animation: scanner-line 2.6s var(--ease-soft) infinite;
+}
+
+/* Reveal-on-scroll utility — toggled via IntersectionObserver */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.6s var(--ease-soft),
+    transform 0.6s var(--ease-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-scanner-pulse,
+  .animate-scanner-line {
+    animation: none;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

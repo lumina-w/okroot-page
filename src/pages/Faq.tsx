@@ -1,0 +1,50 @@
+import { PageShell } from "./PageShell";
+
+const FAQS = [
+  {
+    q: "¿Para qué condiciones funciona Root?",
+    a: "Root está diseñada para personas celíacas, diabéticas e intolerantes a la lactosa. Eliges tu condición al empezar y todo el análisis se ajusta a ella.",
+  },
+  {
+    q: "¿Cómo analiza Root una etiqueta?",
+    a: "Fotografías la etiqueta de un producto y Root te da un veredicto según tu condición específica: seguro, con precaución o no recomendado, junto con el motivo.",
+  },
+  {
+    q: "¿Necesito tarjeta para empezar?",
+    a: "No. El plan Free no requiere tarjeta. Incluye 10 escaneos al mes, recetas filtradas por tu condición, tu diario de comidas e insights básicos.",
+  },
+  {
+    q: "¿Qué incluye el plan Pro?",
+    a: "Escaneos ilimitados, recomendaciones personalizadas, health logs (glucosa, piel, energía), insights completos y lista de compra semanal. Cuesta $19.900 COP al mes.",
+  },
+  {
+    q: "¿Puedo cambiar de plan cuando quiera?",
+    a: "Sí. Las features de Pro se desbloquean automáticamente al subir de plan desde la app, y no hay penalización por cambiar.",
+  },
+  {
+    q: "¿Las recetas son realmente seguras?",
+    a: "Las recetas se curan bajo reglas estrictas para cada condición. No mostramos recetas “aptas para” genéricas: son verificadas para celíacos, diabéticos e intolerantes a la lactosa.",
+  },
+];
+
+export function Faq() {
+  return (
+    <PageShell
+      eyebrow="Preguntas frecuentes"
+      title="Todo lo que quieres saber"
+      intro="Si te queda alguna duda, escríbenos a hola@luminaw.co y te respondemos."
+    >
+      <dl className="flex flex-col gap-4">
+        {FAQS.map(({ q, a }) => (
+          <div
+            key={q}
+            className="rounded-2xl border border-line bg-white/70 p-6"
+          >
+            <dt className="font-display text-lg font-semibold text-ink">{q}</dt>
+            <dd className="mt-2 text-[15px] leading-relaxed text-muted">{a}</dd>
+          </div>
+        ))}
+      </dl>
+    </PageShell>
+  );
+}
