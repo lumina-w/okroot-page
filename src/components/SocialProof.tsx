@@ -25,11 +25,15 @@ export function SocialProof() {
                 “
               </span>
               <blockquote className="-mt-4 font-display text-2xl font-semibold leading-snug tracking-tight text-ink sm:text-3xl">
-                Soy celíaca y desarrolladora. Root existe porque estaba cansada
-                de tener miedo cada vez que como. Ahora confío.
+                Tengo tres condiciones. Cada comida era ruleta rusa — ansiedad,
+                búsqueda obsesiva, desconfianza. Root existe porque cansé de
+                tener miedo. Ahora confío.
               </blockquote>
               <div className="mt-6">
                 <p className="font-semibold text-ink">Valentina Ramírez</p>
+                <p className="text-sm text-muted">
+                  Celíaca, diabética e intolerante a la lactosa
+                </p>
                 <p className="text-sm text-muted">Fundadora · Lúmina W</p>
               </div>
             </div>

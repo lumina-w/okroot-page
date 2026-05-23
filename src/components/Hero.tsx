@@ -57,7 +57,7 @@ export function Hero() {
             <p className="text-sm leading-snug text-muted">
               Hecho por{" "}
               <span className="font-semibold text-ink">Valentina Ramírez</span>,
-              desarrolladora + fundadora de Lúmina W
+              celíaca, diabética e intolerante a la lactosa.
             </p>
           </div>
         </div>
