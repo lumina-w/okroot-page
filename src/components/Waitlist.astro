@@ -37,7 +37,7 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
             class="font-display font-extrabold leading-[1.05] tracking-[-0.04em]"
             style="font-size:clamp(2rem, 4.5vw, 3.25rem);color:var(--root-ink)"
           >
-            Quiero acceso <span style="font-style:italic;color:var(--root-violet)">anticipado</span>
+            Quiero acceso <span style="font-style:italic;color:var(--root-violet-deep)">anticipado</span>
           </h2>
           <p
             class="mx-auto mt-4 max-w-[460px] text-[17px] leading-relaxed"
@@ -80,8 +80,9 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
             required
             autocomplete="email"
             placeholder="tu@correo.com"
+            aria-describedby="wl-error"
             class="mt-2 w-full rounded-2xl px-4 py-3.5 text-[15px] outline-none transition-colors focus:border-[var(--root-violet)]"
-            style="background:#fff;border:2px solid var(--root-line);color:var(--root-ink)"
+            style="background:#fff;border:2px solid var(--root-line-strong);color:var(--root-ink)"
           />
 
           {/* Conditions */}
@@ -95,7 +96,7 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
                 CONDITIONS.map((c) => (
                   <label
                     class="wl-cond flex cursor-pointer items-center gap-2.5 rounded-2xl px-4 py-3 text-[14.5px] transition-colors"
-                    style="background:#fff;border:2px solid var(--root-line);color:var(--root-ink-2)"
+                    style="background:#fff;border:2px solid var(--root-line-strong);color:var(--root-ink-2)"
                   >
                     <input
                       type="checkbox"
@@ -120,7 +121,14 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
             Quiero comer sin adivinar
           </button>
 
-          <p data-wl-error hidden class="mt-3 text-center text-[13px]" style="color:#c44a4a">
+          <p
+            id="wl-error"
+            data-wl-error
+            hidden
+            role="alert"
+            class="mt-3 text-center text-[13px]"
+            style="color:var(--root-danger)"
+          >
             Algo falló. Intenta de nuevo en un momento.
           </p>
 
@@ -181,16 +189,37 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
       if (!res.ok) throw new Error(`Supabase ${res.status}`);
     }
 
+    const input = form.elements.namedItem("email") as HTMLInputElement;
+
+    function showError(msg: string) {
+      errEl.textContent = msg;
+      errEl.hidden = false;
+      input.setAttribute("aria-invalid", "true");
+    }
+    function clearError() {
+      errEl.hidden = true;
+      input.removeAttribute("aria-invalid");
+    }
+    input.addEventListener("input", clearError);
+
     let loading = false;
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const email = (form.elements.namedItem("email") as HTMLInputElement).value.trim();
-      if (!email || loading) return;
+      if (loading) return;
+
+      const email = input.value.trim();
+      // Validate before submit — don't fail silently. `novalidate` disables the
+      // native bubble, so we surface the error in the live region instead.
+      if (!email || !input.checkValidity()) {
+        showError("Escribe un correo válido para continuar.");
+        input.focus();
+        return;
+      }
+      clearError();
 
       loading = true;
       submit.disabled = true;
       submit.textContent = "Enviando…";
-      errEl.hidden = true;
 
       const conditions = Array.from(
         root.querySelectorAll<HTMLInputElement>('input[name="condition"]:checked'),
@@ -200,9 +229,12 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
         await insertWaitlist(email, conditions);
         formWrap.hidden = true;
         success.hidden = false;
+        // Move focus into the success panel so AT users learn it worked.
+        success.setAttribute("tabindex", "-1");
+        success.focus();
       } catch (err) {
         console.error("[OKRoot] waitlist submit failed", err);
-        errEl.hidden = false;
+        showError("Algo falló. Intenta de nuevo en un momento.");
         submit.disabled = false;
         submit.textContent = "Quiero comer sin adivinar";
         loading = false;

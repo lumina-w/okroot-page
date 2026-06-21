@@ -49,6 +49,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Clears the sticky header on in-page anchor jumps (was Lenis's -88 offset). */
+  scroll-padding-top: 88px;
   -webkit-text-size-adjust: 100%;
   /* Thin, brand-violet scrollbar (Firefox) */
   scrollbar-width: thin;
@@ -73,24 +75,6 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary-hover);
   background-clip: padding-box;
-}
-
-/* Lenis smooth-scroll — recommended base styles (init in Base.astro) */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
 }
 
 body {
@@ -145,6 +129,24 @@ body::after {
   outline: 2px solid var(--color-primary);
   outline-offset: 3px;
   border-radius: 6px;
+}
+
+/* Skip-to-content link — visually hidden until focused */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  background: #fff;
+  color: var(--root-ink);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 ::selection {
@@ -212,7 +214,55 @@ body::after {
 }
 
 .animate-scanner-line {
-  animation: scanner-line 2.6s var(--ease-soft) infinite;
+  /* `both` → backwards fill holds opacity:0 during the 0.8s delay (FASE 2 reveal). */
+  animation: scanner-line 2.6s var(--ease-soft) 0.8s infinite both;
+}
+
+/* ScannerHero entrance — was JS (Motion). Now pure CSS keyframes.            */
+/* FASE 1 — phone mockup entrance (delay 0.3s, after the headline). */
+@keyframes phone-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-phone-in {
+  animation: phone-in 0.7s var(--ease-soft) 0.3s both;
+}
+
+/* FASE 4 badge spring-in (overshoot baked into the 60% keyframe), then
+   FASE 5 infinite breathe. Both preserve the badge's baseline rotate(-4deg). */
+@keyframes badge-in {
+  0% {
+    opacity: 0;
+    transform: rotate(-4deg) translateY(8px) scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: rotate(-4deg) translateY(-1px) scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-4deg) translateY(0) scale(1);
+  }
+}
+@keyframes badge-breathe {
+  0%,
+  100% {
+    transform: rotate(-4deg) scale(1);
+  }
+  50% {
+    transform: rotate(-4deg) scale(1.03);
+  }
+}
+.animate-badge {
+  animation:
+    badge-in 0.5s var(--ease-soft) 3.4s both,
+    badge-breathe 2.5s ease-in-out 3.9s infinite;
 }
 
 /* Orchestrated hero load — staggered via inline animation-delay */
@@ -232,7 +282,7 @@ body::after {
     transform: translateY(0);
   }
 }
-details[open] > dd {
+details[open] > .faq-answer {
   animation: faq-reveal 0.3s var(--ease-soft) both;
 }
 
@@ -273,7 +323,7 @@ details[open] > dd {
     transform: none;
     transition: none;
   }
-  details[open] > dd {
+  details[open] > .faq-answer {
     animation: none;
   }
 }

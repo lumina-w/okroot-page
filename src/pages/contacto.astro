@@ -14,8 +14,8 @@ const CHANNELS: Channel[] = [
   {
     icon: "mail",
     label: "Correo",
-    value: "contact@luminaw.co",
-    href: "mailto:contact@luminaw.co",
+    value: "wavival.dev@luminaw.co",
+    href: "mailto:wavival.dev@luminaw.co",
   },
   {
     icon: "phone",
@@ -106,7 +106,11 @@ const classes =
           <a
             href={href}
             {...(external
-              ? { target: "_blank", rel: "noopener noreferrer" }
+              ? {
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                  "aria-label": `${value} (abre en una pestaña nueva)`,
+                }
               : {})}
             class={`${classes} hover:border-primary`}
           >
@@ -149,10 +153,10 @@ const classes =
       <p class="mt-2 text-[15px] leading-relaxed text-muted">
         ¿Eres nutricionista, creador de contenido o medio? Cuéntanos tu idea en{" "}
         <a
-          href="mailto:contact@luminaw.co"
+          href="mailto:wavival.dev@luminaw.co"
           class="font-semibold text-primary underline underline-offset-2 hover:text-accent"
         >
-          contact@luminaw.co
+          wavival.dev@luminaw.co
         </a>{" "}
         y buscamos la forma de sumar.
       </p>

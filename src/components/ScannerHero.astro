@@ -37,6 +37,7 @@ import PhoneMock from "@/components/PhoneMock.astro";
       <span
         class="flex h-[38px] w-[38px] items-center justify-center rounded-full text-base font-bold text-white"
         style="background:var(--root-violet)"
+        aria-hidden
       >
         ✓
       </span>
@@ -61,13 +62,14 @@ import PhoneMock from "@/components/PhoneMock.astro";
       <span
         class="flex h-[38px] w-[38px] items-center justify-center rounded-full text-base font-bold text-white"
         style="background:#c44a4a"
+        aria-hidden
       >
         ✗
       </span>
       <div>
         <div
           class="text-[11px] font-bold uppercase tracking-[0.08em]"
-          style="color:#c44a4a"
+          style="color:var(--root-danger)"
         >
           No
         </div>
