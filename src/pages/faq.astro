@@ -28,9 +28,24 @@ const FAQS = [
     a: "Las recetas se curan bajo reglas estrictas para cada condición. No mostramos recetas “aptas para” genéricas: son verificadas para celíacos, diabéticos e intolerantes a la lactosa.",
   },
 ];
+
+// FAQPage structured data — must mirror the FAQs rendered below (Google
+// rejects schema that doesn't match visible content).
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
 ---
 
-<Base title="Preguntas — OKRoot">
+<Base
+  title="Preguntas — OKRoot"
+  description="Resolvemos tus dudas sobre OKRoot: qué condiciones cubre, cómo analiza una etiqueta, si funciona sin señal y cómo empezar gratis."
+>
   <PageShell
     eyebrow="Preguntas frecuentes"
     title="Todo lo que quieres saber"
@@ -45,4 +60,5 @@ const FAQS = [
       ))}
     </dl>
   </PageShell>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
 </Base>

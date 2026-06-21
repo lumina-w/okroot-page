@@ -1,5 +1,5 @@
 ---
-import PhoneMock from "@/components/PhoneMock.astro";
+import ScannerHero from "@/components/ScannerHero.astro";
 
 /* ─── Section ────────────────────────────────────────────────────────────── */
 ---
@@ -95,63 +95,8 @@ import PhoneMock from "@/components/PhoneMock.astro";
         </div>
       </div>
 
-      {/* Right column — phone + floating verdict chips */}
-      <div
-        class="load-rise relative flex justify-center lg:justify-end"
-        style="animation-delay:280ms"
-      >
-        <div class="relative">
-          <PhoneMock />
-
-          {/* VerdictChip: ok */}
-          <div
-            class="absolute hidden items-center gap-2.5 rounded-2xl border bg-white p-3 shadow-[0_12px_30px_-12px_rgba(20,20,20,0.18)] lg:flex"
-            style="border-color:var(--root-line);top:80px;left:-10px;transform:rotate(-4deg)"
-          >
-            <span
-              class="flex h-[38px] w-[38px] items-center justify-center rounded-full text-base font-bold text-white"
-              style="background:var(--root-violet)"
-            >
-              ✓
-            </span>
-            <div>
-              <div
-                class="text-[11px] font-bold uppercase tracking-[0.08em]"
-                style="color:var(--root-violet)"
-              >
-                OK
-              </div>
-              <div class="text-[13px] font-semibold" style="color:var(--root-ink)">
-                Sin gluten · IG bajo
-              </div>
-            </div>
-          </div>
-
-          {/* VerdictChip: no */}
-          <div
-            class="absolute hidden items-center gap-2.5 rounded-2xl border bg-white p-3 shadow-[0_12px_30px_-12px_rgba(20,20,20,0.18)] lg:flex"
-            style="border-color:var(--root-line);bottom:40px;right:-20px;transform:rotate(4deg)"
-          >
-            <span
-              class="flex h-[38px] w-[38px] items-center justify-center rounded-full text-base font-bold text-white"
-              style="background:#c44a4a"
-            >
-              ✗
-            </span>
-            <div>
-              <div
-                class="text-[11px] font-bold uppercase tracking-[0.08em]"
-                style="color:#c44a4a"
-              >
-                No
-              </div>
-              <div class="text-[13px] font-semibold" style="color:var(--root-ink)">
-                Contiene lactosa
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Right column — Motion-driven scanner (entrance + scan-line + badge) */}
+      <ScannerHero />
     </div>
   </div>
 </section>

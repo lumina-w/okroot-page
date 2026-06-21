@@ -1,0 +1,122 @@
+---
+import PhoneMock from "@/components/PhoneMock.astro";
+
+/* ─── Organism: ScannerHero ───────────────────────────────────────────────
+   The ONLY component driven by Motion (vanilla `animate`, no React). Sequence:
+   FASE 1 mockup entrance · FASE 2 scan-line reveal · FASE 4 badge spring ·
+   FASE 5 badge breathing. The scan-line sweep + pulse still live in CSS
+   (.animate-scanner-line); Motion only controls *when* things appear.
+   prefers-reduced-motion → static, badge visible immediately. */
+---
+
+<div class="relative flex justify-center lg:justify-end">
+  {/* [data-scanner-phone] — FASE 1 entrance target (inline opacity:0 avoids a flash) */}
+  <div data-scanner-phone class="relative" style="opacity:0">
+    <PhoneMock />
+
+    {/* FASE 2 — scan-line overlay; matches PhoneMock's rotate(3deg) + radius */}
+    <div
+      aria-hidden
+      class="pointer-events-none absolute inset-0 overflow-hidden"
+      style="border-radius:44px;transform:rotate(3deg)"
+    >
+      <div
+        data-scanner-line
+        class="animate-scanner-line absolute inset-x-0 top-0 h-full"
+        style="opacity:0;background:linear-gradient(to bottom, color-mix(in srgb, var(--color-primary) 32%, transparent) 0%, transparent 16%)"
+      >
+      </div>
+    </div>
+
+    {/* FASE 4/5 — badge ("OK para tu perfil"); spring in, then breathe */}
+    <div
+      data-scanner-badge
+      class="absolute hidden items-center gap-2.5 rounded-2xl border bg-white p-3 shadow-[0_12px_30px_-12px_rgba(20,20,20,0.18)] lg:flex"
+      style="opacity:0;border-color:var(--root-line);top:80px;left:-10px;transform:rotate(-4deg);transform-origin:center"
+    >
+      <span
+        class="flex h-[38px] w-[38px] items-center justify-center rounded-full text-base font-bold text-white"
+        style="background:var(--root-violet)"
+      >
+        ✓
+      </span>
+      <div>
+        <div
+          class="text-[11px] font-bold uppercase tracking-[0.08em]"
+          style="color:var(--root-violet)"
+        >
+          OK
+        </div>
+        <div class="text-[13px] font-semibold" style="color:var(--root-ink)">
+          Sin gluten · IG bajo
+        </div>
+      </div>
+    </div>
+
+    {/* Static counter-chip (CSS only — not Motion) */}
+    <div
+      class="absolute hidden items-center gap-2.5 rounded-2xl border bg-white p-3 shadow-[0_12px_30px_-12px_rgba(20,20,20,0.18)] lg:flex"
+      style="border-color:var(--root-line);bottom:40px;right:-20px;transform:rotate(4deg)"
+    >
+      <span
+        class="flex h-[38px] w-[38px] items-center justify-center rounded-full text-base font-bold text-white"
+        style="background:#c44a4a"
+      >
+        ✗
+      </span>
+      <div>
+        <div
+          class="text-[11px] font-bold uppercase tracking-[0.08em]"
+          style="color:#c44a4a"
+        >
+          No
+        </div>
+        <div class="text-[13px] font-semibold" style="color:var(--root-ink)">
+          Contiene lactosa
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { animate } from "motion";
+
+  const phone = document.querySelector<HTMLElement>("[data-scanner-phone]");
+  const line = document.querySelector<HTMLElement>("[data-scanner-line]");
+  const badge = document.querySelector<HTMLElement>("[data-scanner-badge]");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (reduce) {
+    // Skip FASES 1/2/5 — show mockup + badge directly (scan-line stays off; CSS
+    // already disables .animate-scanner-line under reduced-motion).
+    if (phone) phone.style.opacity = "1";
+    if (badge) badge.style.opacity = "1";
+  } else if (phone) {
+    // FASE 1 — mockup entrance (delay 0.3s, after the headline).
+    animate(
+      phone,
+      { opacity: [0, 1], y: [40, 0], scale: [0.96, 1] },
+      { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.3 },
+    );
+
+    // FASE 2 — reveal the scan-line (sweep itself is the CSS keyframe).
+    if (line) animate(line, { opacity: [0, 1] }, { duration: 0.4, delay: 0.8 });
+
+    // FASE 4 — badge springs in at 3.4s (subtle bounce: stiffness 400 / damping 20).
+    if (badge) {
+      animate(
+        badge,
+        { opacity: [0, 1], scale: [0.8, 1], y: [8, 0] },
+        { type: "spring", stiffness: 400, damping: 20, delay: 3.4 },
+      ).finished.then(() => {
+        // FASE 5 — only the badge breathes, forever.
+        animate(
+          badge,
+          { scale: [1, 1.03, 1] },
+          { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
+        );
+      });
+    }
+  }
+</script>

@@ -6,12 +6,29 @@ import Footer from "@/components/Footer.astro";
 interface Props {
   title: string;
   description?: string;
+  /** Override the social-card title. Defaults to the page <title>. */
+  ogTitle?: string;
+  /** Override the social-card description. Defaults to `description`. */
+  ogDescription?: string;
+  /** Social-card image path, relative to the site root. */
+  ogImage?: string;
+  /** Keep the page out of search indexes (e.g. 404). */
+  noindex?: boolean;
 }
 
 const {
   title,
-  description = "PWA offline-first para celíacos, diabéticos e intolerantes a la lactosa. Fotografía una etiqueta y sabe en segundos si puedes comerla. Scanner IA con Claude API.",
+  description = "Fotografía la etiqueta de cualquier producto y sabe en segundos si puedes comerla. Scanner con IA para celíacos, diabéticos e intolerantes a la lactosa.",
+  ogTitle = title,
+  ogDescription = description,
+  ogImage = "/og.png",
+  noindex = false,
 } = Astro.props;
+
+// Per-page canonical + absolute OG URLs, derived from the request path and
+// `site` in astro.config.mjs — never hardcode the homepage on inner pages.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImageUrl = new URL(ogImage, Astro.site).href;
 ---
 
 <!doctype html>
@@ -23,23 +40,23 @@ const {
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#9433ea" />
-    <link rel="canonical" href="https://okroot.co/" />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <meta name="description" content={description} />
-    <meta property="og:title" content="OKRoot — Come con confianza" />
-    <meta
-      property="og:description"
-      content="Fotografía la etiqueta. Sabe en segundos si puedes comerla. Scanner IA para celíacos, diabéticos e intolerantes a la lactosa — las tres a la vez."
-    />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://okroot.co/" />
-    <meta property="og:image" content="https://okroot.co/og.png" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogTitle} />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="OKRoot" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="OKRoot — Come con confianza" />
-    <meta
-      name="twitter:description"
-      content="Fotografía la etiqueta. Sabe en segundos si puedes comerla. Scanner IA con Claude API."
-    />
-    <meta name="twitter:image" content="https://okroot.co/og.png" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -75,7 +92,7 @@ const {
             "applicationCategory": "HealthApplication",
             "operatingSystem": "Web, iOS, Android",
             "url": "https://app.okroot.co",
-            "description": "PWA offline-first para celíacos, diabéticos e intolerantes a la lactosa. Fotografía una etiqueta y sabe en segundos si puedes comerla. Scanner IA con Claude API.",
+            "description": "PWA offline-first para celíacos, diabéticos e intolerantes a la lactosa. Fotografía una etiqueta y sabe en segundos si puedes comerla.",
             "inLanguage": "es",
             "publisher": { "@id": "https://okroot.co/#org" },
             "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
@@ -110,6 +127,43 @@ const {
           { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
         );
         reveals.forEach((el) => io.observe(el));
+      }
+    </script>
+
+    <script>
+      // Lenis smooth scroll. Vanilla — does not touch the IntersectionObserver
+      // above (Lenis scrolls the window normally, so `.reveal` still fires).
+      // Skipped entirely under reduced-motion → native scroll.
+      import Lenis from "lenis";
+
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduce) {
+        const lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          touchMultiplier: 1.5,
+        });
+
+        function raf(time: number) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Keep in-page anchors (#waitlist, …) working — Lenis would otherwise
+        // let the browser hard-jump. Offset clears the sticky header.
+        document.addEventListener("click", (e) => {
+          const link = (e.target as HTMLElement).closest<HTMLAnchorElement>(
+            'a[href^="#"]',
+          );
+          const hash = link?.getAttribute("href");
+          if (!hash || hash === "#") return;
+          const target = document.querySelector<HTMLElement>(hash);
+          if (!target) return;
+          e.preventDefault();
+          lenis.scrollTo(target, { offset: -88 });
+          history.pushState(null, "", hash);
+        });
       }
     </script>
   </body>

@@ -21,6 +21,17 @@ const FAQS = [
     a: "Hoy: celiaquía, diabetes tipo 2 e intolerancia a la lactosa. Más condiciones vienen en el roadmap.",
   },
 ];
+
+// FAQPage structured data — mirrors the FAQs rendered below.
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
 ---
 
 <section id="faq" class="py-24 lg:py-32" style="background:var(--root-cream-warm)">
@@ -67,4 +78,5 @@ const FAQS = [
       ))}
     </dl>
   </div>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
 </section>
