@@ -1,82 +1,349 @@
 ---
-import { APP_URL, PORTFOLIO_URL } from "@/lib/consts";
+// Footer de OKRoot. Tres zonas: conversión (último CTA), columnas de navegación,
+// subfooter legal. Toda la info está hardcodeada — sin props.
+// Anclas reales del landing: #lista-de-espera (waitlist), #como-funciona,
+// #funcionalidades (incluye recetas), #faq.
 ---
 
-<footer
-  class="border-t px-5 pb-10 pt-14 sm:px-6"
-  style="background:var(--root-cream);border-color:var(--root-line)"
->
-  <div class="mx-auto w-full max-w-[1100px]">
-    <div class="flex flex-col items-start justify-between gap-8 sm:flex-row sm:items-center">
-      <div>
-        <span class="flex items-center gap-2">
-          <img
-            src="/favicon-32.png"
-            alt=""
-            width={28}
-            height={28}
-            loading="lazy"
-            class="h-[28px] w-[28px]"
-          />
-          <span
-            class="font-display text-[22px] font-extrabold tracking-[-0.04em]"
-            style="color:var(--root-ink)"
-          >
-            root
-          </span>
-        </span>
-        <p class="mt-3 max-w-xs text-sm leading-relaxed" style="color:var(--root-mute)">
-          Fotografía la etiqueta. Sabe en segundos si puedes comerla.
-        </p>
-      </div>
-
-      <nav class="flex flex-wrap items-center gap-x-7 gap-y-3 text-sm font-medium">
-        <a
-          href="/preguntas"
-          class="py-1 transition-colors hover:text-primary"
-          style="color:var(--root-ink-2)"
-        >
-          Preguntas
-        </a>
-        <a
-          href="/contacto"
-          class="py-1 transition-colors hover:text-primary"
-          style="color:var(--root-ink-2)"
-        >
-          Contacto
-        </a>
-        <a
-          href="/legal#privacidad"
-          class="py-1 transition-colors hover:text-primary"
-          style="color:var(--root-ink-2)"
-        >
-          Privacidad
-        </a>
-        <a
-          href={APP_URL}
-          class="py-1 transition-colors hover:text-primary"
-          style="color:var(--root-ink-2)"
-        >
-          app.okroot.co
-        </a>
-        <a
-          href={PORTFOLIO_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="wavival.dev (abre en una pestaña nueva)"
-          class="py-1 transition-colors hover:text-primary"
-          style="color:var(--root-ink-2)"
-        >
-          wavival.dev
-        </a>
-      </nav>
+<footer class="ftr">
+  <div class="ftr__inner">
+    {/* ZONA 1 — Conversión */}
+    <div class="ftr__cta">
+      <span class="ftr__logo" aria-hidden="true">
+        <span class="ftr__logo-ok">OK</span><span class="ftr__logo-root">root</span>
+      </span>
+      <p class="ftr__tagline">
+        La única app que te dice si un alimento es apto para celiaquía, diabetes
+        e intolerancia a la lactosa, las tres a la vez. En una foto.
+      </p>
+      <a
+        class="btn btn-primary btn-md ftr__btn"
+        href="/#lista-de-espera"
+        aria-label="Quiero acceso anticipado, ir a la lista de espera"
+      >
+        Quiero acceso anticipado
+      </a>
+      <p class="ftr__microcopy">
+        Sin App Store · Funciona offline · Gratis en early access
+      </p>
     </div>
 
-    <div
-      class="mt-10 border-t pt-6 text-center text-[12.5px]"
-      style="border-color:var(--root-line);color:var(--root-mute)"
-    >
-      © 2026 OKRoot
+    <hr class="ftr__hr" />
+
+    {/* ZONA 2 — Columnas de navegación */}
+    <div class="ftr__cols">
+      <div class="ftr__col">
+        <h2 class="ftr__col-title">Producto</h2>
+        <ul class="ftr__list">
+          <li><a class="ftr__link" href="/#como-funciona">Cómo funciona</a></li>
+          <li><a class="ftr__link" href="/#funcionalidades">Recetas</a></li>
+          <li><a class="ftr__link" href="/#faq">Preguntas frecuentes</a></li>
+          <li>
+            <a
+              class="ftr__link"
+              href="https://app.okroot.co"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Entrar a la app (abre en una pestaña nueva)"
+            >
+              Entrar a la app
+              <svg
+                class="ftr__ext"
+                width="10"
+                height="10"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="ftr__col">
+        <h2 class="ftr__col-title">Compañía</h2>
+        <ul class="ftr__list">
+          <li>
+            <a
+              class="ftr__link"
+              href="https://luminaw.co"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Sobre Lúmina W (abre en una pestaña nueva)"
+            >
+              Sobre Lúmina W
+            </a>
+          </li>
+          <li>
+            <a
+              class="ftr__link"
+              href="https://luminaw.co/#contact"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Contacto de Lúmina W (abre en una pestaña nueva)"
+            >
+              Contacto
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="ftr__col">
+        <h2 class="ftr__col-title">Contacto</h2>
+        <ul class="ftr__list ftr__list--contact">
+          <li>
+            <a class="ftr__link" href="mailto:contact@luminaw.co">
+              <svg
+                class="ftr__icon"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                aria-hidden="true"
+              >
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              contact@luminaw.co
+            </a>
+          </li>
+          <li>
+            <a
+              class="ftr__link"
+              href="https://wa.me/573108283088"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Contactar por WhatsApp (abre en una pestaña nueva)"
+            >
+              <svg
+                class="ftr__icon"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0 0 20.464 3.488"></path>
+              </svg>
+              WhatsApp
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="ftr__hr" />
+
+    {/* ZONA 3 — Subfooter legal */}
+    <div class="ftr__sub">
+      <p class="ftr__copy">
+        © 2026 OKRoot · Lúmina W. Todos los derechos reservados.
+      </p>
+      <nav class="ftr__sublinks" aria-label="Enlaces legales">
+        <a href="/privacidad/">Privacidad</a>
+        <span aria-hidden="true">·</span>
+        <a href="/terminos/">Términos</a>
+        <span aria-hidden="true">·</span>
+        <a href="/habeas-data/">Habeas Data</a>
+        <span aria-hidden="true">·</span>
+        <a href="/cookies/">Cookies</a>
+      </nav>
     </div>
   </div>
 </footer>
+
+<style>
+  .ftr {
+    background: var(--color-ink);
+    color: #f2f2f2;
+    padding: 80px 0 40px;
+  }
+  .ftr__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  @media (min-width: 1024px) {
+    .ftr__inner {
+      padding: 0 48px;
+    }
+  }
+
+  /* ── Zona 1 — Conversión ── */
+  .ftr__cta {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .ftr__logo {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 28px;
+    line-height: 1;
+  }
+  .ftr__logo-ok {
+    font-weight: 800;
+    color: #9433ea;
+  }
+  .ftr__logo-root {
+    font-weight: 500;
+    color: #f2f2f2;
+  }
+  .ftr__tagline {
+    margin: 20px 0 0;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.6;
+    /* --color-muted aclarado para contraste AA sobre #141414 */
+    color: rgb(168, 168, 168);
+  }
+  /* Layout-only override; visuals come from .btn .btn-primary (index.css). */
+  .ftr__btn {
+    margin-top: 24px;
+  }
+  .ftr__microcopy {
+    margin: 16px 0 0;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--root-cream);
+    opacity: 0.5;
+  }
+
+  /* ── Separadores ── */
+  .ftr__hr {
+    border: none;
+    border-top: 1px solid rgba(242, 242, 242, 0.1);
+    margin: 48px 0;
+  }
+
+  /* ── Zona 2 — Columnas ── */
+  .ftr__cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  @media (min-width: 640px) {
+    .ftr__cols {
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .ftr__cols {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .ftr__col-title {
+    margin: 0 0 16px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-primary);
+  }
+  .ftr__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .ftr__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 14px;
+    color: rgba(242, 242, 242, 0.6);
+    text-decoration: none;
+    transition: color 200ms var(--ease-soft);
+  }
+  .ftr__link:hover {
+    color: rgba(242, 242, 242, 1);
+  }
+  .ftr__ext {
+    opacity: 0.6;
+  }
+  .ftr__list--contact .ftr__icon {
+    color: var(--root-cream);
+    opacity: 0.5;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+  .ftr__contact-static {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: rgba(242, 242, 242, 0.6);
+  }
+  /* ── Zona 3 — Subfooter ── */
+  .ftr__sub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+  }
+  @media (min-width: 768px) {
+    .ftr__sub {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      text-align: left;
+    }
+  }
+  .ftr__copy {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--root-cream);
+    opacity: 0.4;
+  }
+  .ftr__sublinks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+  }
+  .ftr__sublinks a {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    color: rgba(250, 248, 245, 0.5);
+    text-decoration: none;
+    transition: opacity 200ms var(--ease-soft);
+  }
+  .ftr__sublinks a:hover {
+    color: rgba(250, 248, 245, 1);
+    text-decoration: underline;
+  }
+  .ftr__sublinks span {
+    color: rgba(250, 248, 245, 0.3);
+  }
+
+  /* ── Mobile: CTA full-width ── */
+  @media (max-width: 639px) {
+    .ftr__btn {
+      width: 100%;
+    }
+  }
+</style>

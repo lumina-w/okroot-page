@@ -1,9 +1,6 @@
 ---
 import Base from "@/layouts/Base.astro";
 
-const buttonClasses =
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-cream active:scale-[0.98] cursor-pointer bg-primary text-white shadow-[0_8px_24px_-8px_rgba(148,51,234,0.55)] hover:bg-accent hover:shadow-[0_12px_30px_-8px_rgba(88,28,135,0.6)] h-14 px-8 text-base";
-
 // Scanner-frame corners — mirrors ScannerIllo, ties the 404 to the product.
 const corners = [
   "top:16px;left:16px;border-top:2px solid var(--root-violet);border-left:2px solid var(--root-violet)",
@@ -54,11 +51,8 @@ const corners = [
       </p>
 
       <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-        <a href="/" class={buttonClasses}>Ir al inicio</a>
-        <a
-          href="/#lista-de-espera"
-          class="text-base font-semibold text-primary transition-colors hover:text-accent"
-        >
+        <a href="/" class="btn btn-primary btn-lg">Ir al inicio</a>
+        <a href="/#lista-de-espera" class="btn btn-ghost btn-lg">
           Quiero acceso anticipado
         </a>
       </div>

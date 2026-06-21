@@ -3,7 +3,7 @@ import Base from "@/layouts/Base.astro";
 import PageShell from "@/components/PageShell.astro";
 
 // Términos y Condiciones — Ley 1480 (consumidor) y Ley 1581 (datos), Colombia.
-// Valentina Ramírez opera como persona natural: sin NIT, sin sociedad.
+// Lúmina W es la empresa operadora de OKRoot (responsable del servicio).
 // Contacto: contact@luminaw.co. Última actualización: 21 de junio de 2026.
 
 // Resumen amable: lo esencial en lenguaje claro, antes del clausulado.
@@ -65,12 +65,13 @@ const TOC = [
 
 <Base
   title="Términos y Condiciones · OKRoot"
-  description="Términos y condiciones de uso de OKRoot, herramienta de análisis de etiquetas por IA para celíacos, diabéticos e intolerantes a la lactosa. Operada por Valentina Ramírez, Colombia."
+  description="Términos y condiciones de uso de OKRoot, herramienta de análisis de etiquetas por IA para celíacos, diabéticos e intolerantes a la lactosa. Operada por Lúmina W, Colombia."
 >
   <PageShell
     eyebrow="Documento legal"
     title="Términos y Condiciones de uso."
     intro="Estas son las reglas que rigen el uso de OKRoot. Léelas con calma: arriba encontrarás un resumen claro antes del clausulado completo."
+    toc={TOC}
   >
     {/* Metadatos del documento */}
     <dl
@@ -92,7 +93,7 @@ const TOC = [
         <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
           Operado por
         </dt>
-        <dd class="text-ink">Valentina Ramírez</dd>
+        <dd class="text-ink">Lúmina W</dd>
       </div>
       <div class="flex flex-col gap-0.5">
         <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
@@ -137,8 +138,8 @@ const TOC = [
       </div>
     </section>
 
-    {/* Índice */}
-    <nav aria-label="Contenido" class="mt-14">
+    {/* Índice — solo móvil; en desktop lo reemplaza el sidebar sticky */}
+    <nav aria-label="Contenido" class="mt-14 lg:hidden">
       <h2 class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
         Contenido
       </h2>
@@ -180,7 +181,7 @@ const TOC = [
           <div>
             <dt class="inline font-semibold">Prestadora:</dt>{" "}
             <dd class="inline text-muted">
-              Valentina Ramírez, persona natural, Colombia, operadora de OKRoot.
+              Lúmina W, empresa operadora de OKRoot, Colombia.
             </dd>
           </div>
           <div>
@@ -394,7 +395,7 @@ const TOC = [
         >
           <li>
             OKRoot, su código, diseño, marca, logotipo y contenido editorial son
-            propiedad de Valentina Ramírez.
+            propiedad de Lúmina W.
           </li>
           <li>Las recetas curadas son contenido propio de OKRoot.</li>
           <li>
@@ -552,7 +553,7 @@ const TOC = [
         <span aria-hidden="true">·</span>
         <a href="/cookies/" class="hover:text-primary">Cookies</a>
       </nav>
-      <p class="mt-3">© 2026 Valentina Ramírez · OKRoot</p>
+      <p class="mt-3">© 2026 Lúmina W · OKRoot</p>
     </footer>
   </PageShell>
 </Base>

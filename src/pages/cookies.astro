@@ -61,6 +61,17 @@ const BROWSER_HELP = [
     url: "https://support.microsoft.com/es-es/microsoft-edge/eliminar-las-cookies-en-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09",
   },
 ];
+
+// Tabla de contenidos — alimenta el sidebar sticky de PageShell.
+const TOC = [
+  { id: "s1", label: "Qué son las cookies" },
+  { id: "s2", label: "Cookies que usamos" },
+  { id: "s3", label: "Google Analytics 4 en detalle" },
+  { id: "s4", label: "Gestión de cookies" },
+  { id: "s5", label: "Transferencia internacional" },
+  { id: "s6", label: "Cambios a esta política" },
+  { id: "s7", label: "Contacto" },
+];
 ---
 
 <Base
@@ -71,6 +82,7 @@ const BROWSER_HELP = [
     eyebrow="Documento legal"
     title="Política de Cookies."
     intro="OKRoot usa cookies mínimas y necesarias por defecto. Las cookies de analytics (Google Analytics 4) solo se activan si vos las aceptás."
+    toc={TOC}
   >
     {/* Metadatos */}
     <dl
@@ -86,9 +98,31 @@ const BROWSER_HELP = [
         <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
           Responsable
         </dt>
-        <dd class="text-ink">Valentina Ramírez · contact@luminaw.co</dd>
+        <dd class="text-ink">Lúmina W · contact@luminaw.co</dd>
       </div>
     </dl>
+
+    {/* Índice — solo móvil; en desktop lo reemplaza el sidebar sticky */}
+    <nav aria-label="Contenido" class="mt-12 lg:hidden">
+      <h2 class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+        Contenido
+      </h2>
+      <ol class="mt-3 grid gap-x-8 gap-y-1.5 text-sm sm:grid-cols-2">
+        {
+          TOC.map((item, i) => (
+            <li>
+              <a
+                href={`#${item.id}`}
+                class="text-muted transition-colors hover:text-primary"
+              >
+                <span class="tabular-nums text-primary">{i + 1}.</span>{" "}
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
 
     <article class="mt-14 flex flex-col gap-12">
       {/* 1. Qué son las cookies */}
@@ -380,11 +414,7 @@ const BROWSER_HELP = [
           revocar el consentimiento. La cookie okroot_cookie_consent también se
           elimina, por lo que el banner volverá a aparecer.
         </p>
-        <button
-          type="button"
-          id="change-prefs"
-          class="mt-6 inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
-        >
+        <button type="button" id="change-prefs" class="btn btn-primary btn-sm mt-6">
           Cambiar mis preferencias
         </button>
       </section>
@@ -464,7 +494,7 @@ const BROWSER_HELP = [
         <span aria-hidden="true">·</span>
         <a href="/habeas-data/" class="hover:text-primary">Habeas Data</a>
       </nav>
-      <p class="mt-3">© 2026 Valentina Ramírez · OKRoot</p>
+      <p class="mt-3">© 2026 Lúmina W · OKRoot</p>
     </footer>
   </PageShell>
 </Base>

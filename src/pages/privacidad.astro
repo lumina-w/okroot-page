@@ -88,6 +88,7 @@ const TOC = [
     eyebrow="Documento legal"
     title="Política de Privacidad."
     intro="En OKRoot tratamos tus datos de salud con el cuidado que merecen. Esta política explica qué recopilamos, para qué lo usamos y cómo lo protegemos."
+    toc={TOC}
   >
     {/* Metadatos del documento */}
     <dl
@@ -109,7 +110,7 @@ const TOC = [
         <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
           Responsable
         </dt>
-        <dd class="text-ink">Valentina Ramírez</dd>
+        <dd class="text-ink">Lúmina W</dd>
       </div>
       <div class="flex flex-col gap-0.5">
         <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
@@ -154,8 +155,8 @@ const TOC = [
       </div>
     </section>
 
-    {/* Índice */}
-    <nav aria-label="Contenido" class="mt-14">
+    {/* Índice — solo móvil; en desktop lo reemplaza el sidebar sticky */}
+    <nav aria-label="Contenido" class="mt-14 lg:hidden">
       <h2
         class="text-xs font-medium uppercase tracking-[0.08em] text-primary"
       >
@@ -189,12 +190,8 @@ const TOC = [
           Responsable del tratamiento
         </h2>
         <ul class="mt-4 flex flex-col gap-2 text-base leading-[1.7] text-ink">
-          <li>Valentina Ramírez, persona natural, Colombia.</li>
+          <li>Lúmina W, operadora de OKRoot, con domicilio en Colombia.</li>
           <li>Email: <span class="font-medium">contact@luminaw.co</span></li>
-          <li>
-            Sin NIT: como persona natural no está obligada a inscripción
-            mercantil.
-          </li>
         </ul>
       </section>
 
@@ -540,7 +537,7 @@ const TOC = [
         <span aria-hidden="true">·</span>
         <a href="/cookies/" class="hover:text-primary">Cookies</a>
       </nav>
-      <p class="mt-3">© 2026 Valentina Ramírez · OKRoot</p>
+      <p class="mt-3">© 2026 Lúmina W · OKRoot</p>
     </footer>
   </PageShell>
 </Base>

@@ -1,58 +1,220 @@
 ---
 import { APP_URL } from "@/lib/consts";
+
+// Navbar. Logo tipográfico (sin ícono), links centrales, y a la derecha
+// "Iniciar sesión" + CTA. Mismo destino de login que antes tenía "Entrar a la
+// app" (eliminado de los links centrales). El comportamiento de scroll (frost)
+// no se toca.
+const NAV_LINKS = [
+  { href: "/#como-funciona", label: "Cómo funciona" },
+  { href: "/#funcionalidades", label: "Recetas" },
+  { href: "/#fundadora", label: "Sobre mí" },
+  { href: "/#faq", label: "Preguntas" },
+];
+
+const LOGIN_URL = `${APP_URL}/login`;
 ---
 
 <header class="sticky top-0 z-50 px-5 py-4 sm:px-6">
-  <div
+  <nav
+    aria-label="Navegación principal"
     class="site-header__bar mx-auto flex h-14 w-full max-w-[1200px] items-center justify-between rounded-full border px-5 transition-all duration-300"
     style="background:#fff;border-color:var(--root-line)"
   >
-    {/* Logo */}
-    <a href="/" class="flex items-center" aria-label="OKRoot, inicio">
-      <span class="flex items-center gap-2">
-        <img src="/favicon-32.png" alt="" width="26" height="26" class="h-[26px] w-[26px]" />
-        <span
-          class="font-display text-xl font-extrabold tracking-[-0.04em]"
-          style="color:var(--root-ink)"
-        >
-          root
-        </span>
-      </span>
+    {/* Logo — tipográfico puro, un solo bloque */}
+    <a href="/" class="nav-logo" aria-label="OKRoot, inicio">
+      <span class="nav-logo__ok">OK</span><span class="nav-logo__root">root</span>
     </a>
 
-    {/* Nav */}
-    <nav class="hidden items-center gap-7 md:flex">
-      <a
-        href="/#como-funciona"
-        class="py-1.5 text-sm font-medium transition-colors hover:text-primary"
-        style="color:var(--root-ink-2)">Cómo funciona</a
-      >
-      <a
-        href="/#fundadora"
-        class="py-1.5 text-sm font-medium transition-colors hover:text-primary"
-        style="color:var(--root-ink-2)">Sobre mí</a
-      >
-      <a
-        href={APP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Entrar a la app (abre en una pestaña nueva)"
-        class="py-1.5 text-sm font-medium transition-colors hover:text-primary"
-        style="color:var(--root-ink-2)">Entrar a la app</a
-      >
-    </nav>
+    {/* Links centrales (desktop) */}
+    <ul class="hidden items-center gap-7 md:flex">
+      {
+        NAV_LINKS.map((link) => (
+          <li>
+            <a href={link.href} class="nav-link">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
 
-    {/* Sticky CTA → lista de espera */}
+    {/* Zona derecha (desktop) */}
+    <div class="hidden items-center gap-5 md:flex">
+      <a
+        href={LOGIN_URL}
+        rel="noopener noreferrer"
+        aria-label="Iniciar sesión en OKRoot"
+        class="nav-login"
+      >
+        Iniciar sesión
+      </a>
+      <a href="/#lista-de-espera" class="btn btn-primary btn-sm">Quiero acceso</a>
+    </div>
+
+    {/* Hamburguesa (mobile) */}
+    <button
+      type="button"
+      class="nav-burger md:hidden"
+      data-menu-toggle
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <line x1="3" y1="7" x2="21" y2="7"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="17" x2="21" y2="17"></line>
+      </svg>
+    </button>
+  </nav>
+
+  {/* Panel móvil */}
+  <div id="mobile-menu" class="nav-mobile md:hidden" hidden>
+    <ul class="nav-mobile__list">
+      {
+        NAV_LINKS.map((link) => (
+          <li>
+            <a href={link.href} class="nav-mobile__link">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <hr class="nav-mobile__sep" />
     <a
-      href="/#lista-de-espera"
-      class="rounded-full px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-      style="background:var(--root-violet)">Quiero acceso</a
+      href={LOGIN_URL}
+      rel="noopener noreferrer"
+      aria-label="Iniciar sesión en OKRoot"
+      class="nav-login nav-mobile__login"
+    >
+      Iniciar sesión
+    </a>
+    <a href="/#lista-de-espera" class="btn btn-primary btn-sm nav-mobile__cta"
+      >Quiero acceso</a
     >
   </div>
 </header>
 
+<style>
+  /* ── Logo tipográfico ── */
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    text-decoration: none;
+  }
+  .nav-logo__ok {
+    font-weight: 800;
+    color: var(--color-primary);
+  }
+  .nav-logo__root {
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  /* ── Links centrales ── */
+  .nav-link {
+    display: inline-block;
+    padding: 0.375rem 0;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: color 200ms var(--ease-soft);
+  }
+  .nav-link:hover {
+    color: var(--color-primary);
+  }
+
+  /* ── Iniciar sesión ── */
+  .nav-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 200ms var(--ease-soft);
+  }
+  .nav-login:hover {
+    color: var(--color-primary-hover);
+  }
+
+  /* ── Hamburguesa ── */
+  .nav-burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    color: var(--color-ink);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* ── Panel móvil ── */
+  .nav-mobile {
+    margin: 8px auto 0;
+    width: 100%;
+    max-width: 1200px;
+    padding: 16px;
+    border-radius: 20px;
+    border: 1px solid var(--root-line);
+    background: var(--root-cream);
+    box-shadow: 0 12px 30px -12px rgba(20, 20, 20, 0.18);
+  }
+  .nav-mobile__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .nav-mobile__link {
+    display: block;
+    padding: 12px 8px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: color 200ms var(--ease-soft);
+  }
+  .nav-mobile__link:hover {
+    color: var(--color-primary);
+  }
+  .nav-mobile__sep {
+    border: none;
+    border-top: 1px solid var(--root-line);
+    margin: 8px 0;
+  }
+  .nav-mobile__login {
+    padding: 12px 8px;
+    font-size: 16px;
+  }
+  .nav-mobile__cta {
+    margin-top: 12px;
+    width: 100%;
+  }
+</style>
+
 <script>
-  // Frost the header bar once the page is scrolled a touch.
+  // Frost the header bar once the page is scrolled a touch. (Lógica existente.)
   const bar = document.querySelector<HTMLElement>(".site-header__bar");
   if (bar) {
     const onScroll = () => {
@@ -62,5 +224,23 @@ import { APP_URL } from "@/lib/consts";
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  // Menú móvil: toggle del panel + estado accesible.
+  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const menu = document.getElementById("mobile-menu");
+  if (toggle && menu) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+      menu.hidden = !open;
+    };
+    toggle.addEventListener("click", () => {
+      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    });
+    // Cerrar al elegir un destino.
+    menu.querySelectorAll("a").forEach((a) =>
+      a.addEventListener("click", () => setOpen(false)),
+    );
   }
 </script>
