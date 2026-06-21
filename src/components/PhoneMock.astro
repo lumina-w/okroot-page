@@ -1,0 +1,108 @@
+---
+/* ─── Organism: PhoneMock (helpers inlined) ─────────────────────────────── */
+---
+
+<div
+  class="relative mx-auto select-none"
+  style="width:280px;border-radius:44px;background:var(--root-ink);padding:8px;transform:rotate(3deg);box-shadow:0 30px 60px -20px rgba(88,28,135,0.35), 0 12px 24px -12px rgba(0,0,0,0.25)"
+>
+  <div
+    class="flex h-full flex-col overflow-hidden"
+    style="background:var(--root-cream);border-radius:36px"
+  >
+    {/* PhoneStatusBar */}
+    <div class="flex justify-between px-6 pb-1.5 pt-3.5 text-[11px] font-semibold" style="color:var(--root-ink)">
+      <span>9:41</span>
+      <span>● ● ●</span>
+    </div>
+
+    <div class="px-6 pb-1.5 pt-3">
+      <div class="text-[11px] uppercase tracking-[0.14em]" style="color:var(--root-mute)">
+        Escaneo · ahora
+      </div>
+      <div
+        class="mt-1 font-display text-[22px] font-extrabold"
+        style="letter-spacing:-0.03em;color:var(--root-ink)"
+      >
+        Galletas de avena
+      </div>
+    </div>
+
+    {/* VerdictCard */}
+    <div
+      class="mx-4 mt-3.5 rounded-[18px] p-4"
+      style="background:linear-gradient(135deg,#9433ea,#7a1fd9);color:#fff"
+    >
+      <div class="text-[10px] uppercase tracking-[0.2em] opacity-80">Seguro para ti</div>
+      <div
+        class="mt-1.5 flex items-center gap-2.5 font-display text-[38px] font-extrabold"
+        style="letter-spacing:-0.03em;line-height:1"
+      >
+        <span
+          class="flex h-[30px] w-[30px] items-center justify-center rounded-full text-lg"
+          style="background:rgba(255,255,255,0.22)"
+        >
+          ✓
+        </span>
+        Sí
+      </div>
+      <div class="mt-2 text-xs leading-snug opacity-90">Sin gluten · sin lactosa · IG bajo</div>
+    </div>
+
+    <div class="mx-4 mt-3.5 flex flex-col gap-2">
+      {/* ConditionBadge: Celíaca */}
+      <div class="flex items-center gap-2.5 rounded-[14px] border bg-white px-3 py-2.5" style="border-color:var(--root-line)">
+        <span
+          class="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full text-xs font-bold"
+          style="background:var(--root-violet-soft);color:var(--root-violet)"
+        >
+          ✓
+        </span>
+        <div class="min-w-0">
+          <div class="text-xs font-semibold" style="color:var(--root-ink)">Celíaca</div>
+          <div class="text-[10.5px]" style="color:var(--root-mute)">Sin gluten verificado</div>
+        </div>
+      </div>
+      {/* ConditionBadge: Diabética */}
+      <div class="flex items-center gap-2.5 rounded-[14px] border bg-white px-3 py-2.5" style="border-color:var(--root-line)">
+        <span
+          class="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full text-xs font-bold"
+          style="background:var(--root-violet-soft);color:var(--root-violet)"
+        >
+          ✓
+        </span>
+        <div class="min-w-0">
+          <div class="text-xs font-semibold" style="color:var(--root-ink)">Diabética</div>
+          <div class="text-[10.5px]" style="color:var(--root-mute)">IG: 34 · seguro</div>
+        </div>
+      </div>
+      {/* ConditionBadge: Sin lactosa */}
+      <div class="flex items-center gap-2.5 rounded-[14px] border bg-white px-3 py-2.5" style="border-color:var(--root-line)">
+        <span
+          class="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full text-xs font-bold"
+          style="background:var(--root-violet-soft);color:var(--root-violet)"
+        >
+          ✓
+        </span>
+        <div class="min-w-0">
+          <div class="text-xs font-semibold" style="color:var(--root-ink)">Sin lactosa</div>
+          <div class="text-[10.5px]" style="color:var(--root-mute)">Sin trazas</div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="mt-auto flex justify-around border-t px-6 pb-[18px] pt-3.5"
+      style="border-color:var(--root-line)"
+    >
+      {["Scan", "Recetas", "Diary", "Tú"].map((t, i) => (
+        <div
+          class="text-[10px] font-semibold"
+          style={`color:${i === 0 ? "var(--root-violet)" : "var(--root-faint)"}`}
+        >
+          {t}
+        </div>
+      ))}
+    </div>
+  </div>
+</div>

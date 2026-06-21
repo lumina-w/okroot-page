@@ -1,0 +1,66 @@
+---
+const corners = [
+  "top:18px;left:18px;border-top:2px solid var(--root-violet);border-left:2px solid var(--root-violet)",
+  "top:18px;right:18px;border-top:2px solid var(--root-violet);border-right:2px solid var(--root-violet)",
+  "bottom:18px;left:18px;border-bottom:2px solid var(--root-violet);border-left:2px solid var(--root-violet)",
+  "bottom:18px;right:18px;border-bottom:2px solid var(--root-violet);border-right:2px solid var(--root-violet)",
+];
+
+const ingredients: [string, boolean][] = [
+  ["Trigo", false],
+  ["Lactosa", false],
+  ["Azúcar añadida", false],
+];
+---
+
+<div
+  class="relative min-h-[280px] overflow-hidden rounded-[20px] border p-8"
+  style="background:linear-gradient(155deg, #ece1ff 0%, #faf8f5 100%);border-color:var(--root-line)"
+>
+  {/* Scanner frame corners */}
+  {corners.map((s) => (
+    <div class="absolute h-6 w-6" style={s} />
+  ))}
+
+  {/* Label card */}
+  <div
+    class="relative mx-auto mt-5 max-w-[320px] rounded-[14px] border p-[18px_20px] shadow-[0_8px_24px_-10px_rgba(20,20,20,0.18)]"
+    style="background:#fff;border-color:var(--root-line);transform:rotate(-2deg)"
+  >
+    <div class="text-[10px] uppercase tracking-[0.18em]" style="color:var(--root-faint)">
+      Información nutricional
+    </div>
+    <div
+      class="mt-1.5 font-display text-[17px] font-bold"
+      style="letter-spacing:-0.02em;color:var(--root-ink)"
+    >
+      Galletas de avena
+    </div>
+    <div class="my-3 h-px" style="background:var(--root-line)" />
+    {ingredients.map(([ing, ok]) => (
+      <div
+        class="flex justify-between py-1 text-xs"
+        style="color:var(--root-ink-2)"
+      >
+        <span>{ing}</span>
+        <span style={`color:${ok ? "var(--root-violet)" : "#c44a4a"}`}>
+          {ok ? "✓" : "detectado"}
+        </span>
+      </div>
+    ))}
+  </div>
+
+  {/* Verdict pill */}
+  <div
+    class="absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full px-[18px] py-2.5 text-[13px] font-semibold text-white shadow-[0_8px_20px_-6px_rgba(148,51,234,0.5)]"
+    style="background:var(--root-violet);white-space:nowrap"
+  >
+    <span
+      class="flex h-[18px] w-[18px] items-center justify-center rounded-full text-[11px]"
+      style="background:rgba(255,255,255,0.22)"
+    >
+      ✓
+    </span>
+    Apto · sin gluten · IG bajo
+  </div>
+</div>

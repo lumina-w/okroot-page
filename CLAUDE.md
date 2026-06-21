@@ -4,71 +4,85 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Marketing landing page for **Root** — a personalized-nutrition app for celiacs,
-diabetics, and lactose-intolerant users (brand "Lúmina W"). Spanish-language
-copy. Single Vite SPA, deployed to Netlify at the `okroot.co` domain root.
+Marketing landing page for **Root** (brand "OKRoot") — a personalized-nutrition
+app for celiacs, diabetics, and lactose-intolerant users. Spanish-language copy.
+Static **Astro** site, deployed to Netlify at the `okroot.co` domain root.
 
 ## Commands
 
 ```bash
-npm run dev       # Vite dev server (http://localhost:5173)
-npm run build     # tsc -b (project-references type-check) then vite build → dist/
+npm run dev       # Astro dev server (http://localhost:4321)
+npm run build     # astro build → static HTML in dist/
 npm run preview   # serve the production build locally
-npm run lint      # tsc -b --noEmit — type-check only; THIS IS THE ONLY "lint"
+npm run lint      # astro check — TypeScript + .astro type-check; THIS IS THE "lint"
 ```
 
-There is no ESLint, Prettier, or test runner. "Linting" means TypeScript
-type-checking. Verify changes compile with `npm run lint` or `npm run build`.
+There is no ESLint, Prettier, or test runner. "Linting" means `astro check`
+(TypeScript + template type-checking). Verify changes with `npm run lint` or
+`npm run build`. Note: `@tailwindcss/vite` is typed against a different Vite
+version than Astro's bundled one, so its plugin is JSDoc-cast to `any` in
+`astro.config.mjs` to keep `astro check` clean — leave that cast in place.
 
 ## Architecture
 
-- **Routing** (`src/App.tsx`): React Router. A single `<Layout>` route wraps all
-  pages. `index` → `Landing`; plus `faq`, `about`, `contact`, `legal`, and a
-  `*` catch-all. The landing page composes section components in fixed order
-  (`Hero → PainSection → HowItWorks → Features → Founder → Waitlist → FaqSection`).
-- **Scroll behavior** is centralized, not per-component. `Layout`'s
-  `ScrollManager` resets scroll on route change and honors `#hash` anchors.
-  Cross-route section jumps pass `state.scrollTo` via router navigation;
-  `Landing` reads that state on mount to scroll to a section. When adding
-  navigation that should land on a landing section, use this `state.scrollTo`
-  convention rather than ad-hoc scrolling.
-- **Reveal-on-scroll animations** (`src/hooks/useReveal.ts`): add the `reveal`
-  class to elements and call `useReveal()` on a container ref; the hook's
-  IntersectionObserver adds `is-visible` when they enter view. Stagger children
-  with an inline `--reveal-delay`. All animation is pure CSS — do not add an
-  animation library.
+- **Routing is file-based** (`src/pages/*.astro`). Each file is a real static
+  page: `index` → landing, plus `about`, `contact`, `faq`, `legal`, and `404`.
+  No client router, no SPA fallback — every route is its own prerendered HTML
+  file. The landing (`src/pages/index.astro`) composes section components in
+  fixed order (`Hero → PainSection → HowItWorks → Features → Founder → Waitlist
+  → FaqSection`).
+- **`src/layouts/Base.astro`** wraps every page: it owns the `<head>` (SEO meta,
+  Open Graph/Twitter tags, JSON-LD structured data, fonts) plus the shared
+  `<Header>` / `<Footer>` and the reveal-on-scroll script. Pages pass `title`
+  and optional `description` props.
+- **Reveal-on-scroll animations**: add the `reveal` class to elements; a small
+  inline `IntersectionObserver` script in `Base.astro` adds `is-visible` when
+  they enter view. Stagger children with an inline `--reveal-delay`. All
+  animation is pure CSS — do not add an animation library.
+- **Components** are `.astro` files in `src/components/`. They render to static
+  HTML at build time; interactive bits use plain `<script>` blocks (Astro
+  bundles them to hashed `/_astro/*.js`).
 
 ## Styling
 
-- **Tailwind CSS v4, CSS-first config** — there is no `tailwind.config.js`.
-  The theme lives in `src/index.css` under `@theme { ... }` (brand colors like
-  `--color-primary`, fonts, easing). Extra design tokens are plain CSS vars on
-  `:root`. Add/adjust design tokens there, then use them as Tailwind utilities
-  (e.g. `bg-primary`, `text-accent`, `border-line`).
-- **shadcn/ui "new-york" style**, but only `Button` and `Card` are vendored into
-  `src/components/ui/` and customized to the brand (CVA variants). `cn()` from
-  `@/lib/utils` merges classes. Icons: lucide (`components.json` config), though
-  custom SVGs live in `src/components/icons.tsx`.
-- Path alias `@/` → `src/` (configured in both `vite.config.ts` and tsconfig).
+- **Tailwind CSS v4, CSS-first config** via the `@tailwindcss/vite` plugin (wired
+  in `astro.config.mjs`) — there is no `tailwind.config.js`. The theme lives in
+  `src/index.css` under `@theme { ... }` (brand colors like `--color-primary`,
+  fonts, easing). Extra design tokens are plain CSS vars on `:root`. Add/adjust
+  tokens there, then use them as Tailwind utilities (e.g. `bg-primary`,
+  `text-accent`, `border-line`).
+- Path alias `@/` → `src/`, configured in **both** `astro.config.mjs` (Vite
+  `resolve.alias`, needed at build time) and `tsconfig.json` (`paths`, for the
+  type-checker).
 
 ## Configuration constants
 
-`src/lib/utils.ts` holds the runtime-config constants — edit these, not
+`src/lib/consts.ts` holds the runtime-config constants — edit these, not
 scattered literals:
 - `APP_URL` — where the "Entrar a la app" CTA points (`https://app.okroot.co`).
-- `PORTFOLIO_URL` — founder social-proof link.
-- `WAITLIST_ENDPOINT` — waitlist form POST target. Empty string runs the form in
-  optimistic-demo mode (no network). **If you set a cross-origin endpoint, you
-  must also widen `connect-src` / `form-action` in `netlify.toml`'s CSP**, or the
-  browser blocks the POST.
+- `PORTFOLIO_URL` — founder social-proof link (`https://wavival.dev`).
+- `EARLY_ACCESS_SPOTS` — early-access scarcity count on the waitlist. Must be a
+  real number; set to `0` to hide the scarcity line.
+
+The waitlist form posts to **Supabase**. `src/components/Waitlist.astro` inserts
+into the `okroot-waitlist` table via PostgREST (no SDK — plain `fetch`, zero
+bundle cost) using `PUBLIC_SUPABASE_URL` / `PUBLIC_SUPABASE_ANON_KEY`. Astro only
+exposes env vars prefixed `PUBLIC_` to client scripts. When either var is
+missing the form runs in **optimistic-demo mode** (logs, no network) — so
+**production builds on Netlify must have both env vars set**, or signups are
+silently dropped. The anon key is public by design; Row Level Security
+(`supabase/waitlist.sql`: anon may INSERT only) protects the data. The CSP in
+`netlify.toml` already allows `connect-src https://*.supabase.co`.
 
 ## Deploy (Netlify)
 
-`netlify.toml` is the source of truth: build → `dist`, SPA fallback
-(`/* → /index.html`), strict security headers including a tight CSP, and
-immutable caching for hashed `/assets/*`. The site serves at the domain root
-(`base: "/"` in `vite.config.ts`).
+`netlify.toml` is the source of truth: build → `dist`, strict security headers
+including a tight CSP, and immutable caching for hashed `/_astro/*`. The site
+serves at the domain root (`site: "https://okroot.co"` in `astro.config.mjs`).
+There is no SPA redirect — Astro emits a real HTML file per route, and Netlify
+serves `404.html` for unknown paths.
 
-Note: `README.md` is partly stale — it describes an older `/root/` base path and
-`dist/root` output. The actual config serves from the domain root (`base: "/"`,
-publish `dist`). Trust `vite.config.ts` + `netlify.toml` over the README.
+Set `PUBLIC_SUPABASE_URL` / `PUBLIC_SUPABASE_ANON_KEY` in Netlify env vars (Site
+settings → Environment variables) and run `supabase/waitlist.sql` against the
+project, or the production waitlist form silently drops signups (see
+Configuration constants above).

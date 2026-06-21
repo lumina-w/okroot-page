@@ -1,0 +1,18 @@
+---
+import Base from "@/layouts/Base.astro";
+import PageShell from "@/components/PageShell.astro";
+
+const buttonClasses =
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-semibold transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-cream disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] cursor-pointer bg-primary text-white shadow-[0_8px_24px_-8px_rgba(148,51,234,0.55)] hover:bg-accent hover:shadow-[0_12px_30px_-8px_rgba(88,28,135,0.6)] h-14 px-8 text-base";
+---
+<Base title="404 — OKRoot">
+  <PageShell
+    eyebrow="Error 404"
+    title="Esta página no existe"
+    intro="El enlace que seguiste no lleva a ningún lado. Volvamos a terreno seguro."
+  >
+    <a href="/" class={buttonClasses}>
+      Ir al inicio
+    </a>
+  </PageShell>
+</Base>

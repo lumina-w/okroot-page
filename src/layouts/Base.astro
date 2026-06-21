@@ -1,0 +1,116 @@
+---
+import "../index.css";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "PWA offline-first para celíacos, diabéticos e intolerantes a la lactosa. Fotografía una etiqueta y sabe en segundos si puedes comerla. Scanner IA con Claude API.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#9433ea" />
+    <link rel="canonical" href="https://okroot.co/" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content="OKRoot — Come con confianza" />
+    <meta
+      property="og:description"
+      content="Fotografía la etiqueta. Sabe en segundos si puedes comerla. Scanner IA para celíacos, diabéticos e intolerantes a la lactosa — las tres a la vez."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://okroot.co/" />
+    <meta property="og:image" content="https://okroot.co/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="OKRoot — Come con confianza" />
+    <meta
+      name="twitter:description"
+      content="Fotografía la etiqueta. Sabe en segundos si puedes comerla. Scanner IA con Claude API."
+    />
+    <meta name="twitter:image" content="https://okroot.co/og.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>{title}</title>
+
+    <script type="application/ld+json" is:inline>
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://okroot.co/#org",
+            "name": "OKRoot",
+            "url": "https://okroot.co/",
+            "logo": "https://okroot.co/apple-touch-icon.png"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://okroot.co/#website",
+            "url": "https://okroot.co/",
+            "name": "OKRoot",
+            "inLanguage": "es",
+            "publisher": { "@id": "https://okroot.co/#org" }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "OKRoot",
+            "applicationCategory": "HealthApplication",
+            "operatingSystem": "Web, iOS, Android",
+            "url": "https://app.okroot.co",
+            "description": "PWA offline-first para celíacos, diabéticos e intolerantes a la lactosa. Fotografía una etiqueta y sabe en segundos si puedes comerla. Scanner IA con Claude API.",
+            "inLanguage": "es",
+            "publisher": { "@id": "https://okroot.co/#org" },
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div class="flex min-h-screen flex-col">
+      <Header />
+      <main class="flex-1">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+
+    <script>
+      // Reveal-on-scroll: toggle `is-visible` on `.reveal` elements as they enter view.
+      // Children may set `--reveal-delay` inline for a stagger effect.
+      const reveals = document.querySelectorAll<HTMLElement>(".reveal");
+      if (reveals.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+        );
+        reveals.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

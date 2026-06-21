@@ -1,0 +1,63 @@
+---
+import { APP_URL } from "@/lib/consts";
+---
+
+<header class="sticky top-0 z-50 px-5 py-4 sm:px-6">
+  <div
+    class="site-header__bar mx-auto flex h-14 w-full max-w-[1200px] items-center justify-between rounded-full border px-5 transition-all duration-300"
+    style="background:#fff;border-color:var(--root-line)"
+  >
+    {/* Logo */}
+    <a href="/" class="flex items-center" aria-label="OKRoot — inicio">
+      <span class="flex items-center gap-2">
+        <img src="/favicon-32.png" alt="" width="26" height="26" class="h-[26px] w-[26px]" />
+        <span
+          class="font-display text-xl font-extrabold tracking-[-0.04em]"
+          style="color:var(--root-ink)"
+        >
+          <span style="color:var(--root-violet)">OK</span>root
+        </span>
+      </span>
+    </a>
+
+    {/* Nav */}
+    <nav class="hidden items-center gap-7 md:flex">
+      <a
+        href="/#como-funciona"
+        class="text-sm font-medium transition-colors hover:text-primary"
+        style="color:var(--root-ink-2)">Cómo funciona</a
+      >
+      <a
+        href="/#fundadora"
+        class="text-sm font-medium transition-colors hover:text-primary"
+        style="color:var(--root-ink-2)">Sobre mí</a
+      >
+      <a
+        href={APP_URL}
+        class="text-sm font-medium transition-colors hover:text-primary"
+        style="color:var(--root-ink-2)">Entrar a la app</a
+      >
+    </nav>
+
+    {/* Sticky CTA → waitlist form */}
+    <a
+      href="/#waitlist"
+      class="rounded-full px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+      style="background:var(--root-violet)">Quiero acceso</a
+    >
+  </div>
+</header>
+
+<script>
+  // Frost the header bar once the page is scrolled a touch.
+  const bar = document.querySelector<HTMLElement>(".site-header__bar");
+  if (bar) {
+    const onScroll = () => {
+      const scrolled = window.scrollY > 12;
+      bar.style.background = scrolled ? "rgba(250,248,245,0.88)" : "#fff";
+      bar.style.backdropFilter = scrolled ? "blur(12px)" : "none";
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+</script>
