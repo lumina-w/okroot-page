@@ -1,66 +1,273 @@
 ---
-const corners = [
-  "top:18px;left:18px;border-top:2px solid var(--root-violet);border-left:2px solid var(--root-violet)",
-  "top:18px;right:18px;border-top:2px solid var(--root-violet);border-right:2px solid var(--root-violet)",
-  "bottom:18px;left:18px;border-bottom:2px solid var(--root-violet);border-left:2px solid var(--root-violet)",
-  "bottom:18px;right:18px;border-bottom:2px solid var(--root-violet);border-right:2px solid var(--root-violet)",
-];
+/* ─── ScannerIllo ─────────────────────────────────────────────────────────
+   Single violet-styled panel (no outer wrapper). An infinite, pure-CSS loop
+   scans "Galletas de avena" → NO apto (rojo), then "Galletas de arroz" → OK
+   (verde), and repeats. prefers-reduced-motion → static "no apto" state. */
 
-const ingredients: [string, boolean][] = [
-  ["Trigo", false],
-  ["Lactosa", false],
-  ["Azúcar añadida", false],
-];
+const ROWS_A: string[] = ["Trigo", "Lactosa", "Azúcar añadida"];
+const ROWS_B: string[] = ["Trigo", "Lactosa", "Azúcar añadida"];
 ---
 
 <div
-  class="relative min-h-[280px] overflow-hidden rounded-[20px] border p-8"
-  style="background:linear-gradient(155deg, #ece1ff 0%, #faf8f5 100%);border-color:var(--root-line)"
+  class="scn relative w-full overflow-hidden rounded-[22px] p-7 sm:p-9"
+  style="background:#fff;border:2px solid color-mix(in srgb, var(--root-violet) 40%, transparent);box-shadow:0 22px 50px -18px rgba(148,51,234,0.5)"
 >
-  {/* Scanner frame corners */}
-  {corners.map((s) => (
-    <div class="absolute h-6 w-6" style={s} />
-  ))}
+  {/* Scan beam — sweeps top→bottom to imply scanning */}
+  <div class="scn__beam" aria-hidden></div>
 
-  {/* Label card */}
-  <div
-    class="relative mx-auto mt-5 max-w-[320px] rounded-[14px] border p-[18px_20px] shadow-[0_8px_24px_-10px_rgba(20,20,20,0.18)]"
-    style="background:#fff;border-color:var(--root-line);transform:rotate(-2deg)"
-  >
-    <div class="text-[10px] uppercase tracking-[0.18em]" style="color:var(--root-faint)">
-      Información nutricional
-    </div>
-    <div
-      class="mt-1.5 font-display text-[17px] font-bold"
-      style="letter-spacing:-0.02em;color:var(--root-ink)"
-    >
-      Galletas de avena
-    </div>
-    <div class="my-3 h-px" style="background:var(--root-line)" />
-    {ingredients.map(([ing, ok]) => (
-      <div
-        class="flex justify-between py-1 text-xs"
-        style="color:var(--root-ink-2)"
-      >
-        <span>{ing}</span>
-        <span style={`color:${ok ? "var(--root-violet)" : "var(--root-danger)"}`}>
-          {ok ? "✓" : "detectado"}
-        </span>
+  <div class="scn__eyebrow">Información nutricional</div>
+
+  <div class="scn__stage">
+    {/* Layer A — Galletas de avena → NO apto */}
+    <div class="scn__layer scn__layer--a">
+      <div class="scn__title">Galletas de avena</div>
+      <div class="scn__rule"></div>
+      {ROWS_A.map((ing) => (
+        <div class="scn__row">
+          <span>{ing}</span>
+          <span class="scn__flag scn__flag--bad">detectado</span>
+        </div>
+      ))}
+      <div class="scn__badge scn__badge--bad">
+        <span class="scn__badge-mark">✗</span>
+        No apto · gluten y lactosa
       </div>
-    ))}
-  </div>
+    </div>
 
-  {/* Verdict pill — negative: matches the detected ingredients above */}
-  <div
-    class="absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full px-[18px] py-2.5 text-[13px] font-semibold text-white shadow-[0_8px_20px_-6px_rgba(196,74,74,0.5)]"
-    style="background:var(--root-danger);white-space:nowrap"
-  >
-    <span
-      class="flex h-[18px] w-[18px] items-center justify-center rounded-full text-[11px]"
-      style="background:rgba(255,255,255,0.22)"
-    >
-      ✗
-    </span>
-    No apto · gluten y lactosa
+    {/* Layer B — Galletas de arroz → OK */}
+    <div class="scn__layer scn__layer--b">
+      <div class="scn__title">Galletas de arroz</div>
+      <div class="scn__rule"></div>
+      {ROWS_B.map((ing) => (
+        <div class="scn__row">
+          <span>{ing}</span>
+          <span class="scn__flag scn__flag--ok">no detectado</span>
+        </div>
+      ))}
+      <div class="scn__badge scn__badge--ok">
+        <span class="scn__badge-mark">✓</span>
+        Apto · sin gluten · IG bajo
+      </div>
+    </div>
   </div>
 </div>
+
+<style>
+  .scn {
+    --scn-green: #1f9d6b;
+    --scn-green-text: #178a5e;
+  }
+  .scn__eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--root-violet);
+  }
+
+  /* Stage holds both product layers stacked; min-height keeps it from jumping. */
+  .scn__stage {
+    position: relative;
+    margin-top: 10px;
+    min-height: 210px;
+  }
+  .scn__layer {
+    position: absolute;
+    inset: 0;
+  }
+  .scn__title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--root-ink);
+  }
+  .scn__rule {
+    height: 1px;
+    margin: 16px 0;
+    background: var(--root-violet-mist);
+  }
+  .scn__row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 15px;
+    color: var(--root-ink-2);
+  }
+  .scn__flag {
+    font-weight: 600;
+  }
+  .scn__flag--bad {
+    color: var(--root-danger);
+  }
+  .scn__flag--ok {
+    color: var(--scn-green-text);
+  }
+  .scn__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    padding: 10px 18px;
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+  }
+  .scn__badge--bad {
+    background: var(--root-danger);
+    box-shadow: 0 8px 20px -6px rgba(196, 74, 74, 0.5);
+  }
+  .scn__badge--ok {
+    background: var(--scn-green);
+    box-shadow: 0 8px 20px -6px rgba(31, 157, 107, 0.5);
+  }
+  .scn__badge-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.22);
+    font-size: 11px;
+  }
+
+  /* Scan beam */
+  .scn__beam {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 38%;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--root-violet) 26%, transparent) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    animation: scn-beam 3.6s var(--ease-soft) infinite;
+  }
+
+  /* ── The infinite loop ── (7.2s = 2 × beam) */
+  @keyframes scn-beam {
+    0% {
+      transform: translateY(-110%);
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+    }
+    55% {
+      transform: translateY(280%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(280%);
+      opacity: 0;
+    }
+  }
+
+  /* A: avena visible first half, B: arroz second half, with crossfade. */
+  .scn__layer--a {
+    animation: scn-layer-a 7.2s ease-in-out infinite;
+  }
+  .scn__layer--b {
+    animation: scn-layer-b 7.2s ease-in-out infinite;
+  }
+  @keyframes scn-layer-a {
+    0%,
+    8% {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    16%,
+    44% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    52%,
+    100% {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+  @keyframes scn-layer-b {
+    0%,
+    52% {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    60%,
+    92% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    98%,
+    100% {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+  /* Badge pops slightly after its layer settles. */
+  .scn__badge {
+    transform-origin: left center;
+  }
+  .scn__layer--a .scn__badge {
+    animation: scn-badge 7.2s ease-in-out infinite;
+  }
+  .scn__layer--b .scn__badge {
+    animation: scn-badge-b 7.2s ease-in-out infinite;
+  }
+  @keyframes scn-badge {
+    0%,
+    18% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    26%,
+    44% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes scn-badge-b {
+    0%,
+    62% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    70%,
+    92% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* Static fallback: show only the avena / NO apto state, no motion. */
+  @media (prefers-reduced-motion: reduce) {
+    .scn__beam,
+    .scn__layer--a,
+    .scn__layer--b,
+    .scn__layer--a .scn__badge,
+    .scn__layer--b .scn__badge {
+      animation: none;
+    }
+    .scn__beam,
+    .scn__layer--b {
+      display: none;
+    }
+    .scn__layer--a {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

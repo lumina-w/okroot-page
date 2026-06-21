@@ -84,8 +84,10 @@
 
 html {
   scroll-behavior: smooth;
-  /* Clears the sticky header on in-page anchor jumps (was Lenis's -88 offset). */
-  scroll-padding-top: 88px;
+  /* Clears the sticky header on in-page anchor jumps + a breathing gap.
+     Header box is ~88px (py-4 16 + bar h-14 56 + py-4 16); add ~24px so the
+     target heading doesn't sit flush under the bar. */
+  scroll-padding-top: 112px;
   -webkit-text-size-adjust: 100%;
   /* Thin, brand-violet scrollbar (Firefox) */
   scrollbar-width: thin;

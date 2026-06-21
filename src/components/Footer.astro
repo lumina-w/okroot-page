@@ -2,7 +2,7 @@
 // Footer de OKRoot. Tres zonas: conversión (último CTA), columnas de navegación,
 // subfooter legal. Toda la info está hardcodeada — sin props.
 // Anclas reales del landing: #lista-de-espera (waitlist), #como-funciona,
-// #funcionalidades (incluye recetas), #faq.
+// #funcionalidades (incluye recetas), #preguntas.
 ---
 
 <footer class="ftr">
@@ -37,7 +37,7 @@
         <ul class="ftr__list">
           <li><a class="ftr__link" href="/#como-funciona">Cómo funciona</a></li>
           <li><a class="ftr__link" href="/#funcionalidades">Recetas</a></li>
-          <li><a class="ftr__link" href="/#faq">Preguntas frecuentes</a></li>
+          <li><a class="ftr__link" href="/#preguntas">Preguntas frecuentes</a></li>
           <li>
             <a
               class="ftr__link"
@@ -83,15 +83,10 @@
             </a>
           </li>
           <li>
-            <a
-              class="ftr__link"
-              href="https://luminaw.co/#contact"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Contacto de Lúmina W (abre en una pestaña nueva)"
-            >
-              Contacto
-            </a>
+            <a class="ftr__link" href="/#casos-de-exito">Casos de éxito</a>
+          </li>
+          <li>
+            <a class="ftr__link" href="/contacto/">Contacto</a>
           </li>
         </ul>
       </div>
@@ -147,7 +142,7 @@
     {/* ZONA 3 — Subfooter legal */}
     <div class="ftr__sub">
       <p class="ftr__copy">
-        © 2026 OKRoot · Lúmina W. Todos los derechos reservados.
+        © 2026 Lúmina W · OKRoot. Todos los derechos reservados.
       </p>
       <nav class="ftr__sublinks" aria-label="Enlaces legales">
         <a href="/privacidad/">Privacidad</a>
@@ -315,7 +310,8 @@
     font-weight: 400;
     font-size: 13px;
     color: var(--root-cream);
-    opacity: 0.4;
+    /* 0.5 (not 0.4) keeps copyright at 5.07:1 on #141414 — AA for 13px text. */
+    opacity: 0.5;
   }
   .ftr__sublinks {
     display: flex;

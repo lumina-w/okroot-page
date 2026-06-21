@@ -4,10 +4,10 @@ import ScannerHero from "@/components/ScannerHero.astro";
 /* ─── Section ────────────────────────────────────────────────────────────── */
 ---
 
-<section id="hero" class="px-5 pb-6 pt-0 sm:px-6 lg:px-6">
+<section id="hero" class="px-5 pb-6 pt-3 sm:px-6 sm:pt-4 lg:px-6">
   {/* Hero card with radial gradient */}
   <div
-    class="relative overflow-hidden rounded-[28px] border"
+    class="relative mx-auto w-full max-w-[1200px] overflow-hidden rounded-[28px] border"
     style="background:radial-gradient(120% 90% at 0% 0%, #ece1ff 0%, #faf8f5 55%, #faf8f5 100%);border-color:var(--root-line);min-height:600px"
   >
     {/* Decorative blob */}
@@ -63,24 +63,28 @@ import ScannerHero from "@/components/ScannerHero.astro";
         </div>
 
         <div class="load-rise mt-11" style="animation-delay:430ms">
-          {/* TrustPill */}
-          <div
-            class="flex max-w-[560px] items-center gap-3.5 rounded-full border px-[18px] py-3.5"
+          {/* TrustPill — enlaza a los casos de éxito (sección fundadora) */}
+          <a
+            href="#casos-de-exito"
+            class="flex max-w-[560px] items-center gap-3.5 rounded-full border px-[18px] py-3.5 transition-colors hover:border-[var(--root-violet)]"
             style="background:#fff;border-color:var(--root-line)"
           >
-            <div
-              class="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full font-display text-sm font-extrabold text-white"
-              style="background:linear-gradient(135deg,#9433ea,#581c87)"
-            >
-              VR
-            </div>
+            <img
+              src="/valentina.webp"
+              alt="Valentina Ramírez, fundadora de OKRoot"
+              width="42"
+              height="42"
+              loading="lazy"
+              decoding="async"
+              class="h-[42px] w-[42px] shrink-0 rounded-full object-cover"
+            />
             <p class="text-[12.5px] leading-snug" style="color:var(--root-mute)">
               <span class="font-semibold" style="color:var(--root-ink)">
                 Hecho por Valentina Ramírez
               </span>
-              : celíaca, diabética e intolerante a la lactosa. Full Stack Developer.
+              : celíaca, diabética e intolerante a la lactosa.
             </p>
-          </div>
+          </a>
         </div>
       </div>
 

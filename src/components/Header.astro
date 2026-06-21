@@ -8,8 +8,8 @@ import { APP_URL } from "@/lib/consts";
 const NAV_LINKS = [
   { href: "/#como-funciona", label: "Cómo funciona" },
   { href: "/#funcionalidades", label: "Recetas" },
-  { href: "/#fundadora", label: "Sobre mí" },
-  { href: "/#faq", label: "Preguntas" },
+  { href: "/#casos-de-exito", label: "Casos de éxito" },
+  { href: "/#preguntas", label: "Preguntas" },
 ];
 
 const LOGIN_URL = `${APP_URL}/login`;
@@ -27,7 +27,7 @@ const LOGIN_URL = `${APP_URL}/login`;
     </a>
 
     {/* Links centrales (desktop) */}
-    <ul class="hidden items-center gap-7 md:flex">
+    <ul class="hidden items-center gap-7 lg:flex">
       {
         NAV_LINKS.map((link) => (
           <li>
@@ -40,7 +40,7 @@ const LOGIN_URL = `${APP_URL}/login`;
     </ul>
 
     {/* Zona derecha (desktop) */}
-    <div class="hidden items-center gap-5 md:flex">
+    <div class="hidden items-center gap-5 lg:flex">
       <a
         href={LOGIN_URL}
         rel="noopener noreferrer"
@@ -52,34 +52,25 @@ const LOGIN_URL = `${APP_URL}/login`;
       <a href="/#lista-de-espera" class="btn btn-primary btn-sm">Quiero acceso</a>
     </div>
 
-    {/* Hamburguesa (mobile) */}
+    {/* Hamburguesa (mobile + tablet) — barras que se transforman en X */}
     <button
       type="button"
-      class="nav-burger md:hidden"
+      class="nav-burger lg:hidden"
       data-menu-toggle
       aria-label="Abrir menú"
       aria-expanded="false"
       aria-controls="mobile-menu"
     >
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        aria-hidden="true"
-      >
-        <line x1="3" y1="7" x2="21" y2="7"></line>
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="17" x2="21" y2="17"></line>
-      </svg>
+      <span class="nav-burger__box" aria-hidden="true">
+        <span class="nav-burger__bar"></span>
+        <span class="nav-burger__bar"></span>
+        <span class="nav-burger__bar"></span>
+      </span>
     </button>
   </nav>
 
-  {/* Panel móvil */}
-  <div id="mobile-menu" class="nav-mobile md:hidden" hidden>
+  {/* Panel móvil — animado con max-height/opacity; `inert` cuando está cerrado */}
+  <div id="mobile-menu" class="nav-mobile lg:hidden" inert>
     <ul class="nav-mobile__list">
       {
         NAV_LINKS.map((link) => (
@@ -155,28 +146,101 @@ const LOGIN_URL = `${APP_URL}/login`;
     color: var(--color-primary-hover);
   }
 
-  /* ── Hamburguesa ── */
+  /* ── Hamburguesa → X ── */
   .nav-burger {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 4px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
     color: var(--color-ink);
     background: transparent;
     border: none;
     cursor: pointer;
   }
+  /* Scoped `display:inline-flex` above outranks Tailwind's `lg:hidden`
+     (equal specificity, scoped wins on order) — hide explicitly at lg+. */
+  @media (min-width: 1024px) {
+    .nav-burger {
+      display: none;
+    }
+  }
+  .nav-burger__box {
+    position: relative;
+    width: 22px;
+    height: 16px;
+  }
+  .nav-burger__bar {
+    position: absolute;
+    left: 0;
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition:
+      top 0.3s var(--ease-soft),
+      transform 0.3s var(--ease-soft),
+      opacity 0.2s ease;
+  }
+  .nav-burger__bar:nth-child(1) {
+    top: 0;
+  }
+  .nav-burger__bar:nth-child(2) {
+    top: 7px;
+  }
+  .nav-burger__bar:nth-child(3) {
+    top: 14px;
+  }
+  /* Open state: top/bottom bars cross into an X, middle fades out. */
+  .nav-burger[aria-expanded="true"] .nav-burger__bar:nth-child(1) {
+    top: 7px;
+    transform: rotate(45deg);
+  }
+  .nav-burger[aria-expanded="true"] .nav-burger__bar:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-burger[aria-expanded="true"] .nav-burger__bar:nth-child(3) {
+    top: 7px;
+    transform: rotate(-45deg);
+  }
 
   /* ── Panel móvil ── */
   .nav-mobile {
-    margin: 8px auto 0;
+    margin: 0 auto;
     width: 100%;
     max-width: 1200px;
-    padding: 16px;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition:
+      max-height 0.32s var(--ease-soft),
+      opacity 0.25s ease,
+      transform 0.25s var(--ease-soft),
+      margin-top 0.32s var(--ease-soft);
+    /* Box visuals applied to the inner wrapper so they fade with the panel. */
     border-radius: 20px;
-    border: 1px solid var(--root-line);
+    border: 1px solid transparent;
     background: var(--root-cream);
+    box-shadow: 0 12px 30px -12px rgba(20, 20, 20, 0);
+  }
+  .nav-mobile.is-open {
+    margin-top: 8px;
+    max-height: 440px;
+    opacity: 1;
+    transform: translateY(0);
+    padding: 16px;
+    border-color: var(--root-line);
     box-shadow: 0 12px 30px -12px rgba(20, 20, 20, 0.18);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav-mobile {
+      transition: none;
+    }
+    .nav-burger__bar {
+      transition: none;
+    }
   }
   .nav-mobile__list {
     list-style: none;
@@ -233,7 +297,9 @@ const LOGIN_URL = `${APP_URL}/login`;
     const setOpen = (open: boolean) => {
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
-      menu.hidden = !open;
+      menu.classList.toggle("is-open", open);
+      // `inert` removes the collapsed panel from tab order + a11y tree.
+      menu.toggleAttribute("inert", !open);
     };
     toggle.addEventListener("click", () => {
       setOpen(toggle.getAttribute("aria-expanded") !== "true");

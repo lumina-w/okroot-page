@@ -34,8 +34,8 @@ const faqSchema = {
 };
 ---
 
-<section id="faq" class="py-24 lg:py-32" style="background:var(--root-cream-warm)">
-  <div class="mx-auto w-full max-w-[760px] px-5 sm:px-8">
+<section id="preguntas" class="py-24 lg:py-32" style="background:var(--root-cream-warm)">
+  <div class="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
     <div class="reveal text-center">
       <div class="eyebrow">Preguntas frecuentes</div>
       <h2
@@ -84,7 +84,7 @@ const faqSchema = {
     // vanilla, no deps. Reduced-motion → instant toggle.
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     document
-      .querySelectorAll<HTMLDetailsElement>("#faq details")
+      .querySelectorAll<HTMLDetailsElement>("#preguntas details")
       .forEach((d) => {
         const summary = d.querySelector("summary")!;
         const answer = d.querySelector<HTMLElement>(".faq-answer")!;

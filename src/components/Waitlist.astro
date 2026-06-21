@@ -5,7 +5,7 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
 ---
 
 <section id="lista-de-espera" class="px-5 py-12 sm:px-6 lg:py-20">
-  <div class="reveal mx-auto w-full max-w-[760px]" data-waitlist>
+  <div class="reveal mx-auto w-full max-w-[1200px]" data-waitlist>
     <div
       class="overflow-hidden rounded-[32px] border p-8 sm:p-12"
       style="background:var(--root-violet-soft);border-color:var(--root-violet-mist)"
@@ -71,7 +71,7 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
         <form data-wl-form class="mx-auto mt-9 max-w-[460px]" novalidate>
           {/* Name */}
           <label for="wl-name" class="block text-sm font-semibold" style="color:var(--root-ink)">
-            Nombre
+            Nombre <span aria-hidden="true" style="color:var(--root-danger)">*</span>
           </label>
           <input
             id="wl-name"
@@ -87,7 +87,7 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
 
           {/* Email */}
           <label for="wl-email" class="mt-6 block text-sm font-semibold" style="color:var(--root-ink)">
-            Correo
+            Correo <span aria-hidden="true" style="color:var(--root-danger)">*</span>
           </label>
           <input
             id="wl-email"
@@ -104,8 +104,7 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
           {/* Conditions */}
           <fieldset class="mt-6 border-0 p-0">
             <legend class="text-sm font-semibold" style="color:var(--root-ink)">
-              ¿Cuál es tu restricción?
-              <span class="font-normal" style="color:var(--root-faint)">(opcional)</span>
+              ¿Cuál es tu restricción? <span aria-hidden="true" style="color:var(--root-danger)">*</span>
             </legend>
             <div class="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
               {
@@ -256,8 +255,14 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
 
       const name = nameInput.value.trim();
       const email = input.value.trim();
-      // Validate before submit — don't fail silently. `novalidate` disables the
-      // native bubble, so we surface the error in the live region instead.
+      const conditions = Array.from(
+        root.querySelectorAll<HTMLInputElement>('input[name="condition"]:checked'),
+      ).map((c) => c.value);
+      // Free-text detail only matters when "Otra" is among the picks.
+      const other = conditions.includes("Otra") ? otherInput.value.trim() : "";
+
+      // All fields required. `novalidate` disables the native bubble, so we
+      // surface each error in the live region instead.
       if (!name) {
         showError("Escribe tu nombre para continuar.", nameInput);
         nameInput.focus();
@@ -268,18 +273,23 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
         input.focus();
         return;
       }
+      if (conditions.length === 0) {
+        const firstCond =
+          root.querySelector<HTMLInputElement>('input[name="condition"]');
+        showError("Elige al menos una restricción para continuar.", firstCond ?? input);
+        firstCond?.focus();
+        return;
+      }
+      if (conditions.includes("Otra") && !other) {
+        showError("Cuéntanos cuál es tu restricción.", otherInput);
+        otherInput.focus();
+        return;
+      }
       clearError();
 
       loading = true;
       submit.disabled = true;
       submit.textContent = "Enviando…";
-
-      const conditions = Array.from(
-        root.querySelectorAll<HTMLInputElement>('input[name="condition"]:checked'),
-      ).map((c) => c.value);
-
-      // Free-text detail only matters when "Otra" is among the picks.
-      const other = conditions.includes("Otra") ? otherInput.value.trim() : "";
 
       try {
         await insertWaitlist({

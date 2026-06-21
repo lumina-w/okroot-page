@@ -26,11 +26,8 @@ import ScannerIllo from "@/components/ScannerIllo.astro";
 
     {/* Showcase + steps */}
     <div class="mt-14 grid gap-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-stretch">
-      {/* Scanner showcase */}
-      <div
-        class="reveal flex items-center overflow-hidden rounded-[28px] border bg-white p-6 sm:p-8"
-        style="border-color:var(--root-line)"
-      >
+      {/* Scanner showcase — ScannerIllo is now the panel itself (no wrapper box) */}
+      <div class="reveal flex items-center">
         <ScannerIllo />
       </div>
 
