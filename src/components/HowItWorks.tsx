@@ -1,23 +1,79 @@
 import { useReveal } from "@/hooks/useReveal";
-import { ScannerIllo, RecipesIllo, InsightsIllo } from "./mockups";
+import { ScannerIllo } from "./mockups";
 
-/* ─── Atom: Feature number badge + eyebrow ──────────────────────────────── */
+/* ─── Atom: step glyphs ─────────────────────────────────────────────────── */
 
-function FeatureLabel({ idx, eyebrow }: { idx: string; eyebrow: string }) {
+function CameraGlyph() {
   return (
-    <div className="flex items-center gap-3.5">
-      <div
-        className="flex h-[38px] w-[38px] items-center justify-center rounded-xl font-display text-sm font-extrabold"
-        style={{ background: "var(--root-violet-soft)", color: "var(--root-violet)" }}
-      >
-        {idx}
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden>
+      <rect x="5" y="10" width="22" height="16" rx="3" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="16" cy="18" r="4.5" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M12 10l1.8-3h4.4L20 10" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function AiGlyph() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden>
+      <path d="M16 4v4M16 24v4M4 16h4M24 16h4M7.5 7.5l2.8 2.8M21.7 21.7l2.8 2.8M24.5 7.5l-2.8 2.8M10.3 21.7l-2.8 2.8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="16" cy="16" r="5.5" stroke="currentColor" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
+function VerdictGlyph() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden>
+      <circle cx="16" cy="16" r="11" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M11 16.5l3.2 3.2L21 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/* ─── Molecule: StepCard ────────────────────────────────────────────────── */
+
+function StepCard({
+  idx,
+  Glyph,
+  title,
+  body,
+  delay,
+}: {
+  idx: string;
+  Glyph: () => React.ReactElement;
+  title: string;
+  body: React.ReactNode;
+  delay: number;
+}) {
+  return (
+    <div
+      className="reveal flex flex-col gap-5 rounded-3xl border bg-white p-8"
+      style={{ borderColor: "var(--root-line)", ["--reveal-delay" as string]: `${delay}ms` }}
+    >
+      <div className="flex items-center justify-between">
+        <div
+          className="flex h-12 w-12 items-center justify-center rounded-2xl"
+          style={{ background: "var(--root-violet-soft)", color: "var(--root-violet)" }}
+        >
+          <Glyph />
+        </div>
+        <span
+          className="font-display text-sm font-bold tracking-[0.04em]"
+          style={{ color: "var(--root-faint)" }}
+        >
+          {idx}
+        </span>
       </div>
-      <div
-        className="text-[11px] font-bold uppercase tracking-[0.22em]"
-        style={{ color: "var(--root-violet)" }}
+      <h3
+        className="font-display text-[22px] font-bold leading-tight tracking-[-0.025em]"
+        style={{ color: "var(--root-ink)" }}
       >
-        {eyebrow}
-      </div>
+        {title}
+      </h3>
+      <p className="text-[15.5px] leading-relaxed" style={{ color: "var(--root-mute)" }}>
+        {body}
+      </p>
     </div>
   );
 }
@@ -29,104 +85,95 @@ export function HowItWorks() {
 
   return (
     <section
-      id="how-it-works"
+      id="como-funciona"
       className="py-24 lg:py-32"
-      style={{ background: "var(--root-cream-warm)" }}
+      style={{ background: "var(--root-cream)" }}
     >
       <div ref={ref} className="mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10">
         {/* Header */}
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <div className="max-w-[620px]">
-            <div className="reveal">
-              <div
-                className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold"
-                style={{ background: "rgba(148,51,234,0.10)", color: "var(--root-purple)" }}
-              >
-                <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--root-violet)" }} />
-                Cómo funciona
-              </div>
-            </div>
-            <h2
-              className="reveal mt-5 font-display font-extrabold leading-[1.02] tracking-[-0.04em]"
-              style={{ fontSize: "clamp(2rem, 4.5vw, 3.75rem)", color: "var(--root-ink)" }}
+        <div className="max-w-[620px]">
+          <div className="reveal">
+            <div
+              className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold"
+              style={{ background: "rgba(148,51,234,0.10)", color: "var(--root-purple)" }}
             >
-              Tres pasos.
-              <br />
-              Cero{" "}
-              <span style={{ fontStyle: "italic", color: "var(--root-violet)" }}>guesswork</span>.
-            </h2>
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--root-violet)" }} />
+              Cómo funciona
+            </div>
           </div>
-          <p
-            className="reveal max-w-[280px] text-sm leading-relaxed"
-            style={{ color: "var(--root-mute)" }}
+          <h2
+            className="reveal mt-5 font-display font-extrabold leading-[1.02] tracking-[-0.04em]"
+            style={{ fontSize: "clamp(2rem, 4.5vw, 3.75rem)", color: "var(--root-ink)" }}
           >
-            Diseñado para celíacos, diabéticos e intolerantes a la lactosa. Funciona desde el primer escaneo.
-          </p>
+            Una foto.
+            <br />
+            Una respuesta{" "}
+            <span style={{ fontStyle: "italic", color: "var(--root-violet)" }}>clara</span>.
+          </h2>
         </div>
 
-        {/* Feature grid */}
-        <div className="mt-16 grid gap-5 lg:grid-cols-2">
-          {/* 01 Scanner */}
+        {/* Showcase + steps */}
+        <div className="mt-14 grid gap-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-stretch">
+          {/* Scanner showcase */}
           <div
-            className="reveal grid min-h-[380px] items-center gap-8 overflow-hidden rounded-[28px] border bg-white p-10 sm:p-12"
-            style={{ borderColor: "var(--root-line)", ["--reveal-delay" as string]: "0ms" }}
+            className="reveal flex items-center overflow-hidden rounded-[28px] border bg-white p-6 sm:p-8"
+            style={{ borderColor: "var(--root-line)" }}
           >
-            <div>
-              <FeatureLabel idx="01" eyebrow="Scanner" />
-              <h3
-                className="mt-6 font-display font-extrabold leading-[1.05] tracking-[-0.035em]"
-                style={{ fontSize: "clamp(1.75rem, 2.5vw, 2.75rem)", color: "var(--root-ink)" }}
-              >
-                Analiza en segundos
-              </h3>
-              <p className="mt-4 text-[17px] leading-relaxed" style={{ color: "var(--root-mute)" }}>
-                Fotografía la etiqueta. Nuestro análisis te dice si es seguro{" "}
-                <strong style={{ color: "var(--root-ink)" }}>PARA TI</strong>, según tu condición.
-              </p>
-            </div>
             <ScannerIllo />
           </div>
 
-          {/* 02 Recetas */}
-          <div
-            className="reveal grid min-h-[380px] items-center gap-8 overflow-hidden rounded-[28px] border bg-white p-10 sm:p-12"
-            style={{ borderColor: "var(--root-line)", ["--reveal-delay" as string]: "100ms" }}
-          >
-            <RecipesIllo />
-            <div>
-              <FeatureLabel idx="02" eyebrow="Recetas verificadas" />
-              <h3
-                className="mt-6 font-display font-extrabold leading-[1.05] tracking-[-0.035em]"
-                style={{ fontSize: "clamp(1.75rem, 2.5vw, 2.75rem)", color: "var(--root-ink)" }}
-              >
-                Menú que confías
-              </h3>
-              <p className="mt-4 text-[17px] leading-relaxed" style={{ color: "var(--root-mute)" }}>
-                Recetas curadas para celíacos, diabéticos e intolerantes a la lactosa. No es{" "}
-                <em style={{ fontStyle: "normal", color: "var(--root-violet)" }}>"apto para"</em>… es verificado.
-              </p>
-            </div>
-          </div>
+          {/* Steps */}
+          <div className="grid gap-5 sm:grid-cols-2">
+            <StepCard
+              idx="01"
+              Glyph={CameraGlyph}
+              title="Fotografía"
+              body="Abres la app y escaneas la etiqueta de cualquier producto. Sin escribir nada."
+              delay={0}
+            />
+            <StepCard
+              idx="02"
+              Glyph={AiGlyph}
+              title="Análisis IA"
+              body={
+                <>
+                  Claude API lee los ingredientes y los compara contra{" "}
+                  <strong style={{ color: "var(--root-ink)" }}>tu perfil</strong>. No es una base de
+                  datos: razona sobre nombres técnicos y trazas ocultas.
+                </>
+              }
+              delay={100}
+            />
+            <StepCard
+              idx="03"
+              Glyph={VerdictGlyph}
+              title="Respuesta instantánea"
+              body={
+                <>
+                  <span style={{ color: "var(--root-violet)", fontWeight: 700 }}>OK verde</span> o{" "}
+                  <span style={{ color: "#c44a4a", fontWeight: 700 }}>NO rojo</span>, con la razón
+                  específica. Sabes por qué, no solo qué.
+                </>
+              }
+              delay={200}
+            />
 
-          {/* 03 Insights — full width */}
-          <div
-            className="reveal grid min-h-[320px] items-center gap-8 overflow-hidden rounded-[28px] border bg-white p-10 sm:p-12 lg:col-span-2 lg:grid-cols-2 lg:gap-14"
-            style={{ borderColor: "var(--root-line)", ["--reveal-delay" as string]: "200ms" }}
-          >
-            <div>
-              <FeatureLabel idx="03" eyebrow="Insights" />
-              <h3
-                className="mt-6 font-display font-extrabold leading-[1.05] tracking-[-0.035em]"
-                style={{ fontSize: "clamp(1.75rem, 2.5vw, 2.75rem)", color: "var(--root-ink)" }}
-              >
-                Entiende tu patrón
-              </h3>
-              <p className="mt-4 max-w-[460px] text-[17px] leading-relaxed" style={{ color: "var(--root-mute)" }}>
-                Ve cómo tu cuerpo responde. Macros, racha, alertas personalizadas{" "}
-                <span className="font-semibold" style={{ color: "var(--root-violet)" }}>(Pro)</span>.
+            {/* Differentiator note */}
+            <div
+              className="reveal flex flex-col justify-center gap-2 rounded-3xl p-7 text-white"
+              style={{
+                background: "linear-gradient(155deg,#9433ea 0%,#581c87 100%)",
+                ["--reveal-delay" as string]: "300ms",
+              }}
+            >
+              <div className="text-[11px] font-bold uppercase tracking-[0.18em] opacity-80">
+                El diferenciador
+              </div>
+              <p className="text-[15.5px] font-semibold leading-snug">
+                Restricciones compuestas: valida celiaquía + diabetes + lactosa al mismo tiempo.{" "}
+                <span style={{ color: "#e9d4ff" }}>No en silos.</span>
               </p>
             </div>
-            <InsightsIllo />
           </div>
         </div>
       </div>

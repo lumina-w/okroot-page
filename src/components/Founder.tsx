@@ -1,0 +1,159 @@
+import { useReveal } from "@/hooks/useReveal";
+import { PORTFOLIO_URL } from "@/lib/utils";
+
+/* ─── Molecule: Founder Portrait ─────────────────────────────────────────── */
+
+function FounderPortrait() {
+  return (
+    <div
+      className="relative w-full overflow-hidden rounded-3xl"
+      style={{
+        background: "linear-gradient(135deg,#9433ea,#581c87)",
+        aspectRatio: "4 / 5",
+      }}
+    >
+      <img
+        src="/valentina.webp"
+        alt="Valentina Ramírez, fundadora de OKRoot"
+        width={720}
+        height={720}
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div
+        className="absolute bottom-4 left-4 rounded-full px-3 py-1.5 text-[11px] uppercase tracking-[0.16em] text-white"
+        style={{ background: "rgba(0,0,0,0.32)", backdropFilter: "blur(8px)" }}
+      >
+        Valentina Ramírez
+      </div>
+    </div>
+  );
+}
+
+/* ─── Atom: tech badge ──────────────────────────────────────────────────── */
+
+function TechBadge({ children }: { children: string }) {
+  return (
+    <span
+      className="rounded-full border px-3 py-1.5 text-[12.5px] font-semibold"
+      style={{
+        background: "#fff",
+        borderColor: "var(--root-line)",
+        color: "var(--root-ink-2)",
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+/* ─── Section ────────────────────────────────────────────────────────────── */
+
+export function Founder() {
+  const ref = useReveal<HTMLDivElement>();
+
+  return (
+    <section id="fundadora" className="py-24 lg:py-32" style={{ background: "var(--root-cream)" }}>
+      <div ref={ref} className="mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10">
+        <div
+          className="reveal grid items-center gap-10 overflow-hidden rounded-[28px] border p-8 sm:p-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:p-14"
+          style={{
+            background: "linear-gradient(135deg, #ece1ff 0%, #faf8f5 100%)",
+            borderColor: "var(--root-line)",
+          }}
+        >
+          {/* Portrait — top on mobile, left on desktop */}
+          <div className="mx-auto w-full max-w-[320px]">
+            <FounderPortrait />
+          </div>
+
+          {/* Story */}
+          <div>
+            <div
+              className="text-[12px] font-bold uppercase tracking-[0.16em]"
+              style={{ color: "var(--root-violet)" }}
+            >
+              La creadora es también la usuaria número uno.
+            </div>
+
+            <h2
+              className="mt-4 font-display font-extrabold leading-[1.05] tracking-[-0.035em]"
+              style={{ fontSize: "clamp(1.75rem, 3.6vw, 2.75rem)", color: "var(--root-ink)" }}
+            >
+              Construí Root porque ninguna app{" "}
+              <span style={{ fontStyle: "italic", color: "var(--root-violet)" }}>
+                resolvía lo que yo necesitaba.
+              </span>
+            </h2>
+
+            <div
+              className="mt-6 flex flex-col gap-4 text-[17px] leading-relaxed"
+              style={{ color: "var(--root-mute)" }}
+            >
+              <p>
+                Soy celíaca, diabética e intolerante a la lactosa. Busqué una app que combinara las
+                tres restricciones. No existía. Así que la construí.
+              </p>
+              <p>
+                Root no es un experimento de wellness. Es una{" "}
+                <strong style={{ color: "var(--root-ink)" }}>herramienta médica real</strong>,
+                creada desde adentro.
+              </p>
+            </div>
+
+            {/* First-person testimonial — treated as a pull-quote */}
+            <blockquote
+              className="mt-7 rounded-2xl border-l-4 py-4 pl-5 pr-4"
+              style={{
+                borderColor: "var(--root-violet)",
+                background: "rgba(148,51,234,0.06)",
+              }}
+            >
+              <p
+                className="font-display text-[18px] font-semibold italic leading-snug tracking-[-0.02em]"
+                style={{ color: "var(--root-ink)" }}
+              >
+                "Llevo 6 meses usándola cada vez que voy al súper. No he tenido un error
+                desde que activé el perfil combinado."
+              </p>
+              <footer className="mt-2.5 text-[13px]" style={{ color: "var(--root-mute)" }}>
+                — Valentina · celíaca + diabética + intolerante a la lactosa
+              </footer>
+            </blockquote>
+
+            {/* Tech credibility */}
+            <div className="mt-7 flex flex-wrap gap-2.5">
+              <TechBadge>Django</TechBadge>
+              <TechBadge>React</TechBadge>
+              <TechBadge>Claude API</TechBadge>
+              <TechBadge>PWA</TechBadge>
+            </div>
+
+            {/* Signature */}
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <div className="h-px w-8" style={{ background: "var(--root-ink)" }} />
+              <div>
+                <p className="font-semibold" style={{ fontSize: 16, color: "var(--root-ink)" }}>
+                  Valentina Ramírez
+                </p>
+                <p className="mt-0.5 text-[13px]" style={{ color: "var(--root-mute)" }}>
+                  Full Stack Developer ·{" "}
+                  <a
+                    href={PORTFOLIO_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold transition-colors hover:opacity-80"
+                    style={{ color: "var(--root-violet)" }}
+                  >
+                    wavival.dev
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

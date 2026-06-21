@@ -1,10 +1,9 @@
 import type { ReactNode, CSSProperties } from "react";
 import { PhoneMock } from "./mockups";
-import { APP_URL } from "@/lib/utils";
 
 /* ─── Atoms ─────────────────────────────────────────────────────────────── */
 
-function Eyebrow({ children }: { children: ReactNode }) {
+function Badge({ children }: { children: ReactNode }) {
   return (
     <div
       className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold"
@@ -38,42 +37,46 @@ function TrustPill() {
         <span className="font-semibold" style={{ color: "var(--root-ink)" }}>
           Hecho por Valentina Ramírez
         </span>
-        {" "}— celíaca, diabética e intolerante a la lactosa. Desarrolladora · Fundadora de Lúmina W.
+        {" "}— celíaca, diabética e intolerante a la lactosa. Full Stack Developer.
       </p>
     </div>
   );
 }
 
-/* ─── Molecule: Floating card ───────────────────────────────────────────── */
+/* ─── Molecule: Floating verdict chip ───────────────────────────────────── */
 
-function FloatingCard({
-  emoji,
+function VerdictChip({
+  verdict,
   label,
-  title,
+  detail,
   style,
 }: {
-  emoji: string;
+  verdict: "ok" | "no";
   label: string;
-  title: string;
+  detail: string;
   style?: CSSProperties;
 }) {
+  const ok = verdict === "ok";
   return (
     <div
       className="absolute hidden items-center gap-2.5 rounded-2xl border bg-white p-3 shadow-[0_12px_30px_-12px_rgba(20,20,20,0.18)] lg:flex"
       style={{ borderColor: "var(--root-line)", ...style }}
     >
       <span
-        className="flex h-[38px] w-[38px] items-center justify-center rounded-[10px] text-lg"
-        style={{ background: "var(--root-violet-soft)" }}
+        className="flex h-[38px] w-[38px] items-center justify-center rounded-full text-base font-bold text-white"
+        style={{ background: ok ? "var(--root-violet)" : "#c44a4a" }}
       >
-        {emoji}
+        {ok ? "✓" : "✗"}
       </span>
       <div>
-        <div className="text-[11px] font-semibold" style={{ color: "var(--root-violet)" }}>
+        <div
+          className="text-[11px] font-bold uppercase tracking-[0.08em]"
+          style={{ color: ok ? "var(--root-violet)" : "#c44a4a" }}
+        >
           {label}
         </div>
         <div className="text-[13px] font-semibold" style={{ color: "var(--root-ink)" }}>
-          {title}
+          {detail}
         </div>
       </div>
     </div>
@@ -84,7 +87,7 @@ function FloatingCard({
 
 export function Hero() {
   return (
-    <section className="px-5 pb-6 pt-0 sm:px-6 lg:px-6">
+    <section id="hero" className="px-5 pb-6 pt-0 sm:px-6 lg:px-6">
       {/* Hero card with radial gradient */}
       <div
         className="relative overflow-hidden rounded-[28px] border"
@@ -109,18 +112,19 @@ export function Hero() {
           {/* Left column */}
           <div className="relative z-10">
             <div className="load-rise" style={{ animationDelay: "0ms" }}>
-              <Eyebrow>Pre-lanzamiento LATAM · Cupos limitados</Eyebrow>
+              <Badge>Creado con Claude API · IA real, no base de datos</Badge>
             </div>
 
             <h1
-              className="load-rise mt-6 font-display font-extrabold leading-[0.98] tracking-[-0.045em] text-ink"
+              className="load-rise mt-6 font-display font-extrabold leading-[1.0] tracking-[-0.045em] text-ink"
               style={{
-                fontSize: "clamp(3rem, 7vw, 5.75rem)",
+                fontSize: "clamp(2.25rem, 5.4vw, 4.25rem)",
                 animationDelay: "90ms",
               }}
             >
-              Come con
+              Fotografía la etiqueta.
               <br />
+              Sabe en segundos si{" "}
               <span
                 style={{
                   fontStyle: "italic",
@@ -130,55 +134,48 @@ export function Hero() {
                   backgroundClip: "text",
                 }}
               >
-                confianza.
+                puedes comerla.
               </span>
             </h1>
 
             <p
-              className="load-rise mt-6 max-w-[500px] text-[18px] leading-relaxed"
+              className="load-rise mt-6 max-w-[520px] text-[18px] leading-relaxed"
               style={{ color: "var(--root-mute)", animationDelay: "220ms" }}
             >
-              Cada etiqueta analizada según{" "}
-              <strong style={{ color: "var(--root-ink)" }}>TU</strong> condición.
-              Recetas verificadas. Sin guesswork.
+              Para quien tiene celiaquía, diabetes o intolerancia a la lactosa —{" "}
+              <strong style={{ color: "var(--root-ink)" }}>o las tres a la vez.</strong>
             </p>
 
             <div
-              className="load-rise mt-9 flex flex-wrap items-center gap-3"
+              className="load-rise mt-9 flex flex-col items-start gap-3"
               style={{ animationDelay: "320ms" }}
             >
-              <a
-                href={APP_URL}
+              <button
+                onClick={() =>
+                  document
+                    .getElementById("waitlist")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
                 className="inline-flex items-center gap-2 rounded-full px-6 py-4 text-[15px] font-semibold text-white transition-opacity hover:opacity-90"
                 style={{
                   background: "var(--root-violet)",
                   boxShadow: "0 8px 20px -8px rgba(148,51,234,0.5)",
                 }}
               >
-                Prueba gratis — no requiere tarjeta
-              </a>
-              <button
-                className="rounded-full px-1.5 py-4 text-[15px] font-semibold underline underline-offset-[6px] transition-colors hover:text-primary"
-                style={{ color: "var(--root-ink)" }}
-                onClick={() =>
-                  document
-                    .getElementById("how-it-works")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-              >
-                Ver cómo funciona →
+                Quiero comer sin adivinar →
               </button>
+              <p className="text-[13px]" style={{ color: "var(--root-faint)" }}>
+                <strong style={{ color: "var(--root-mute)" }}>Análisis en menos de 3 segundos</strong>
+                {" · "}Sin tarjeta · Funciona offline.
+              </p>
             </div>
 
-            <div
-              className="load-rise mt-11"
-              style={{ animationDelay: "430ms" }}
-            >
+            <div className="load-rise mt-11" style={{ animationDelay: "430ms" }}>
               <TrustPill />
             </div>
           </div>
 
-          {/* Right column — phone + floating cards */}
+          {/* Right column — phone + floating verdict chips */}
           <div
             className="load-rise relative flex justify-center lg:justify-end"
             style={{ animationDelay: "280ms" }}
@@ -186,16 +183,16 @@ export function Hero() {
             <div className="relative">
               <PhoneMock />
 
-              <FloatingCard
-                emoji="🍞"
-                label="Receta verificada"
-                title="Pan sin gluten · IG bajo"
+              <VerdictChip
+                verdict="ok"
+                label="OK"
+                detail="Sin gluten · IG bajo"
                 style={{ top: 80, left: -10, transform: "rotate(-4deg)" }}
               />
-              <FloatingCard
-                emoji="📊"
-                label="Racha · 12 días"
-                title="Glucosa estable"
+              <VerdictChip
+                verdict="no"
+                label="No"
+                detail="Contiene lactosa"
                 style={{ bottom: 40, right: -20, transform: "rotate(4deg)" }}
               />
             </div>

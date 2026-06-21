@@ -2,27 +2,6 @@ import { useReveal } from "@/hooks/useReveal";
 
 /* ─── SVG Glyphs (atoms) ─────────────────────────────────────────────────── */
 
-function AnxietyGlyph() {
-  return (
-    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden>
-      <circle cx="20" cy="20" r="14" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M14 23c2-2 4-2 6-2s4 0 6 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="15" cy="17" r="1.2" fill="currentColor" />
-      <circle cx="25" cy="17" r="1.2" fill="currentColor" />
-    </svg>
-  );
-}
-
-function SearchGlyph() {
-  return (
-    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden>
-      <circle cx="18" cy="18" r="10" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M25 25l6 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      <path d="M14 18h8M18 14v8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 function LabelGlyph() {
   return (
     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden>
@@ -30,6 +9,27 @@ function LabelGlyph() {
       <path d="M14 17h12M14 21h8M14 25h10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
       <circle cx="27" cy="13" r="4" fill="var(--root-cream)" stroke="currentColor" strokeWidth="1.4" />
       <path d="M27 11.5v1.5l1 1" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function DecodeGlyph() {
+  return (
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden>
+      <circle cx="18" cy="18" r="10" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M25 25l6 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M15 16.5c0-2 1.5-3.5 3.5-3.5s3.3 1.4 3.3 3.1c0 2.4-3 2.6-3 4.9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <circle cx="18.6" cy="24" r="0.9" fill="currentColor" />
+    </svg>
+  );
+}
+
+function StackGlyph() {
+  return (
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden>
+      <path d="M20 9l11 5.5L20 20 9 14.5 20 9z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+      <path d="M9 20l11 5.5L31 20" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+      <path d="M9 25.5L20 31l11-5.5" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -82,16 +82,16 @@ function PainCard({
 /* ─── Section ─────────────────────────────────────────────────────────────── */
 
 const PAINS = [
-  { n: "01", title: "Ansiedad cada vez que comes fuera de casa", Glyph: AnxietyGlyph },
-  { n: "02", title: 'Horas buscando si algo es "seguro" en internet', Glyph: SearchGlyph },
-  { n: "03", title: "No saber si confiar en lo que ves en las etiquetas", Glyph: LabelGlyph },
+  { n: "01", title: "Leer cada etiqueta en el súper.", Glyph: LabelGlyph },
+  { n: "02", title: 'Descifrar "almidón modificado" a las 8pm con hambre.', Glyph: DecodeGlyph },
+  { n: "03", title: "Buscar recetas que cumplan celiaquía Y diabetes al mismo tiempo.", Glyph: StackGlyph },
 ];
 
 export function PainSection() {
   const ref = useReveal<HTMLDivElement>();
 
   return (
-    <section className="py-24 lg:py-32" style={{ background: "var(--root-cream)" }}>
+    <section id="problema" className="py-24 lg:py-32" style={{ background: "var(--root-cream-warm)" }}>
       <div ref={ref} className="mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10">
         {/* Header */}
         <div className="max-w-[720px]">
@@ -101,7 +101,7 @@ export function PainSection() {
               style={{ background: "rgba(148,51,234,0.10)", color: "var(--root-purple)" }}
             >
               <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--root-violet)" }} />
-              El problema
+              Lo que vives cada día
             </div>
           </div>
 
@@ -114,11 +114,11 @@ export function PainSection() {
           </h2>
 
           <p
-            className="reveal mt-4 max-w-[560px] text-[18px] leading-relaxed"
-            style={{ color: "var(--root-mute)", ["--reveal-delay" as string]: "80ms" }}
+            className="reveal mt-6 text-[clamp(1.05rem,2vw,1.3rem)] font-semibold leading-snug"
+            style={{ color: "var(--root-ink)", ["--reveal-delay" as string]: "80ms" }}
           >
-            Vivir con condiciones alimentarias en LATAM significa preguntar dos veces, leer
-            etiquetas con lupa y aún así dudar. Lo sabemos porque también lo vivimos.
+            Equivocarse con la etiqueta no es molesto.{" "}
+            <span style={{ color: "var(--root-violet)" }}>Para nosotros, es enfermarse.</span>
           </p>
         </div>
 
@@ -128,6 +128,15 @@ export function PainSection() {
             <PainCard key={p.n} {...p} delay={i * 100} />
           ))}
         </div>
+
+        {/* Resolution line */}
+        <p
+          className="reveal mt-12 font-display text-[clamp(1.5rem,3vw,2.25rem)] font-bold leading-snug tracking-[-0.03em]"
+          style={{ color: "var(--root-ink)" }}
+        >
+          → Root lo hace por ti.{" "}
+          <span style={{ fontStyle: "italic", color: "var(--root-violet)" }}>En una foto.</span>
+        </p>
       </div>
     </section>
   );

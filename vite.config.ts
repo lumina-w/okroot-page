@@ -3,10 +3,9 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "node:path";
 
-// Served under wavival.dev/root/ — output goes into dist/root so the
-// subpath assets resolve correctly when published from the dist root.
+// Served at the okroot.co domain root.
 export default defineConfig({
-  base: "/root/",
+  base: "/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -14,7 +13,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "dist/root",
+    outDir: "dist",
     emptyOutDir: true,
   },
 });

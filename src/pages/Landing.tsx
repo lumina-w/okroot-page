@@ -3,9 +3,11 @@ import { useLocation } from "react-router-dom";
 import { Hero } from "@/components/Hero";
 import { PainSection } from "@/components/PainSection";
 import { HowItWorks } from "@/components/HowItWorks";
-import { Pricing } from "@/components/Pricing";
-import { SocialProof } from "@/components/SocialProof";
-import { FinalCTA } from "@/components/FinalCTA";
+import { Comparison } from "@/components/Comparison";
+import { Features } from "@/components/Features";
+import { Founder } from "@/components/Founder";
+import { Waitlist } from "@/components/Waitlist";
+import { FaqSection } from "@/components/FaqSection";
 
 export function Landing() {
   const location = useLocation();
@@ -25,9 +27,11 @@ export function Landing() {
       <Hero />
       <PainSection />
       <HowItWorks />
-      <Pricing />
-      <SocialProof />
-      <FinalCTA />
+      <Comparison />
+      <Features />
+      <Founder />
+      <Waitlist />
+      <FaqSection />
     </>
   );
 }

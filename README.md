@@ -16,18 +16,18 @@ diabéticos e intolerantes a la lactosa (Lúmina W).
 
 ```bash
 npm install
-npm run dev       # http://localhost:5173/root/
-npm run build     # type-check + build a dist/root
-npm run preview   # sirve el build en /root/
+npm run dev       # http://localhost:5173
+npm run build     # type-check + build a dist/
+npm run preview   # sirve el build de producción
 ```
 
 ## Deploy (Netlify)
 
 `netlify.toml` ya está configurado:
 
-- `base = /root/` en Vite → el build sale en `dist/root`, publicado desde `dist`,
-  de modo que el sitio vive en `wavival.dev/root/`.
-- SPA fallback: `/root/* → /root/index.html` (las rutas del cliente no dan 404).
+- `base = /` en Vite → el build sale en `dist/`, publicado desde `dist`,
+  de modo que el sitio vive en la raíz del dominio (`okroot.co`).
+- SPA fallback: `/* → /index.html` (las rutas del cliente no dan 404).
 - Security headers (CSP, HSTS, X-Frame-Options, etc.).
 
 Conecta el repo a Netlify con publish dir `dist` y se auto-despliega desde la
@@ -35,7 +35,8 @@ rama principal.
 
 ## Pendientes
 
-- `APP_URL` en `src/lib/utils.ts` es un placeholder: apuntar a la URL real de
-  la app cuando exista.
+- `WAITLIST_ENDPOINT` en `src/lib/utils.ts` está vacío: el form corre en modo
+  demo (sin red). Apuntar a un endpoint real y ampliar `connect-src` /
+  `form-action` en el CSP de `netlify.toml`.
 - Mockups de recetas / dashboard usan datos de muestra (marcados con `TODO`).
 - Textos legales en `src/pages/Legal.tsx` son preliminares.
