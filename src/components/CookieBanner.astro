@@ -1,0 +1,234 @@
+---
+// Consent banner for analytics cookies (GA4). Astro puro, sin dependencias.
+//
+// GA4 NUNCA se carga en el <head>. Solo se inyecta vía loadGA4() y solo si el
+// usuario lo acepta. La preferencia se guarda en la cookie okroot_cookie_consent
+// (true / false), que se lee en cada carga para decidir si cargar GA4.
+//
+// [GA4-ID] es un placeholder: reemplazar por el ID real (G-XXXXXXXXXX) antes de
+// publicar. Mientras siga entre corchetes, loadGA4() no hace ninguna petición.
+---
+
+<div id="cookie-banner" class="cookie-banner" role="region" aria-label="Aviso de cookies" hidden>
+  <div class="cookie-banner__card">
+    <div class="cookie-banner__text">
+      <p class="cookie-banner__title">Usamos cookies mínimas.</p>
+      <p class="cookie-banner__body">
+        Las necesarias siempre están activas. Las de analytics (Google Analytics
+        4) solo se cargan si las aceptás. No recopilamos datos de tu perfil de
+        salud.
+      </p>
+      <a class="cookie-banner__link" href="/cookies/">
+        Ver política de cookies
+        <svg
+          viewBox="0 0 24 24"
+          width="14"
+          height="14"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14M13 6l6 6-6 6"></path>
+        </svg>
+      </a>
+    </div>
+    <div class="cookie-banner__actions">
+      <button type="button" class="cookie-btn cookie-btn--secondary" data-action="reject">
+        Solo necesarias
+      </button>
+      <button type="button" class="cookie-btn cookie-btn--primary" data-action="accept">
+        Aceptar analytics
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cookie-banner {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 60;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .cookie-banner[hidden] {
+    display: none;
+  }
+  .cookie-banner__card {
+    pointer-events: auto;
+    width: 100%;
+    max-width: 560px;
+    padding: 24px;
+    background: var(--color-ink);
+    color: var(--root-cream);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15);
+    transition:
+      opacity 0.3s var(--ease-soft),
+      transform 0.3s var(--ease-soft);
+  }
+  @media (min-width: 640px) {
+    .cookie-banner {
+      padding: 16px;
+    }
+    .cookie-banner__card {
+      border-radius: 16px;
+    }
+  }
+  .cookie-banner.is-leaving .cookie-banner__card {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .cookie-banner__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--root-cream);
+  }
+  .cookie-banner__body {
+    margin: 8px 0 0;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.6;
+    /* Aclarado para contraste legible sobre fondo oscuro */
+    color: rgb(180, 178, 174);
+  }
+  .cookie-banner__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--root-cream);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .cookie-banner__link:hover {
+    color: #fff;
+  }
+
+  .cookie-banner__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  @media (min-width: 640px) {
+    .cookie-banner__actions {
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+  }
+
+  .cookie-btn {
+    flex: 1;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s var(--ease-soft);
+  }
+  @media (min-width: 640px) {
+    .cookie-btn {
+      flex: 0 0 auto;
+    }
+  }
+  /* Primario y secundario con peso visual similar (sin dark patterns). */
+  .cookie-btn--primary {
+    order: 1;
+    background: var(--color-primary);
+    color: #fff;
+    border: 1px solid var(--color-primary);
+  }
+  .cookie-btn--primary:hover {
+    background: var(--color-primary-hover);
+  }
+  .cookie-btn--secondary {
+    order: 2;
+    background: transparent;
+    color: var(--root-cream);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .cookie-btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+  /* Móvil: primario arriba, secundario abajo. Desktop: secundario izq, primario der. */
+  @media (min-width: 640px) {
+    .cookie-btn--secondary {
+      order: 1;
+    }
+    .cookie-btn--primary {
+      order: 2;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cookie-banner__card,
+    .cookie-btn {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Bundled by Astro to a hashed /_astro/*.js (served from 'self' — CSP-safe).
+  // Owns the consent UI + the okroot_cookie_consent cookie. The actual GA4
+  // injection lives in Analytics.astro (window.okrootLoadGA4) — we just trigger
+  // it on accept. GA4 is never loaded without an explicit "true".
+  const CONSENT_COOKIE = "okroot_cookie_consent";
+
+  function readConsent(): string | null {
+    const match = document.cookie
+      .split("; ")
+      .find((row) => row.indexOf(CONSENT_COOKIE + "=") === 0);
+    return match ? match.split("=")[1] : null;
+  }
+
+  function writeConsent(value: "true" | "false") {
+    const oneYear = 60 * 60 * 24 * 365;
+    document.cookie = `${CONSENT_COOKIE}=${value}; Max-Age=${oneYear}; Path=/; SameSite=Lax; Secure`;
+  }
+
+  const banner = document.getElementById("cookie-banner");
+  if (banner) {
+    const dismiss = () => {
+      banner.classList.add("is-leaving");
+      window.setTimeout(() => {
+        banner.hidden = true;
+        banner.classList.remove("is-leaving");
+      }, 300);
+    };
+
+    banner
+      .querySelector('[data-action="accept"]')
+      ?.addEventListener("click", () => {
+        writeConsent("true");
+        window.okrootLoadGA4?.();
+        dismiss();
+      });
+
+    banner
+      .querySelector('[data-action="reject"]')
+      ?.addEventListener("click", () => {
+        writeConsent("false");
+        dismiss();
+      });
+
+    // Sin decisión previa: mostramos el banner. ("true"/"false" → ya decidido,
+    // Analytics.astro ya cargó GA4 si correspondía.)
+    if (readConsent() === null) {
+      banner.hidden = false;
+    }
+  }
+</script>

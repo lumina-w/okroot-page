@@ -1,0 +1,546 @@
+---
+import Base from "@/layouts/Base.astro";
+import PageShell from "@/components/PageShell.astro";
+
+// Política de Privacidad — Ley 1581 de 2012 (Colombia), datos sensibles de salud.
+// Contacto: contact@luminaw.co. Última actualización: 21 de junio de 2026.
+
+// Resumen amable: lo esencial en lenguaje simple, antes del clausulado.
+const SUMMARY = [
+  {
+    title: "Tus datos de salud son tuyos",
+    body: "Solo los usamos para analizar etiquetas según tu perfil. No los vendemos. No los compartimos. No entrenan ninguna IA.",
+    // escudo
+    icon: "M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z",
+  },
+  {
+    title: "Lo que procesa la IA",
+    body: "Cuando fotografías una etiqueta, la imagen se envía a la API de Anthropic (EE.UU.) solo para el análisis. No se almacena la imagen. Solo el resultado.",
+    // scanner
+    icon: "M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M3 12h18",
+  },
+  {
+    title: "Tu perfil vive en tu dispositivo",
+    body: "Tu celiaquía, diabetes e intolerancia a la lactosa se guardan localmente. El servidor solo recibe lo necesario para analizar cada etiqueta.",
+    // teléfono
+    icon: "M7 4h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zM11 18h2",
+  },
+  {
+    title: "Podés borrar todo",
+    body: "Desde la app podés eliminar tu perfil y todos tus datos en cualquier momento. Sin trámites.",
+    // papelera
+    icon: "M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13M10 11v6M14 11v6",
+  },
+];
+
+// Filas de la tabla "Datos que recopilamos y para qué".
+const DATA_ROWS = [
+  {
+    dato: "Perfil de salud (celiaquía, diabetes, intolerancia a la lactosa)",
+    para: "Personalizar el análisis de etiquetas",
+    base: "Consentimiento explícito del titular. Art. 6 Ley 1581, dato sensible de salud.",
+  },
+  {
+    dato: "Imágenes de etiquetas",
+    para: "Análisis por IA en tiempo real",
+    base: "Ejecución del servicio solicitado. La imagen no se almacena: se procesa y se descarta.",
+  },
+  {
+    dato: "Diario alimentario",
+    para: "Historial de consumo offline",
+    base: "Consentimiento. Se almacena solo en el dispositivo.",
+  },
+  {
+    dato: "Email (lista de espera)",
+    para: "Notificar acceso anticipado",
+    base: "Consentimiento.",
+  },
+  {
+    dato: "Datos de uso (analytics)",
+    para: "Mejorar la experiencia del producto",
+    base: "Consentimiento, opt-in en el banner de cookies.",
+  },
+];
+
+// Índice del clausulado (anclas #s1 … #s13).
+const TOC = [
+  { id: "s1", label: "Responsable del tratamiento" },
+  { id: "s2", label: "Datos que recopilamos y para qué" },
+  { id: "s3", label: "Datos sensibles de salud" },
+  { id: "s4", label: "Procesamiento por IA" },
+  { id: "s5", label: "Analytics" },
+  { id: "s6", label: "Transferencias internacionales" },
+  { id: "s7", label: "Tiempo de conservación" },
+  { id: "s8", label: "Derechos del titular (Habeas Data)" },
+  { id: "s9", label: "Seguridad" },
+  { id: "s10", label: "Cookies" },
+  { id: "s11", label: "Menores de edad" },
+  { id: "s12", label: "Cambios a esta política" },
+  { id: "s13", label: "Contacto" },
+];
+---
+
+<Base
+  title="Política de Privacidad · OKRoot"
+  description="Cómo OKRoot trata tus datos de salud: qué recopilamos, para qué, y cómo los protegemos bajo la Ley 1581 de Colombia."
+>
+  <PageShell
+    eyebrow="Documento legal"
+    title="Política de Privacidad."
+    intro="En OKRoot tratamos tus datos de salud con el cuidado que merecen. Esta política explica qué recopilamos, para qué lo usamos y cómo lo protegemos."
+  >
+    {/* Metadatos del documento */}
+    <dl
+      class="grid gap-x-8 gap-y-3 border-y border-line py-5 text-sm sm:grid-cols-2"
+    >
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Última actualización
+        </dt>
+        <dd class="text-ink">21 de junio de 2026</dd>
+      </div>
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Jurisdicción
+        </dt>
+        <dd class="text-ink">Colombia · Ley 1581 de 2012</dd>
+      </div>
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Responsable
+        </dt>
+        <dd class="text-ink">Valentina Ramírez</dd>
+      </div>
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Contacto
+        </dt>
+        <dd class="text-ink">contact@luminaw.co</dd>
+      </div>
+    </dl>
+
+    {/* Resumen amable: cards 2x2 */}
+    <section aria-label="Resumen" class="mt-12">
+      <div class="grid gap-4 sm:grid-cols-2">
+        {
+          SUMMARY.map((card) => (
+            <article
+              class="flex flex-col gap-3 rounded-xl border border-line p-5"
+              style="background-color: var(--root-violet-soft);"
+            >
+              <span
+                class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/70 text-primary"
+                aria-hidden="true"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  class="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d={card.icon} />
+                </svg>
+              </span>
+              <h2 class="font-display text-base font-semibold text-ink">
+                {card.title}
+              </h2>
+              <p class="text-sm leading-relaxed text-muted">{card.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    {/* Índice */}
+    <nav aria-label="Contenido" class="mt-14">
+      <h2
+        class="text-xs font-medium uppercase tracking-[0.08em] text-primary"
+      >
+        Contenido
+      </h2>
+      <ol class="mt-3 grid gap-x-8 gap-y-1.5 text-sm sm:grid-cols-2">
+        {
+          TOC.map((item, i) => (
+            <li>
+              <a
+                href={`#${item.id}`}
+                class="text-muted transition-colors hover:text-primary"
+              >
+                <span class="tabular-nums text-primary">{i + 1}.</span>{" "}
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    {/* Clausulado */}
+    <article class="mt-14 flex flex-col gap-12">
+      {/* 1. Responsable */}
+      <section id="s1" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 1
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Responsable del tratamiento
+        </h2>
+        <ul class="mt-4 flex flex-col gap-2 text-base leading-[1.7] text-ink">
+          <li>Valentina Ramírez, persona natural, Colombia.</li>
+          <li>Email: <span class="font-medium">contact@luminaw.co</span></li>
+          <li>
+            Sin NIT: como persona natural no está obligada a inscripción
+            mercantil.
+          </li>
+        </ul>
+      </section>
+
+      {/* 2. Datos que recopilamos */}
+      <section id="s2" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 2
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Datos que recopilamos y para qué
+        </h2>
+        <div class="mt-5 overflow-x-auto">
+          <table class="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr class="border-b border-line">
+                <th
+                  scope="col"
+                  class="py-3 pr-4 font-display text-sm font-semibold text-ink"
+                >
+                  Dato
+                </th>
+                <th
+                  scope="col"
+                  class="py-3 pr-4 font-display text-sm font-semibold text-ink"
+                >
+                  Para qué
+                </th>
+                <th
+                  scope="col"
+                  class="py-3 font-display text-sm font-semibold text-ink"
+                >
+                  Base legal
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                DATA_ROWS.map((row, i) => (
+                  <tr
+                    class="border-b border-line align-top"
+                    style={
+                      i % 2 === 1
+                        ? "background-color: var(--root-cream);"
+                        : "background-color: #ffffff;"
+                    }
+                  >
+                    <th
+                      scope="row"
+                      class="py-3 pr-4 font-medium text-ink"
+                    >
+                      {row.dato}
+                    </th>
+                    <td class="py-3 pr-4 text-muted">{row.para}</td>
+                    <td class="py-3 text-muted">{row.base}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* 3. Datos sensibles de salud — destacado */}
+      <section id="s3" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 3
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Datos sensibles de salud: tratamiento especial
+        </h2>
+        <div
+          class="mt-5 rounded-xl border border-line p-6"
+          style="background-color: var(--root-violet-soft);"
+        >
+          <p class="text-base leading-[1.7] text-ink">
+            Tu condición de salud es un dato sensible bajo el artículo 6 de la
+            Ley 1581 de 2012. Por eso recibe protección reforzada:
+          </p>
+          <ul
+            class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+          >
+            <li>
+              Base legal: consentimiento explícito e informado del titular,
+              requerido por el artículo 6 de la Ley 1581.
+            </li>
+            <li>
+              El perfil de salud se almacena localmente en el dispositivo del
+              usuario.
+            </li>
+            <li>
+              Al servidor solo llega lo necesario para analizar cada etiqueta,
+              no el perfil completo.
+            </li>
+            <li>No se cruzan con bases de datos de terceros.</li>
+            <li>No se usan para publicidad ni perfilamiento comercial.</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* 4. Procesamiento por IA */}
+      <section id="s4" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 4
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Procesamiento por IA
+        </h2>
+        <ul
+          class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>
+            Cuando fotografías una etiqueta, la imagen se envía a la API de
+            Anthropic para su análisis.
+          </li>
+          <li>Anthropic procesa en servidores ubicados en EE.UU.</li>
+          <li>OKRoot no almacena las imágenes de etiquetas.</li>
+          <li>Solo se conserva el resultado del análisis.</li>
+          <li>
+            Política de privacidad de Anthropic:{" "}
+            <a
+              href="https://www.anthropic.com/privacy"
+              class="font-medium text-primary underline-offset-2 hover:underline"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              anthropic.com/privacy
+            </a>
+          </li>
+          <li>
+            Podés no usar el scanner y usar solo recetas y diario. En ese caso
+            ninguna imagen se envía a terceros.
+          </li>
+        </ul>
+      </section>
+
+      {/* 5. Analytics */}
+      <section id="s5" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 5
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Analytics
+        </h2>
+        <ul
+          class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>Solo se activa si aceptás en el banner de cookies.</li>
+          <li>
+            Recopila: páginas visitadas, tiempo en página, dispositivo y país
+            aproximado.
+          </li>
+          <li>No recopila datos de salud ni del perfil del usuario.</li>
+          <li>Procesado por Google (EE.UU.) bajo cláusulas contractuales tipo.</li>
+          <li>
+            Podés rechazarlo en el banner o revocarlo en{" "}
+            <a
+              href="/cookies/"
+              class="font-medium text-primary underline-offset-2 hover:underline"
+            >
+              /cookies/
+            </a>.
+          </li>
+        </ul>
+      </section>
+
+      {/* 6. Transferencias internacionales */}
+      <section id="s6" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 6
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Transferencias internacionales de datos
+        </h2>
+        <ul
+          class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>Anthropic (EE.UU.): análisis de imágenes de etiquetas.</li>
+          <li>Google (EE.UU.): analytics, solo con consentimiento.</li>
+          <li>
+            Ambas transferencias se realizan bajo garantías adecuadas (cláusulas
+            contractuales tipo).
+          </li>
+          <li>Ninguna otra transferencia a terceros.</li>
+        </ul>
+      </section>
+
+      {/* 7. Conservación */}
+      <section id="s7" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 7
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Tiempo de conservación
+        </h2>
+        <ul
+          class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>Perfil de salud: en el dispositivo hasta que lo elimines.</li>
+          <li>Diario alimentario: en el dispositivo hasta su eliminación.</li>
+          <li>
+            Email de la lista de espera: hasta el lanzamiento o hasta que solicites su
+            eliminación.
+          </li>
+          <li>Datos de analytics: 14 meses (configuración de GA4).</li>
+          <li>Imágenes de etiquetas: no se conservan.</li>
+        </ul>
+      </section>
+
+      {/* 8. Derechos del titular */}
+      <section id="s8" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 8
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Derechos del titular (Habeas Data)
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">Tenés derecho a:</p>
+        <ul
+          class="mt-2 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>Conocer los datos que tenemos sobre vos.</li>
+          <li>Actualizar y rectificar tu información.</li>
+          <li>Solicitar la supresión (derecho al olvido).</li>
+          <li>Revocar la autorización de tratamiento.</li>
+          <li>Presentar queja ante la SIC.</li>
+        </ul>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          Canal: <span class="font-medium">contact@luminaw.co</span>. Respondemos en máximo
+          10 días hábiles. El procedimiento completo está en{" "}
+          <a
+            href="/habeas-data/"
+            class="font-medium text-primary underline-offset-2 hover:underline"
+          >
+            /habeas-data/
+          </a>.
+        </p>
+      </section>
+
+      {/* 9. Seguridad */}
+      <section id="s9" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 9
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Seguridad
+        </h2>
+        <ul
+          class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>Comunicaciones cifradas con TLS.</li>
+          <li>Perfil de salud almacenado localmente, no en el servidor.</li>
+          <li>Acceso mínimo necesario a los datos (principio de minimización).</li>
+          <li>
+            Sin empleados con acceso a datos de usuarios: es un producto
+            individual, sin equipo.
+          </li>
+        </ul>
+      </section>
+
+      {/* 10. Cookies */}
+      <section id="s10" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 10
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Cookies
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          Por defecto solo usamos cookies necesarias. El analytics se activa solo
+          con tu consentimiento explícito. El detalle completo está en{" "}
+          <a
+            href="/cookies/"
+            class="font-medium text-primary underline-offset-2 hover:underline"
+          >
+            /cookies/
+          </a>.
+        </p>
+      </section>
+
+      {/* 11. Menores */}
+      <section id="s11" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 11
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Menores de edad
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          OKRoot no está dirigido a menores de 14 años. Si un menor ha creado un
+          perfil, su representante legal puede solicitar la eliminación a{" "}
+          <span class="font-medium">contact@luminaw.co</span>.
+        </p>
+      </section>
+
+      {/* 12. Cambios */}
+      <section id="s12" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 12
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Cambios a esta política
+        </h2>
+        <ul
+          class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>
+            Cambios materiales: notificación por email a usuarios registrados con
+            30 días de anticipación.
+          </li>
+          <li>Cambios menores: actualización de la fecha en este documento.</li>
+          <li>El uso continuado del servicio implica aceptación.</li>
+        </ul>
+      </section>
+
+      {/* 13. Contacto */}
+      <section id="s13" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 13
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Contacto
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          Escribinos a <span class="font-medium">contact@luminaw.co</span>. Respondemos en
+          menos de 2 días hábiles. Para ejercer derechos de Habeas Data, seguí el
+          procedimiento en{" "}
+          <a
+            href="/habeas-data/"
+            class="font-medium text-primary underline-offset-2 hover:underline"
+          >
+            /habeas-data/
+          </a>.
+        </p>
+      </section>
+    </article>
+
+    {/* Footer del documento */}
+    <footer class="mt-16 border-t border-line pt-6 text-sm text-muted">
+      <nav aria-label="Documentos legales" class="flex flex-wrap gap-x-2 gap-y-1">
+        <a href="/terminos/" class="hover:text-primary">Términos</a>
+        <span aria-hidden="true">·</span>
+        <a href="/habeas-data/" class="hover:text-primary">Habeas Data</a>
+        <span aria-hidden="true">·</span>
+        <a href="/cookies/" class="hover:text-primary">Cookies</a>
+      </nav>
+      <p class="mt-3">© 2026 Valentina Ramírez · OKRoot</p>
+    </footer>
+  </PageShell>
+</Base>

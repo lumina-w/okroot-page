@@ -2,6 +2,8 @@
 import "../index.css";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import Analytics from "@/components/Analytics.astro";
+import CookieBanner from "@/components/CookieBanner.astro";
 
 interface Props {
   title: string;
@@ -111,6 +113,8 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
         ]
       }
     </script>
+
+    <Analytics />
   </head>
   <body>
     <a href="#main" class="skip-link">Saltar al contenido</a>
@@ -121,6 +125,8 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
       </main>
       <Footer />
     </div>
+
+    <CookieBanner />
 
     <script>
       // Reveal-on-scroll: toggle `is-visible` on `.reveal` elements as they enter view.
@@ -143,44 +149,22 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
     </script>
 
     <script>
-      // Lenis smooth scroll. Vanilla — does not touch the IntersectionObserver
-      // above (Lenis scrolls the window normally, so `.reveal` still fires).
-      // Skipped entirely under reduced-motion → native scroll.
-      import Lenis from "lenis";
-
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!reduce) {
-        const lenis = new Lenis({
-          duration: 1.2,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          touchMultiplier: 1.5,
-        });
-
-        function raf(time: number) {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-
-        // Keep in-page anchors (#waitlist, …) working — Lenis would otherwise
-        // let the browser hard-jump. Offset clears the sticky header.
-        document.addEventListener("click", (e) => {
-          const link = (e.target as HTMLElement).closest<HTMLAnchorElement>(
-            'a[href^="#"]',
-          );
-          const hash = link?.getAttribute("href");
-          if (!hash || hash === "#") return;
-          const target = document.querySelector<HTMLElement>(hash);
-          if (!target) return;
-          e.preventDefault();
-          lenis.scrollTo(target, { offset: -88 });
-          history.pushState(null, "", hash);
-          // Move keyboard focus to the target so AT/keyboard users land there
-          // too — scrollTo alone leaves focus on the clicked link.
-          target.setAttribute("tabindex", "-1");
-          target.focus({ preventScroll: true });
-        });
-      }
+      // In-page anchors scroll natively now: `scroll-behavior: smooth` +
+      // `scroll-padding-top: 88px` in index.css handle the smooth jump and the
+      // sticky-header offset (no JS scroll lib). This tiny shim only moves
+      // keyboard/AT focus to the target — native anchor nav leaves focus on the
+      // link otherwise. preventScroll keeps the native smooth scroll intact.
+      document.addEventListener("click", (e) => {
+        const link = (e.target as HTMLElement).closest<HTMLAnchorElement>(
+          'a[href^="#"]',
+        );
+        const hash = link?.getAttribute("href");
+        if (!hash || hash === "#") return;
+        const target = document.querySelector<HTMLElement>(hash);
+        if (!target) return;
+        target.setAttribute("tabindex", "-1");
+        target.focus({ preventScroll: true });
+      });
     </script>
   </body>
 </html>

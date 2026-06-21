@@ -4,7 +4,7 @@ import { EARLY_ACCESS_SPOTS } from "@/lib/consts";
 const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra"];
 ---
 
-<section id="waitlist" class="px-5 py-12 sm:px-6 lg:py-20">
+<section id="lista-de-espera" class="px-5 py-12 sm:px-6 lg:py-20">
   <div class="reveal mx-auto w-full max-w-[760px]" data-waitlist>
     <div
       class="overflow-hidden rounded-[32px] border p-8 sm:p-12"
@@ -69,8 +69,24 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
         </div>
 
         <form data-wl-form class="mx-auto mt-9 max-w-[460px]" novalidate>
+          {/* Name */}
+          <label for="wl-name" class="block text-sm font-semibold" style="color:var(--root-ink)">
+            Nombre
+          </label>
+          <input
+            id="wl-name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            placeholder="Tu nombre"
+            aria-describedby="wl-error"
+            class="mt-2 w-full rounded-2xl px-4 py-3.5 text-[15px] outline-none transition-colors focus:border-[var(--root-violet)]"
+            style="background:#fff;border:2px solid var(--root-line-strong);color:var(--root-ink)"
+          />
+
           {/* Email */}
-          <label for="wl-email" class="block text-sm font-semibold" style="color:var(--root-ink)">
+          <label for="wl-email" class="mt-6 block text-sm font-semibold" style="color:var(--root-ink)">
             Correo
           </label>
           <input
@@ -108,6 +124,20 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
                   </label>
                 ))
               }
+
+              {/* "Otra" free-text — full width, revealed only when "Otra" is checked */}
+              <div data-wl-other-wrap hidden class="sm:col-span-2">
+                <label for="wl-other" class="sr-only">¿Cuál?</label>
+                <input
+                  id="wl-other"
+                  name="other_condition"
+                  type="text"
+                  maxlength="80"
+                  placeholder="¿Cuál? Cuéntanos tu restricción"
+                  class="w-full rounded-2xl px-4 py-3 text-[14.5px] outline-none transition-colors focus:border-[var(--root-violet)]"
+                  style="background:#fff;border:2px solid var(--root-line-strong);color:var(--root-ink)"
+                />
+              </div>
             </div>
           </fieldset>
 
@@ -159,19 +189,38 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
     const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL;
     const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 
-    // Highlight the chip border while a condition is checked.
+    const otherWrap = root.querySelector<HTMLElement>("[data-wl-other-wrap]")!;
+    const otherInput = root.querySelector<HTMLInputElement>("#wl-other")!;
+
+    // Highlight the chip border while a condition is checked. The "Otra" chip
+    // also reveals a full-width free-text input to specify which restriction.
     root.querySelectorAll<HTMLInputElement>('input[name="condition"]').forEach((cb) => {
       cb.addEventListener("change", () => {
         const label = cb.closest<HTMLElement>(".wl-cond");
         if (label) {
           label.style.borderColor = cb.checked ? "var(--root-violet)" : "var(--root-line)";
         }
+        if (cb.value === "Otra") {
+          otherWrap.hidden = !cb.checked;
+          if (cb.checked) {
+            otherInput.focus();
+          } else {
+            otherInput.value = "";
+          }
+        }
       });
     });
 
-    async function insertWaitlist(email: string, conditions: string[]) {
+    type WaitlistRow = {
+      email: string;
+      name: string;
+      conditions: string[];
+      other_condition: string | null;
+    };
+
+    async function insertWaitlist(row: WaitlistRow) {
       if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-        console.warn("[OKRoot] Supabase no configurado. Submit simulado.", { email, conditions });
+        console.warn("[OKRoot] Supabase no configurado. Submit simulado.", row);
         return;
       }
       const res = await fetch(`${SUPABASE_URL}/rest/v1/okroot-waitlist`, {
@@ -182,7 +231,7 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
           Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
           Prefer: "return=minimal",
         },
-        body: JSON.stringify({ email, conditions }),
+        body: JSON.stringify(row),
       });
       // A duplicate email (409) counts as success — "you're already in".
       if (res.status === 409) return;
@@ -190,28 +239,37 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
     }
 
     const input = form.elements.namedItem("email") as HTMLInputElement;
+    const nameInput = form.elements.namedItem("name") as HTMLInputElement;
 
-    function showError(msg: string) {
+    function showError(msg: string, field?: HTMLInputElement) {
       errEl.textContent = msg;
       errEl.hidden = false;
-      input.setAttribute("aria-invalid", "true");
+      field?.setAttribute("aria-invalid", "true");
     }
     function clearError() {
       errEl.hidden = true;
       input.removeAttribute("aria-invalid");
+      nameInput.removeAttribute("aria-invalid");
     }
     input.addEventListener("input", clearError);
+    nameInput.addEventListener("input", clearError);
 
     let loading = false;
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (loading) return;
 
+      const name = nameInput.value.trim();
       const email = input.value.trim();
       // Validate before submit — don't fail silently. `novalidate` disables the
       // native bubble, so we surface the error in the live region instead.
+      if (!name) {
+        showError("Escribe tu nombre para continuar.", nameInput);
+        nameInput.focus();
+        return;
+      }
       if (!email || !input.checkValidity()) {
-        showError("Escribe un correo válido para continuar.");
+        showError("Escribe un correo válido para continuar.", input);
         input.focus();
         return;
       }
@@ -225,8 +283,16 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
         root.querySelectorAll<HTMLInputElement>('input[name="condition"]:checked'),
       ).map((c) => c.value);
 
+      // Free-text detail only matters when "Otra" is among the picks.
+      const other = conditions.includes("Otra") ? otherInput.value.trim() : "";
+
       try {
-        await insertWaitlist(email, conditions);
+        await insertWaitlist({
+          email,
+          name,
+          conditions,
+          other_condition: other || null,
+        });
         formWrap.hidden = true;
         success.hidden = false;
         // Move focus into the success panel so AT users learn it worked.

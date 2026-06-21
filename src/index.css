@@ -271,19 +271,11 @@ body::after {
   animation: rise-in 0.8s var(--ease-soft) both;
 }
 
-/* FAQ accordion — soft reveal of the answer when a <details> opens */
-@keyframes faq-reveal {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-details[open] > .faq-answer {
-  animation: faq-reveal 0.3s var(--ease-soft) both;
+/* FAQ accordion — height-animated open AND close (driven by FaqSection's JS,
+   which sets explicit px heights; this just declares the easing). */
+.faq-answer {
+  overflow: hidden;
+  transition: height 0.3s var(--ease-soft);
 }
 
 /* Reveal-on-scroll utility — toggled via IntersectionObserver */
@@ -310,6 +302,16 @@ details[open] > .faq-answer {
   .animate-scanner-line {
     animation: none;
   }
+  .animate-phone-in {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .animate-badge {
+    opacity: 1;
+    transform: rotate(-4deg);
+    animation: none;
+  }
   .load-rise {
     opacity: 1;
     animation: none;
@@ -323,7 +325,7 @@ details[open] > .faq-answer {
     transform: none;
     transition: none;
   }
-  details[open] > .faq-answer {
-    animation: none;
+  .faq-answer {
+    transition: none;
   }
 }

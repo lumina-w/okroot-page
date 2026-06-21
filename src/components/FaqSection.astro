@@ -71,12 +71,70 @@ const faqSchema = {
               +
             </span>
           </summary>
-          <div class="faq-answer mt-3 text-[15.5px] leading-relaxed" style="color:var(--root-mute)">
-            {a}
+          <div class="faq-answer">
+            <div class="pt-3 text-[15.5px] leading-relaxed" style="color:var(--root-mute)">
+              {a}
+            </div>
           </div>
         </details>
       ))}
     </div>
   </div>
   <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+
+  <script>
+    // Native <details> snaps shut with no transition. This animates the
+    // .faq-answer height on BOTH open and close: intercept the summary click,
+    // drive the height, and only flip the `open` attribute at the right moment
+    // (kept open through the close so its content stays in the layout). Pure
+    // vanilla, no deps. Reduced-motion → instant toggle.
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document
+      .querySelectorAll<HTMLDetailsElement>("#faq details")
+      .forEach((d) => {
+        const summary = d.querySelector("summary")!;
+        const answer = d.querySelector<HTMLElement>(".faq-answer")!;
+
+        summary.addEventListener("click", (e) => {
+          if (reduce) return; // let the browser toggle natively
+          e.preventDefault();
+          if (answer.dataset.animating) return;
+
+          if (d.open) {
+            // Closing: from current height down to 0, then drop `open`.
+            answer.dataset.animating = "1";
+            answer.style.height = `${answer.scrollHeight}px`;
+            requestAnimationFrame(() => {
+              answer.style.height = "0px";
+            });
+            answer.addEventListener(
+              "transitionend",
+              () => {
+                d.open = false;
+                answer.style.height = "";
+                delete answer.dataset.animating;
+              },
+              { once: true },
+            );
+          } else {
+            // Opening: reveal content, then grow 0 → natural height.
+            d.open = true;
+            answer.dataset.animating = "1";
+            const target = answer.scrollHeight;
+            answer.style.height = "0px";
+            requestAnimationFrame(() => {
+              answer.style.height = `${target}px`;
+            });
+            answer.addEventListener(
+              "transitionend",
+              () => {
+                answer.style.height = "";
+                delete answer.dataset.animating;
+              },
+              { once: true },
+            );
+          }
+        });
+      });
+  </script>
 </section>

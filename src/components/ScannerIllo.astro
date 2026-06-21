@@ -50,17 +50,17 @@ const ingredients: [string, boolean][] = [
     ))}
   </div>
 
-  {/* Verdict pill */}
+  {/* Verdict pill — negative: matches the detected ingredients above */}
   <div
-    class="absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full px-[18px] py-2.5 text-[13px] font-semibold text-white shadow-[0_8px_20px_-6px_rgba(148,51,234,0.5)]"
-    style="background:var(--root-violet);white-space:nowrap"
+    class="absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full px-[18px] py-2.5 text-[13px] font-semibold text-white shadow-[0_8px_20px_-6px_rgba(196,74,74,0.5)]"
+    style="background:var(--root-danger);white-space:nowrap"
   >
     <span
       class="flex h-[18px] w-[18px] items-center justify-center rounded-full text-[11px]"
       style="background:rgba(255,255,255,0.22)"
     >
-      ✓
+      ✗
     </span>
-    Apto · sin gluten · IG bajo
+    No apto · gluten y lactosa
   </div>
 </div>

@@ -1,0 +1,558 @@
+---
+import Base from "@/layouts/Base.astro";
+import PageShell from "@/components/PageShell.astro";
+
+// Términos y Condiciones — Ley 1480 (consumidor) y Ley 1581 (datos), Colombia.
+// Valentina Ramírez opera como persona natural: sin NIT, sin sociedad.
+// Contacto: contact@luminaw.co. Última actualización: 21 de junio de 2026.
+
+// Resumen amable: lo esencial en lenguaje claro, antes del clausulado.
+const SUMMARY = [
+  {
+    title: "OKRoot es una herramienta, no un médico",
+    body: "El análisis de etiquetas por IA te ayuda a tomar decisiones informadas, pero no reemplaza el diagnóstico ni la indicación de tu médico o nutricionista.",
+    // estetoscopio
+    icon: "M6 3v6a4 4 0 0 0 8 0V3M10 17a4 4 0 0 0 8 0v-3M18 11a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z",
+  },
+  {
+    title: "Early access gratuito",
+    body: "Por ahora OKRoot es gratis para quienes están en la lista de espera. Cuando haya planes de pago, te avisamos con tiempo.",
+    // regalo
+    icon: "M4 9h16v11H4zM4 9l1-4h14l1 4M12 9v11M9 5a2 2 0 1 1 3 0 2 2 0 1 1 3 0",
+  },
+  {
+    title: "Tus datos siguen siendo tuyos",
+    body: "Tu perfil de salud y tu diario alimentario son tuyos. No los vendemos ni los usamos para entrenar IA.",
+    // candado
+    icon: "M7 11V8a5 5 0 0 1 10 0v3M6 11h12v9H6zM12 15v2",
+  },
+  {
+    title: "Podés irte cuando quieras",
+    body: "Sin contratos, sin permanencia. Podés eliminar tu cuenta y todos tus datos en cualquier momento.",
+    // puerta de salida
+    icon: "M14 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 12H3m0 0l3-3m-3 3l3 3",
+  },
+  {
+    title: "Usá la app de buena fe",
+    body: "OKRoot es para uso personal. No para revender, no para automatizar, no para usos distintos al análisis de etiquetas tuyas.",
+    // apretón de manos
+    icon: "M3 12l3-3 4 3 2-1 4 3M21 12l-3-3-3 2M10 12l2 2 3-2M8 18l2 1 2-1",
+  },
+  {
+    title: "Ley colombiana",
+    body: "Cualquier disputa se resuelve bajo las leyes de Colombia, con jurisdicción en Bogotá.",
+    // balanza
+    icon: "M12 4v16M7 20h10M5 7h14M5 7l-2 5a3 3 0 0 0 4 0zM19 7l-2 5a3 3 0 0 0 4 0zM8 7l4-3 4 3",
+  },
+];
+
+// Índice del clausulado (anclas #s1 … #s12).
+const TOC = [
+  { id: "s1", label: "Definiciones" },
+  { id: "s2", label: "Objeto y naturaleza del servicio" },
+  { id: "s3", label: "Registro y acceso" },
+  { id: "s4", label: "Modelo de acceso y early access" },
+  { id: "s5", label: "Uso aceptable" },
+  { id: "s6", label: "Limitación de responsabilidad médica" },
+  { id: "s7", label: "Propiedad intelectual" },
+  { id: "s8", label: "Datos del usuario" },
+  { id: "s9", label: "Disponibilidad del servicio" },
+  { id: "s10", label: "Terminación" },
+  { id: "s11", label: "Ley aplicable y disputas" },
+  { id: "s12", label: "Contacto" },
+];
+---
+
+<Base
+  title="Términos y Condiciones · OKRoot"
+  description="Términos y condiciones de uso de OKRoot, herramienta de análisis de etiquetas por IA para celíacos, diabéticos e intolerantes a la lactosa. Operada por Valentina Ramírez, Colombia."
+>
+  <PageShell
+    eyebrow="Documento legal"
+    title="Términos y Condiciones de uso."
+    intro="Estas son las reglas que rigen el uso de OKRoot. Léelas con calma: arriba encontrarás un resumen claro antes del clausulado completo."
+  >
+    {/* Metadatos del documento */}
+    <dl
+      class="grid gap-x-8 gap-y-3 border-y border-line py-5 text-sm sm:grid-cols-2"
+    >
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Última actualización
+        </dt>
+        <dd class="text-ink">21 de junio de 2026</dd>
+      </div>
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Jurisdicción
+        </dt>
+        <dd class="text-ink">Colombia · Ley 1480 / 1581</dd>
+      </div>
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Operado por
+        </dt>
+        <dd class="text-ink">Valentina Ramírez</dd>
+      </div>
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Contacto
+        </dt>
+        <dd class="text-ink">contact@luminaw.co</dd>
+      </div>
+    </dl>
+
+    {/* Resumen amable: cards 2x3 */}
+    <section aria-label="Resumen" class="mt-12">
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          SUMMARY.map((card) => (
+            <article
+              class="flex flex-col gap-3 rounded-xl border border-line p-5"
+              style="background-color: var(--root-violet-soft);"
+            >
+              <span
+                class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/70 text-primary"
+                aria-hidden="true"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  class="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d={card.icon} />
+                </svg>
+              </span>
+              <h2 class="font-display text-base font-semibold text-ink">
+                {card.title}
+              </h2>
+              <p class="text-sm leading-relaxed text-muted">{card.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    {/* Índice */}
+    <nav aria-label="Contenido" class="mt-14">
+      <h2 class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+        Contenido
+      </h2>
+      <ol class="mt-3 grid gap-x-8 gap-y-1.5 text-sm sm:grid-cols-2">
+        {
+          TOC.map((item, i) => (
+            <li>
+              <a
+                href={`#${item.id}`}
+                class="text-muted transition-colors hover:text-primary"
+              >
+                <span class="tabular-nums text-primary">{i + 1}.</span>{" "}
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    {/* Clausulado */}
+    <article class="mt-14 flex flex-col gap-12">
+      {/* 1. Definiciones */}
+      <section id="s1" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 1
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Definiciones
+        </h2>
+        <dl class="mt-4 flex flex-col gap-3 text-base leading-[1.7] text-ink">
+          <div>
+            <dt class="inline font-semibold">OKRoot:</dt>{" "}
+            <dd class="inline text-muted">
+              aplicación web progresiva (PWA) de análisis de etiquetas de
+              alimentos por inteligencia artificial, accesible en app.okroot.co.
+            </dd>
+          </div>
+          <div>
+            <dt class="inline font-semibold">Prestadora:</dt>{" "}
+            <dd class="inline text-muted">
+              Valentina Ramírez, persona natural, Colombia, operadora de OKRoot.
+            </dd>
+          </div>
+          <div>
+            <dt class="inline font-semibold">Usuario:</dt>{" "}
+            <dd class="inline text-muted">
+              persona natural que accede y usa OKRoot para uso personal.
+            </dd>
+          </div>
+          <div>
+            <dt class="inline font-semibold">Perfil de salud:</dt>{" "}
+            <dd class="inline text-muted">
+              información de restricciones alimentarias del usuario (celiaquía,
+              diabetes tipo 2, intolerancia a la lactosa) configurada en la app.
+            </dd>
+          </div>
+          <div>
+            <dt class="inline font-semibold">Análisis:</dt>{" "}
+            <dd class="inline text-muted">
+              resultado generado por IA (API de Anthropic) al procesar la imagen
+              de una etiqueta contra el perfil de salud activo del usuario.
+            </dd>
+          </div>
+          <div>
+            <dt class="inline font-semibold">Early access:</dt>{" "}
+            <dd class="inline text-muted">
+              periodo actual de acceso gratuito a OKRoot para usuarios de la
+              lista de espera.
+            </dd>
+          </div>
+        </dl>
+      </section>
+
+      {/* 2. Objeto y naturaleza */}
+      <section id="s2" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 2
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Objeto y naturaleza del servicio
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          OKRoot es una herramienta de apoyo informativo para personas con
+          restricciones alimentarias. Permite:
+        </p>
+        <ul
+          class="mt-2 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>
+            Escanear etiquetas de alimentos con IA para saber si un producto es
+            compatible con el perfil de salud.
+          </li>
+          <li>
+            Acceder a recetas verificadas filtradas por restricciones múltiples
+            simultáneas.
+          </li>
+          <li>Registrar un diario alimentario con soporte offline.</li>
+        </ul>
+        <p class="mt-4 text-base leading-[1.7] text-ink">OKRoot no es:</p>
+        <ul
+          class="mt-2 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>Un servicio médico ni de salud regulado.</li>
+          <li>
+            Un sustituto de diagnóstico, tratamiento ni indicación profesional.
+          </li>
+          <li>Una plataforma de telemedicina ni de consulta médica.</li>
+        </ul>
+      </section>
+
+      {/* 3. Registro y acceso */}
+      <section id="s3" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 3
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Registro y acceso
+        </h2>
+        <ul
+          class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>
+            El acceso actual es por invitación desde la lista de espera en
+            okroot.co.
+          </li>
+          <li>El usuario debe proporcionar un email válido.</li>
+          <li>
+            El usuario es responsable de la veracidad de su perfil de salud:
+            OKRoot analiza etiquetas según lo que el usuario declara, no según
+            un diagnóstico médico verificado.
+          </li>
+          <li>Una cuenta por persona, uso personal no transferible.</li>
+        </ul>
+      </section>
+
+      {/* 4. Modelo de acceso y early access */}
+      <section id="s4" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 4
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Modelo de acceso y early access
+        </h2>
+        <ul
+          class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>OKRoot se encuentra en fase de early access gratuito.</li>
+          <li>
+            La Prestadora podrá introducir planes de pago en el futuro,
+            notificando a los usuarios con mínimo 30 días de anticipación por
+            email.
+          </li>
+          <li>
+            Los usuarios de early access no adquieren derecho a gratuidad
+            indefinida, pero sí a notificación previa y a un período de gracia
+            de 30 días antes de cualquier cobro.
+          </li>
+          <li>
+            La Prestadora podrá modificar, limitar o descontinuar
+            funcionalidades durante el early access sin previo aviso, dado el
+            carácter experimental del servicio.
+          </li>
+        </ul>
+      </section>
+
+      {/* 5. Uso aceptable */}
+      <section id="s5" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 5
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Uso aceptable
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          El usuario se compromete a:
+        </p>
+        <ul
+          class="mt-2 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>
+            Usar OKRoot únicamente para análisis de etiquetas de productos
+            propios de consumo personal.
+          </li>
+          <li>No automatizar solicitudes a la aplicación.</li>
+          <li>No intentar acceder a datos de otros usuarios.</li>
+          <li>No realizar ingeniería inversa sobre la aplicación.</li>
+          <li>No usar OKRoot para fines comerciales o de reventa.</li>
+          <li>No cargar imágenes que no sean etiquetas de alimentos.</li>
+        </ul>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          El incumplimiento habilita a la Prestadora a suspender o eliminar la
+          cuenta sin previo aviso.
+        </p>
+      </section>
+
+      {/* 6. Limitación de responsabilidad médica — DESTACADA */}
+      <section id="s6" class="scroll-mt-24">
+        <div
+          class="rounded-xl border border-line p-6"
+          style="background-color: var(--root-violet-soft); border-left: 3px solid var(--color-primary);"
+        >
+          <p
+            class="text-xs font-medium uppercase tracking-[0.08em] text-primary"
+          >
+            Importante
+          </p>
+          <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+            Limitación de responsabilidad médica
+          </h2>
+          <ul
+            class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+          >
+            <li>
+              OKRoot analiza etiquetas mediante IA. Los resultados son
+              orientativos y pueden contener errores.
+            </li>
+            <li>
+              La IA puede no reconocer ingredientes bajo nombres técnicos poco
+              comunes, formulaciones nuevas o etiquetas ilegibles.
+            </li>
+            <li>
+              El usuario es el único responsable de la decisión final sobre qué
+              consume. OKRoot es una ayuda, no una garantía.
+            </li>
+            <li>
+              Ante cualquier duda sobre la seguridad de un producto, el usuario
+              debe consultar a su médico o nutricionista.
+            </li>
+            <li>
+              La Prestadora no es responsable por reacciones adversas, síntomas
+              o daños derivados del consumo de productos analizados por OKRoot.
+            </li>
+            <li>
+              Para condiciones médicas graves o poco frecuentes, OKRoot
+              recomienda verificar siempre con el fabricante y con un
+              profesional de salud.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      {/* 7. Propiedad intelectual */}
+      <section id="s7" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 7
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Propiedad intelectual
+        </h2>
+        <ul
+          class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>
+            OKRoot, su código, diseño, marca, logotipo y contenido editorial son
+            propiedad de Valentina Ramírez.
+          </li>
+          <li>Las recetas curadas son contenido propio de OKRoot.</li>
+          <li>
+            El usuario no adquiere ningún derecho sobre el software, la marca ni
+            el contenido.
+          </li>
+          <li>
+            El usuario conserva todos los derechos sobre las imágenes que
+            fotografía: OKRoot no las almacena.
+          </li>
+        </ul>
+      </section>
+
+      {/* 8. Datos del usuario */}
+      <section id="s8" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 8
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Datos del usuario
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          El tratamiento de datos se rige por la{" "}
+          <a
+            href="/privacidad/"
+            class="font-medium text-primary underline-offset-2 hover:underline"
+          >
+            Política de Privacidad
+          </a>. En resumen:
+        </p>
+        <ul
+          class="mt-2 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>
+            Perfil de salud: almacenado localmente en el dispositivo del usuario.
+          </li>
+          <li>
+            Imágenes de etiquetas: procesadas por IA y descartadas, no se
+            almacenan.
+          </li>
+          <li>Diario alimentario: almacenado localmente.</li>
+          <li>
+            El usuario puede eliminar todos sus datos desde la app en cualquier
+            momento.
+          </li>
+        </ul>
+      </section>
+
+      {/* 9. Disponibilidad */}
+      <section id="s9" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 9
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Disponibilidad del servicio
+        </h2>
+        <ul
+          class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>
+            OKRoot es una PWA en desarrollo activo. La Prestadora no garantiza
+            disponibilidad continua del servicio durante el early access.
+          </li>
+          <li>
+            El diario alimentario y el perfil de salud funcionan offline: esa
+            funcionalidad no depende de la disponibilidad del servidor.
+          </li>
+          <li>
+            El scanner de etiquetas requiere conexión para procesar la imagen
+            con IA.
+          </li>
+          <li>
+            La Prestadora podrá realizar mantenimientos sin previo aviso durante
+            el early access.
+          </li>
+        </ul>
+      </section>
+
+      {/* 10. Terminación */}
+      <section id="s10" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 10
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Terminación
+        </h2>
+        <ul
+          class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>
+            El usuario puede eliminar su cuenta y datos desde la app en cualquier
+            momento.
+          </li>
+          <li>
+            La Prestadora puede suspender cuentas que incumplan estas
+            condiciones.
+          </li>
+          <li>
+            Al terminar, los datos del usuario se eliminan según lo descrito en{" "}
+            <a
+              href="/privacidad/"
+              class="font-medium text-primary underline-offset-2 hover:underline"
+            >
+              /privacidad/
+            </a>.
+          </li>
+        </ul>
+      </section>
+
+      {/* 11. Ley aplicable y disputas */}
+      <section id="s11" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 11
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Ley aplicable y disputas
+        </h2>
+        <ul
+          class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>Estos términos se rigen por las leyes de Colombia.</li>
+          <li>Jurisdicción: juzgados de Bogotá, Colombia.</li>
+          <li>
+            Antes de acudir a sede judicial, las partes intentarán resolver de
+            buena fe en 30 días.
+          </li>
+          <li>
+            El usuario consumidor puede acudir a la Superintendencia de
+            Industria y Comercio (SIC) en ejercicio de sus derechos.
+          </li>
+        </ul>
+      </section>
+
+      {/* 12. Contacto */}
+      <section id="s12" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 12
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Contacto
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          Escribinos a <span class="font-medium">contact@luminaw.co</span>. Respondemos en
+          menos de 2 días hábiles.
+        </p>
+      </section>
+    </article>
+
+    {/* Footer del documento */}
+    <footer class="mt-16 border-t border-line pt-6 text-sm text-muted">
+      <nav aria-label="Documentos legales" class="flex flex-wrap gap-x-2 gap-y-1">
+        <a href="/privacidad/" class="hover:text-primary">Privacidad</a>
+        <span aria-hidden="true">·</span>
+        <a href="/habeas-data/" class="hover:text-primary">Habeas Data</a>
+        <span aria-hidden="true">·</span>
+        <a href="/cookies/" class="hover:text-primary">Cookies</a>
+      </nav>
+      <p class="mt-3">© 2026 Valentina Ramírez · OKRoot</p>
+    </footer>
+  </PageShell>
+</Base>
