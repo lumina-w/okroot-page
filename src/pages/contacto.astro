@@ -41,7 +41,7 @@ const classes =
   "flex items-center gap-4 rounded-2xl border border-line bg-white/70 p-5 transition-colors";
 ---
 <Base
-  title="Contacto — OKRoot"
+  title="Contacto · OKRoot"
   description="¿Dudas, ideas o quieres colaborar con OKRoot? Estos son nuestros canales directos para hablar con el equipo."
 >
   <PageShell
@@ -118,6 +118,57 @@ const classes =
           </div>
         );
       })}
+    </div>
+
+    <div class="mt-12 grid gap-4 sm:grid-cols-2">
+      <div class="rounded-2xl border border-line bg-white/70 p-6">
+        <h2 class="font-display text-lg font-semibold text-ink">Tiempo de respuesta</h2>
+        <p class="mt-2 text-[15px] leading-relaxed text-muted">
+          Respondemos en menos de 24 horas hábiles. Te escribimos en español y, si
+          lo prefieres, en inglés.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-line bg-white/70 p-6">
+        <h2 class="font-display text-lg font-semibold text-ink">
+          ¿Prefieres resolverlo al instante?
+        </h2>
+        <p class="mt-2 text-[15px] leading-relaxed text-muted">
+          Muchas dudas ya están resueltas en las{" "}
+          <a
+            href="/preguntas"
+            class="font-semibold text-primary underline underline-offset-2 hover:text-accent"
+          >
+            preguntas frecuentes
+          </a>.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-4 rounded-2xl border border-line bg-white/70 p-6">
+      <h2 class="font-display text-lg font-semibold text-ink">Colaboraciones y prensa</h2>
+      <p class="mt-2 text-[15px] leading-relaxed text-muted">
+        ¿Eres nutricionista, creador de contenido o medio? Cuéntanos tu idea en{" "}
+        <a
+          href="mailto:contact@luminaw.co"
+          class="font-semibold text-primary underline underline-offset-2 hover:text-accent"
+        >
+          contact@luminaw.co
+        </a>{" "}
+        y buscamos la forma de sumar.
+      </p>
+    </div>
+
+    <div class="mt-8 rounded-[24px] border border-line bg-primary/5 p-7 text-center">
+      <h2 class="font-display text-xl font-bold text-ink">¿Aún no estás en la lista?</h2>
+      <p class="mx-auto mt-2 max-w-md text-[15px] leading-relaxed text-muted">
+        Reserva tu cupo de acceso anticipado y te avisamos apenas abramos.
+      </p>
+      <a
+        href="/#waitlist"
+        class="mt-5 inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-[15px] font-semibold text-white transition-opacity hover:opacity-90"
+      >
+        Quiero mi cupo
+      </a>
     </div>
   </PageShell>
 </Base>

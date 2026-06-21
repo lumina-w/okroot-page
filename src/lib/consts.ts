@@ -9,4 +9,4 @@ export const PORTFOLIO_URL = "https://wavival.dev";
 // Early-access scarcity shown on the waitlist to drive action.
 // MUST be a real number — a false count erodes trust the moment it's noticed.
 // Set to 0 to hide the scarcity line entirely.
-export const EARLY_ACCESS_SPOTS = 47;
+export const EARLY_ACCESS_SPOTS = 17;

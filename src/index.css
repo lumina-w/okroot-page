@@ -37,8 +37,14 @@
   --root-ink: #141414;
   --root-ink-2: #2a2a2a;
   --root-mute: #646464;
-  --root-faint: #9a958d;
+  /* Darkened from #9a958d to clear WCAG AA 4.5:1 on cream and violet-soft. */
+  --root-faint: #6b665e;
   --root-line: #e6e1d8;
+  /* Form-control border — meets 3:1 non-text contrast against #fff. */
+  --root-line-strong: #8c8780;
+  /* Danger text — darkened from #c44a4a to clear 4.5:1 on white/tinted bg.
+     #c44a4a is kept only for solid badge fills (white text passes there). */
+  --root-danger: #b23b3b;
 }
 
 html {
@@ -215,6 +221,21 @@ body::after {
   animation: rise-in 0.8s var(--ease-soft) both;
 }
 
+/* FAQ accordion — soft reveal of the answer when a <details> opens */
+@keyframes faq-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+details[open] > dd {
+  animation: faq-reveal 0.3s var(--ease-soft) both;
+}
+
 /* Reveal-on-scroll utility — toggled via IntersectionObserver */
 .reveal {
   opacity: 0;
@@ -251,5 +272,8 @@ body::after {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+  details[open] > dd {
+    animation: none;
   }
 }

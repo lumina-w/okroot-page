@@ -8,14 +8,14 @@ import { APP_URL } from "@/lib/consts";
     style="background:#fff;border-color:var(--root-line)"
   >
     {/* Logo */}
-    <a href="/" class="flex items-center" aria-label="OKRoot — inicio">
+    <a href="/" class="flex items-center" aria-label="OKRoot, inicio">
       <span class="flex items-center gap-2">
         <img src="/favicon-32.png" alt="" width="26" height="26" class="h-[26px] w-[26px]" />
         <span
           class="font-display text-xl font-extrabold tracking-[-0.04em]"
           style="color:var(--root-ink)"
         >
-          <span style="color:var(--root-violet)">OK</span>root
+          root
         </span>
       </span>
     </a>
@@ -34,6 +34,8 @@ import { APP_URL } from "@/lib/consts";
       >
       <a
         href={APP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
         class="text-sm font-medium transition-colors hover:text-primary"
         style="color:var(--root-ink-2)">Entrar a la app</a
       >

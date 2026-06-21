@@ -55,6 +55,23 @@ version than Astro's bundled one, so its plugin is JSDoc-cast to `any` in
   `resolve.alias`, needed at build time) and `tsconfig.json` (`paths`, for the
   type-checker).
 
+## UI copy rules
+
+Hard rules for anything rendered to the user (visible text, button labels, page
+`<title>`s, `aria-label`s):
+- **Never hardcode arrow characters** (`→`, `←`, `➔`, …) in buttons or copy. If a
+  control needs a directional affordance, use a real icon (an inline SVG / icon
+  component), not a glyph in the text.
+- **Never use the em-dash `—` in UI text.** Use a comma, colon, period, or `·`
+  separator instead. (Code comments are exempt — this is about rendered copy.)
+- **All routes and content are Spanish.** Page slugs included (`/preguntas`,
+  `/contacto`, `/sobre-mi`, `/legal`). An English version comes later as a
+  separate locale — do not mix languages into these pages.
+- **No tech-stack name-drops in marketing copy** (Django, React, Claude API, PWA,
+  etc.) — they don't help the user. Describe the benefit, not the stack.
+- **No medical claims.** Root is a tool, not a medical/diagnostic device (no
+  such permits). Avoid "herramienta médica", "diagnóstico", "tratamiento", etc.
+
 ## Configuration constants
 
 `src/lib/consts.ts` holds the runtime-config constants — edit these, not

@@ -3,9 +3,11 @@ interface Props {
   eyebrow: string;
   title: string;
   intro?: string;
+  /** Rich intro (rendered as HTML) — use for links like mailto. Wins over `intro`. */
+  introHtml?: string;
 }
 
-const { eyebrow, title, intro } = Astro.props;
+const { eyebrow, title, intro, introHtml } = Astro.props;
 ---
 
 <div class="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 lg:px-10 lg:py-24">
@@ -34,8 +36,10 @@ const { eyebrow, title, intro } = Astro.props;
   <h1 class="mt-2 font-display text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl">
     {title}
   </h1>
-  {intro && (
-    <p class="mt-5 text-lg leading-relaxed text-muted">{intro}</p>
+  {(introHtml || intro) && (
+    <p class="mt-5 text-lg leading-relaxed text-muted">
+      {introHtml ? <Fragment set:html={introHtml} /> : intro}
+    </p>
   )}
 
   <div class="mt-12"><slot /></div>

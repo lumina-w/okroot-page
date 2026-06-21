@@ -1,7 +1,5 @@
 ---
 import { PORTFOLIO_URL } from "@/lib/consts";
-
-const TECH_BADGES = ["Django", "React", "Claude API", "PWA"];
 ---
 
 <section id="fundadora" class="py-24 lg:py-32" style="background:var(--root-cream)">
@@ -63,7 +61,7 @@ const TECH_BADGES = ["Django", "React", "Claude API", "PWA"];
           </p>
           <p>
             Root no es un experimento de wellness. Es una{" "}
-            <strong style="color:var(--root-ink)">herramienta médica real</strong>,
+            <strong style="color:var(--root-ink)">herramienta real</strong>,
             creada desde adentro.
           </p>
         </div>
@@ -81,21 +79,10 @@ const TECH_BADGES = ["Django", "React", "Claude API", "PWA"];
             desde que activé el perfil combinado."
           </p>
           <footer class="mt-2.5 text-[13px]" style="color:var(--root-mute)">
-            — Valentina · celíaca + diabética + intolerante a la lactosa
+            Valentina · celíaca + diabética + intolerante a la lactosa
           </footer>
         </blockquote>
 
-        {/* Tech credibility */}
-        <div class="mt-7 flex flex-wrap gap-2.5">
-          {TECH_BADGES.map((badge) => (
-            <span
-              class="rounded-full border px-3 py-1.5 text-[12.5px] font-semibold"
-              style="background:#fff;border-color:var(--root-line);color:var(--root-ink-2)"
-            >
-              {badge}
-            </span>
-          ))}
-        </div>
 
         {/* Signature */}
         <div class="mt-8 flex flex-wrap items-center gap-4">
