@@ -1,0 +1,235 @@
+---
+const SMALL = [
+  {
+    glyph: "profile",
+    title: "Perfil persistente",
+    body: "Tu condición viaja contigo. No repites tu perfil en cada sesión.",
+  },
+  {
+    glyph: "recipe",
+    title: "Recetas curadas",
+    body: "Solo ves recetas que puedes comer. Sin filtrar manualmente.",
+  },
+  {
+    glyph: "offline",
+    title: "Diario offline",
+    body: "Registras lo que comiste aunque no tengas señal. Sincroniza solo.",
+  },
+  {
+    glyph: "price",
+    title: "Precio asequible",
+    body: "Pensado para tu bolsillo. Acceso sin planes caros ni letra chica.",
+  },
+];
+---
+
+<section
+  id="funcionalidades"
+  class="py-24 lg:py-32"
+  style="background:var(--root-cream-warm)"
+>
+  <div class="mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10">
+    {/* Header */}
+    <div class="max-w-[640px]">
+      <div class="reveal">
+        <div class="eyebrow">Qué incluye</div>
+      </div>
+      <h2
+        class="reveal mt-5 font-display font-extrabold leading-[1.02] tracking-[-0.04em]"
+        style="font-size:clamp(2rem, 4.5vw, 3.75rem);color:var(--root-ink)"
+      >
+        No una lista de features.
+        <br />
+        <span style="font-style:italic;color:var(--root-violet)">Promesas.</span>
+      </h2>
+    </div>
+
+    {/* Bento grid */}
+    <div class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-6 lg:auto-rows-[230px]">
+      {/* HERO: Scanner IA — main product functionality */}
+      <article
+        class="reveal group relative flex min-h-[460px] flex-col overflow-hidden rounded-[20px] p-8 text-white sm:col-span-2 sm:p-10 lg:col-span-4 lg:row-span-2 lg:min-h-0"
+        style="background:linear-gradient(155deg,#9433ea 0%,#581c87 100%)"
+      >
+        <div
+          aria-hidden
+          class="pointer-events-none absolute -right-24 -top-24 h-[340px] w-[340px] rounded-full"
+          style="background:radial-gradient(circle, rgba(255,255,255,0.16), transparent 70%)"
+        ></div>
+
+        <div class="relative flex h-full flex-col gap-8 lg:flex-row lg:items-center lg:gap-10">
+          {/* Left column: copy */}
+          <div class="flex flex-col lg:w-1/2">
+            <div class="flex items-center gap-2">
+              <span class="inline-block h-2 w-2 rounded-full" style="background:#e9d4ff"></span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.18em] opacity-85">
+                Funcionalidad principal
+              </span>
+            </div>
+
+            <h3 class="mt-5 font-display font-extrabold leading-[1.04] tracking-[-0.03em]" style="font-size:clamp(1.9rem,3.2vw,2.6rem)">
+              Scanner IA
+            </h3>
+            <p class="mt-3 max-w-[440px] text-[clamp(1rem,1.6vw,1.15rem)] leading-relaxed opacity-95">
+              Fotografías el producto. La IA identifica ingredientes ocultos bajo
+              nombres técnicos,{" "}
+              <span style="color:#e9d4ff;font-weight:700">en segundos.</span>
+            </p>
+          </div>
+
+          {/* Right column: scan visual */}
+          <div class="flex flex-1 items-center justify-center lg:h-full lg:w-1/2">
+            <div class="scan-illo" aria-hidden>
+            <svg class="scan-svg" viewBox="0 0 200 150" fill="none">
+              <rect x="62" y="22" width="76" height="104" rx="12" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" />
+              <rect x="78" y="38" width="44" height="12" rx="3" fill="rgba(255,255,255,0.22)" />
+              <path d="M78 64h44M78 76h44M78 88h28M78 100h36" stroke="rgba(255,255,255,0.45)" stroke-width="2.2" stroke-linecap="round" />
+              {/* corner brackets */}
+              <path d="M44 34v-8a8 8 0 018-8h8M156 34v-8a8 8 0 00-8-8h-8M44 114v8a8 8 0 008 8h8M156 114v8a8 8 0 01-8 8h-8" stroke="#e9d4ff" stroke-width="2.6" stroke-linecap="round" />
+              <rect class="scan-beam" x="44" y="24" width="112" height="3.5" rx="1.75" fill="#f5ebff" />
+            </svg>
+            {/* Result pills: shown after the scan. OK (verde) / No OK (rojo) */}
+            <span class="scan-result scan-ok">
+              <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+                <path d="M9 16.5l4.5 4.5L23 11" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              OK
+            </span>
+            <span class="scan-result scan-no">
+              <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+                <path d="M11 11l10 10M21 11L11 21" stroke="#fff" stroke-width="3.6" stroke-linecap="round" />
+              </svg>
+              No OK
+            </span>
+          </div>
+          </div>
+        </div>
+      </article>
+
+      {/* Multi-condición — accent tile */}
+      <article
+        class="reveal flex flex-col justify-center gap-3 rounded-[20px] p-7 sm:col-span-2 sm:p-8 lg:col-span-2 lg:row-span-1"
+        style="background:var(--root-violet-soft);--reveal-delay:80ms"
+      >
+        <h3 class="font-display text-[20px] font-extrabold leading-tight tracking-[-0.02em]" style="color:var(--root-purple)">
+          Multi-condición
+        </h3>
+        <p class="text-[15px] leading-relaxed" style="color:var(--root-ink)">
+          Celiaquía + diabetes + lactosa.{" "}
+          <span style="color:var(--root-violet);font-weight:700">Juntas, no por separado.</span>{" "}
+          Se cruzan todas en cada escaneo.
+        </p>
+      </article>
+
+      {/* Small feature tiles */}
+      {SMALL.map((f, i) => (
+        <article
+          class="reveal flex flex-col gap-4 rounded-[20px] border bg-white p-7 sm:p-8 lg:col-span-2 lg:row-span-1"
+          style={`border-color:var(--root-line);--reveal-delay:${160 + i * 80}ms`}
+        >
+          <div
+            class="flex h-11 w-11 items-center justify-center rounded-xl"
+            style="background:var(--root-violet-soft);color:var(--root-violet)"
+          >
+            {f.glyph === "profile" && (
+              <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden>
+                <circle cx="16" cy="12" r="5" stroke="currentColor" stroke-width="1.8" />
+                <path d="M7 26c1.5-5 5-7.5 9-7.5s7.5 2.5 9 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              </svg>
+            )}
+            {f.glyph === "recipe" && (
+              <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden>
+                <rect x="8" y="5" width="16" height="22" rx="3" stroke="currentColor" stroke-width="1.8" />
+                <path d="M12 11h8M12 15h8M12 19h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            )}
+            {f.glyph === "offline" && (
+              <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden>
+                <path d="M9 20a6 6 0 011.5-11.8A7 7 0 0124 11a5 5 0 011 9.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M14 22l4 4M18 22l-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              </svg>
+            )}
+            {f.glyph === "price" && (
+              <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden>
+                <path d="M15 6H8a2 2 0 00-2 2v7l11 11a2 2 0 002.8 0l6.2-6.2a2 2 0 000-2.8L17 6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                <circle cx="11.5" cy="11.5" r="1.8" fill="currentColor" />
+              </svg>
+            )}
+          </div>
+          <h3
+            class="font-display text-[19px] font-bold leading-tight tracking-[-0.02em]"
+            style="color:var(--root-ink)"
+          >
+            {f.title}
+          </h3>
+          <p class="text-[15px] leading-relaxed" style="color:var(--root-mute)">
+            {f.body}
+          </p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .scan-illo {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    margin-inline: auto;
+  }
+  .scan-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Sequence per scan (3s): beam sweeps 0-0.9s, hides, then result pill shows. */
+  .scan-beam {
+    animation: scan-move 3s ease-in-out infinite;
+  }
+  @keyframes scan-move {
+    0% { transform: translateY(0); opacity: 0.95; }
+    30% { transform: translateY(96px); opacity: 0.95; }
+    38% { opacity: 0; }
+    72% { transform: translateY(0); opacity: 0; }
+    100% { transform: translateY(0); opacity: 0.95; }
+  }
+
+  /* Two pills share one 6s loop; red offset 3s so OK and No OK alternate. */
+  .scan-result {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 18px 9px 13px;
+    border-radius: 9999px;
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    color: #fff;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
+  }
+  .scan-ok { background: #22c55e; animation: result-pop 6s ease-in-out infinite; }
+  .scan-no { background: #ef4444; animation: result-pop 6s ease-in-out infinite 3s; }
+
+  @keyframes result-pop {
+    0%, 20% { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+    28% { opacity: 1; transform: translate(-50%, -50%) scale(1.12); }
+    34% { transform: translate(-50%, -50%) scale(1); }
+    46% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    50%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scan-beam { animation: none; }
+    .scan-result { animation: none; }
+    .scan-ok { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    .scan-no { display: none; }
+  }
+</style>

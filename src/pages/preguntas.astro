@@ -1,0 +1,64 @@
+---
+import Base from "@/layouts/Base.astro";
+import PageShell from "@/components/PageShell.astro";
+
+const FAQS = [
+  {
+    q: "¿Para qué condiciones funciona Root?",
+    a: "Root está diseñada para personas celíacas, diabéticas e intolerantes a la lactosa. Eliges tu condición al empezar y todo el análisis se ajusta a ella.",
+  },
+  {
+    q: "¿Cómo analiza Root una etiqueta?",
+    a: "Fotografías la etiqueta de un producto y Root te da un veredicto según tu condición específica: seguro, con precaución o no recomendado, junto con el motivo.",
+  },
+  {
+    q: "¿Necesito tarjeta para empezar?",
+    a: "No. El plan Free no requiere tarjeta. Incluye 10 escaneos al mes, recetas filtradas por tu condición, tu diario de comidas e insights básicos.",
+  },
+  {
+    q: "¿Qué incluye el plan Pro?",
+    a: "Escaneos ilimitados, recomendaciones personalizadas, health logs (glucosa, piel, energía), insights completos y lista de compra semanal. Cuesta $19.900 COP al mes.",
+  },
+  {
+    q: "¿Puedo cambiar de plan cuando quiera?",
+    a: "Sí. Las features de Pro se desbloquean automáticamente al subir de plan desde la app, y no hay penalización por cambiar.",
+  },
+  {
+    q: "¿Las recetas son realmente seguras?",
+    a: "Las recetas se curan bajo reglas estrictas para cada condición. No mostramos recetas “aptas para” genéricas: son verificadas para celíacos, diabéticos e intolerantes a la lactosa.",
+  },
+];
+
+// FAQPage structured data — must mirror the FAQs rendered below (Google
+// rejects schema that doesn't match visible content).
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
+---
+
+<Base
+  title="Preguntas · OKRoot"
+  description="Resolvemos tus dudas sobre OKRoot: qué condiciones cubre, cómo analiza una etiqueta, si funciona sin señal y cómo empezar gratis."
+>
+  <PageShell
+    eyebrow="Preguntas frecuentes"
+    title="Todo lo que quieres saber"
+    introHtml={`Si te queda alguna duda, escríbenos a <a href="mailto:contact@luminaw.co" class="font-semibold text-primary underline underline-offset-2 hover:text-accent">contact@luminaw.co</a> y te respondemos.`}
+  >
+    <dl class="flex flex-col gap-4">
+      {FAQS.map(({ q, a }) => (
+        <div class="rounded-2xl border border-line bg-white/70 p-6">
+          <dt class="font-display text-lg font-semibold text-ink">{q}</dt>
+          <dd class="mt-2 text-[15px] leading-relaxed text-muted">{a}</dd>
+        </div>
+      ))}
+    </dl>
+  </PageShell>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+</Base>

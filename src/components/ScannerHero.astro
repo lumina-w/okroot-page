@@ -1,0 +1,79 @@
+---
+import PhoneMock from "@/components/PhoneMock.astro";
+
+/* ─── Organism: ScannerHero ───────────────────────────────────────────────
+   Pure CSS, zero JS. Sequence via keyframe delays: FASE 1 mockup entrance
+   (.animate-phone-in) · FASE 2 scan-line reveal + sweep (.animate-scanner-line)
+   · FASE 4 badge spring + FASE 5 breathe (.animate-badge). All three plus their
+   prefers-reduced-motion fallbacks live in index.css. */
+---
+
+<div class="relative flex justify-center lg:justify-end">
+  {/* FASE 1 entrance — CSS keyframe (.animate-phone-in handles its own opacity:0). */}
+  <div class="relative animate-phone-in">
+    <PhoneMock />
+
+    {/* FASE 2 — scan-line overlay; matches PhoneMock's rotate(3deg) + radius */}
+    <div
+      aria-hidden
+      class="pointer-events-none absolute inset-0 overflow-hidden"
+      style="border-radius:44px;transform:rotate(3deg)"
+    >
+      <div
+        class="animate-scanner-line absolute inset-x-0 top-0 h-full"
+        style="background:linear-gradient(to bottom, color-mix(in srgb, var(--color-primary) 32%, transparent) 0%, transparent 16%)"
+      >
+      </div>
+    </div>
+
+    {/* FASE 4/5 — badge ("OK para tu perfil"); spring in, then breathe */}
+    <div
+      class="animate-badge absolute hidden items-center gap-2.5 rounded-2xl border bg-white p-3 shadow-[0_12px_30px_-12px_rgba(20,20,20,0.18)] lg:flex"
+      style="border-color:var(--root-line);top:80px;left:-48px;transform:rotate(-4deg);transform-origin:center"
+    >
+      <span
+        class="flex h-[38px] w-[38px] items-center justify-center rounded-full text-base font-bold text-white"
+        style="background:var(--root-violet)"
+        aria-hidden
+      >
+        ✓
+      </span>
+      <div>
+        <div
+          class="text-[11px] font-bold uppercase tracking-[0.08em]"
+          style="color:var(--root-violet)"
+        >
+          OK
+        </div>
+        <div class="text-[13px] font-semibold" style="color:var(--root-ink)">
+          Sin gluten · IG bajo
+        </div>
+      </div>
+    </div>
+
+    {/* Static counter-chip (CSS only — not Motion) */}
+    <div
+      class="absolute hidden items-center gap-2.5 rounded-2xl border bg-white p-3 shadow-[0_12px_30px_-12px_rgba(20,20,20,0.18)] lg:flex"
+      style="border-color:var(--root-line);bottom:40px;right:-20px;transform:rotate(4deg)"
+    >
+      <span
+        class="flex h-[38px] w-[38px] items-center justify-center rounded-full text-base font-bold text-white"
+        style="background:#c44a4a"
+        aria-hidden
+      >
+        ✗
+      </span>
+      <div>
+        <div
+          class="text-[11px] font-bold uppercase tracking-[0.08em]"
+          style="color:var(--root-danger)"
+        >
+          No
+        </div>
+        <div class="text-[13px] font-semibold" style="color:var(--root-ink)">
+          Contiene lactosa
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

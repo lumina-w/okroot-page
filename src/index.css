@@ -1,49 +1,117 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   OKRoot DESIGN SYSTEM — SINGLE SOURCE OF TRUTH
+   ───────────────────────────────────────────────────────────────────────────
+   1. @theme        — every brand color/font/easing. Change a value HERE and it
+                      updates every Tailwind utility (bg-primary, text-faint…)
+                      AND every var(--color-*) / var(--root-*) reference.
+   2. :root aliases — --root-* names map to the @theme truth (legacy inline
+                      styles use them). Never give an alias its own value.
+   3. @layer components (further down) — .btn*, .eyebrow, .surface-card: the one
+                      definition of every reusable UI primitive. Use these
+                      classes instead of re-typing button/chip markup.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 @theme {
-  /* Brand palette — violeta / púrpura / crema cálido */
-  --color-primary: rgb(148, 51, 234);
-  --color-primary-hover: rgb(124, 40, 200);
-  --color-accent: rgb(88, 28, 135);
-  --color-neutral: rgb(250, 248, 245);
-  --color-cream: rgb(250, 248, 245);
-  --color-cream-deep: rgb(244, 240, 234);
-  --color-ink: rgb(20, 20, 20);
-  --color-muted: rgb(100, 100, 100);
+  /* ── Violet / purple ramp ── */
+  --color-primary: #9433ea;
+  --color-primary-hover: #7c28c8;
+  --color-violet-deep: #7a1fd9;
+  --color-accent: #581c87;
+  --color-purple: #581c87;
+  --color-purple-ink: #3b0f5e;
+  --color-violet-soft: #f3edff;
+  --color-violet-mist: #ece1ff;
+  --color-violet-on: #e9d4ff; /* light violet for text/borders on dark violet */
 
-  --color-line: rgb(232, 226, 218);
+  /* ── Cream / surface ramp ── */
+  --color-cream: #faf8f5;
+  --color-neutral: #faf8f5;
+  --color-cream-warm: #f3eee5;
+  --color-cream-deep: #f4f0ea;
+  --color-cream-edge: #ebe5d9;
 
-  /* Tipografía */
+  /* ── Ink / text ramp ── */
+  --color-ink: #141414;
+  --color-ink-2: #2a2a2a;
+  --color-muted: #646464;
+  /* Darkened from #9a958d to clear WCAG AA 4.5:1 on cream and violet-soft. */
+  --color-faint: #6b665e;
+
+  /* ── Lines / borders ── */
+  --color-line: #e6e1d8;
+  /* Form-control border — meets 3:1 non-text contrast against #fff. */
+  --color-line-strong: #8c8780;
+
+  /* ── Status ── */
+  /* Danger text — clears 4.5:1 on white/tinted bg. */
+  --color-danger: #b23b3b;
+  /* Solid danger fill — only for badge backgrounds (white text passes there). */
+  --color-danger-solid: #c44a4a;
+
+  /* ── Type ── */
   --font-display: "Bricolage Grotesque", sans-serif;
   --font-sans: "Plus Jakarta Sans", sans-serif;
 
-  /* Movimiento */
+  /* ── Motion ── */
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :root {
   color-scheme: light;
 
-  /* Extended design tokens — matching Root Landing v2 design */
-  --root-violet: #9433ea;
-  --root-violet-deep: #7a1fd9;
-  --root-violet-soft: #f3edff;
-  --root-violet-mist: #ece1ff;
-  --root-purple: #581c87;
-  --root-purple-ink: #3b0f5e;
-  --root-cream: #faf8f5;
-  --root-cream-warm: #f3eee5;
-  --root-cream-edge: #ebe5d9;
-  --root-ink: #141414;
-  --root-ink-2: #2a2a2a;
-  --root-mute: #646464;
-  --root-faint: #9a958d;
-  --root-line: #e6e1d8;
+  /* Legacy aliases → the @theme truth above. Inline styles still reference
+     var(--root-*); these keep them in sync. Prefer Tailwind utilities or
+     var(--color-*) in new code. */
+  --root-violet: var(--color-primary);
+  --root-violet-deep: var(--color-violet-deep);
+  --root-violet-soft: var(--color-violet-soft);
+  --root-violet-mist: var(--color-violet-mist);
+  --root-purple: var(--color-purple);
+  --root-purple-ink: var(--color-purple-ink);
+  --root-cream: var(--color-cream);
+  --root-cream-warm: var(--color-cream-warm);
+  --root-cream-edge: var(--color-cream-edge);
+  --root-ink: var(--color-ink);
+  --root-ink-2: var(--color-ink-2);
+  --root-mute: var(--color-muted);
+  --root-faint: var(--color-faint);
+  --root-line: var(--color-line);
+  --root-line-strong: var(--color-line-strong);
+  --root-danger: var(--color-danger);
 }
 
 html {
   scroll-behavior: smooth;
+  /* Clears the sticky header on in-page anchor jumps + a breathing gap.
+     Header box is ~88px (py-4 16 + bar h-14 56 + py-4 16); add ~24px so the
+     target heading doesn't sit flush under the bar. */
+  scroll-padding-top: 112px;
   -webkit-text-size-adjust: 100%;
+  /* Thin, brand-violet scrollbar (Firefox) */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) transparent;
+}
+
+/* Thin, brand-violet scrollbar (WebKit/Chromium). Padding-box border slims the
+   visible thumb to ~4px. */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-hover);
+  background-clip: padding-box;
 }
 
 body {
@@ -100,8 +168,132 @@ body::after {
   border-radius: 6px;
 }
 
+/* Skip-to-content link — visually hidden until focused */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  background: #fff;
+  color: var(--root-ink);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
 ::selection {
   background-color: color-mix(in srgb, var(--color-primary) 22%, transparent);
+}
+
+/* ----------------------------------------------------------------------- */
+/* Design-system components — the ONE definition of each UI primitive.     */
+/* Compose with Tailwind utilities (w-full, mt-*) on the same element.     */
+/* ----------------------------------------------------------------------- */
+@layer components {
+  /* ── Buttons ──────────────────────────────────────────────────────────
+     <a class="btn btn-primary">…</a>  ·  size with btn-sm / btn-lg (md default) */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    border-radius: 9999px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      background-color 0.2s var(--ease-soft),
+      box-shadow 0.2s var(--ease-soft),
+      color 0.2s var(--ease-soft),
+      opacity 0.2s var(--ease-soft),
+      transform 0.2s var(--ease-soft);
+  }
+  .btn:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--color-cream),
+      0 0 0 4px var(--color-primary);
+  }
+  .btn:active {
+    transform: scale(0.98);
+  }
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  /* Sizes */
+  .btn-sm {
+    height: 2.625rem;
+    padding-inline: 1.25rem;
+    font-size: 0.875rem;
+  }
+  .btn-md {
+    height: 3.25rem;
+    padding-inline: 1.5rem;
+    font-size: 0.9375rem;
+  }
+  .btn-lg {
+    height: 3.5rem;
+    padding-inline: 2rem;
+    font-size: 1rem;
+  }
+
+  /* Variants */
+  .btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+    box-shadow: 0 8px 24px -8px color-mix(in srgb, var(--color-primary) 55%, transparent);
+  }
+  .btn-primary:hover {
+    background: var(--color-accent);
+    box-shadow: 0 12px 30px -8px color-mix(in srgb, var(--color-accent) 60%, transparent);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-primary);
+  }
+  .btn-ghost:hover {
+    color: var(--color-accent);
+  }
+
+  /* ── Eyebrow chip ─────────────────────────────────────────────────────
+     Section kicker: <div class="eyebrow">Cómo funciona</div> (dot is ::before) */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.375rem 0.875rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+    color: var(--color-purple);
+  }
+  .eyebrow::before {
+    content: "";
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 9999px;
+    background: var(--color-primary);
+  }
+
+  /* ── Surface card ─────────────────────────────────────────────────────
+     White rounded panel with the standard hairline border. */
+  .surface-card {
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: 1.5rem;
+  }
 }
 
 /* ----------------------------------------------------------------------- */
@@ -165,13 +357,68 @@ body::after {
 }
 
 .animate-scanner-line {
-  animation: scanner-line 2.6s var(--ease-soft) infinite;
+  /* `both` → backwards fill holds opacity:0 during the 0.8s delay (FASE 2 reveal). */
+  animation: scanner-line 2.6s var(--ease-soft) 0.8s infinite both;
+}
+
+/* ScannerHero entrance — was JS (Motion). Now pure CSS keyframes.            */
+/* FASE 1 — phone mockup entrance (delay 0.3s, after the headline). */
+@keyframes phone-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-phone-in {
+  animation: phone-in 0.7s var(--ease-soft) 0.3s both;
+}
+
+/* FASE 4 badge spring-in (overshoot baked into the 60% keyframe), then
+   FASE 5 infinite breathe. Both preserve the badge's baseline rotate(-4deg). */
+@keyframes badge-in {
+  0% {
+    opacity: 0;
+    transform: rotate(-4deg) translateY(8px) scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: rotate(-4deg) translateY(-1px) scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-4deg) translateY(0) scale(1);
+  }
+}
+@keyframes badge-breathe {
+  0%,
+  100% {
+    transform: rotate(-4deg) scale(1);
+  }
+  50% {
+    transform: rotate(-4deg) scale(1.03);
+  }
+}
+.animate-badge {
+  animation:
+    badge-in 0.5s var(--ease-soft) 3.4s both,
+    badge-breathe 2.5s ease-in-out 3.9s infinite;
 }
 
 /* Orchestrated hero load — staggered via inline animation-delay */
 .load-rise {
   opacity: 0;
   animation: rise-in 0.8s var(--ease-soft) both;
+}
+
+/* FAQ accordion — height-animated open AND close (driven by FaqSection's JS,
+   which sets explicit px heights; this just declares the easing). */
+.faq-answer {
+  overflow: hidden;
+  transition: height 0.3s var(--ease-soft);
 }
 
 /* Reveal-on-scroll utility — toggled via IntersectionObserver */
@@ -198,6 +445,16 @@ body::after {
   .animate-scanner-line {
     animation: none;
   }
+  .animate-phone-in {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .animate-badge {
+    opacity: 1;
+    transform: rotate(-4deg);
+    animation: none;
+  }
   .load-rise {
     opacity: 1;
     animation: none;
@@ -209,6 +466,9 @@ body::after {
   .reveal {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+  .faq-answer {
     transition: none;
   }
 }

@@ -1,0 +1,286 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  intro?: string;
+  /** Rich intro (rendered as HTML) — use for links like mailto. Wins over `intro`. */
+  introHtml?: string;
+  /** Tabla de contenidos. Si viene, se muestra un sidebar sticky en desktop. */
+  toc?: { id: string; label: string }[];
+}
+
+const { eyebrow, title, intro, introHtml, toc } = Astro.props;
+const hasToc = Array.isArray(toc) && toc.length > 0;
+---
+
+{
+  hasToc ? (
+    <div class="ps-wrap">
+      {/* Encabezado — ancho completo, encima del grid */}
+      <div class="ps-header">
+        <a href="/" class="ps-back">
+          <svg
+            viewBox="0 0 24 24"
+            class="h-4 w-4 rotate-180"
+            aria-hidden
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+          Volver al inicio
+        </a>
+
+        <span class="ps-eyebrow">{eyebrow}</span>
+        <h1 class="ps-title">{title}</h1>
+        {(introHtml || intro) && (
+          <p class="ps-intro">
+            {introHtml ? <Fragment set:html={introHtml} /> : intro}
+          </p>
+        )}
+      </div>
+
+      {/* Cuerpo — grid sidebar + contenido en desktop */}
+      <div class="ps-body">
+        <aside aria-label="Tabla de contenidos" class="toc-sidebar">
+          <p class="toc-heading">Contenido</p>
+          <ol class="toc-list">
+            {toc!.map((item, i) => (
+              <li class="toc-item">
+                <a href={`#${item.id}`} class="toc-link" data-id={item.id}>
+                  <span class="toc-num">{String(i + 1).padStart(2, "0")}</span>
+                  <span class="toc-label">{item.label}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </aside>
+
+        <div class="ps-content">
+          <slot />
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div class="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 lg:px-10 lg:py-24">
+      <a
+        href="/"
+        class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-accent"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          class="h-4 w-4 rotate-180"
+          aria-hidden
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+        Volver al inicio
+      </a>
+
+      <span class="mt-8 block text-sm font-semibold uppercase tracking-wide text-primary">
+        {eyebrow}
+      </span>
+      <h1 class="mt-2 font-display text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl">
+        {title}
+      </h1>
+      {(introHtml || intro) && (
+        <p class="mt-5 text-lg leading-relaxed text-muted">
+          {introHtml ? <Fragment set:html={introHtml} /> : intro}
+        </p>
+      )}
+
+      <div class="mt-12">
+        <slot />
+      </div>
+    </div>
+  )
+}
+
+<style>
+  /* ── Wrapper con TOC ── */
+  .ps-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 64px 24px;
+  }
+  @media (min-width: 1024px) {
+    .ps-wrap {
+      padding: 96px 24px;
+    }
+  }
+
+  .ps-header {
+    margin-bottom: 48px;
+  }
+  .ps-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 200ms var(--ease-soft);
+  }
+  .ps-back:hover {
+    color: var(--color-accent);
+  }
+  .ps-eyebrow {
+    display: block;
+    margin-top: 32px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+  }
+  .ps-title {
+    margin: 8px 0 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.25rem, 4vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+  .ps-intro {
+    margin: 20px 0 0;
+    max-width: 640px;
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  /* ── Cuerpo ── */
+  .ps-body {
+    display: block;
+  }
+  .ps-content {
+    min-width: 0;
+  }
+  @media (min-width: 1024px) {
+    .ps-body {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+  }
+
+  /* ── Sidebar TOC ── */
+  .toc-sidebar {
+    position: sticky;
+    top: 96px;
+    align-self: start;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .toc-sidebar::-webkit-scrollbar {
+    display: none;
+  }
+  .toc-heading {
+    margin: 0 0 12px;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+  }
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .toc-link {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 6px 0 6px 10px;
+    border-left: 2px solid transparent;
+    text-decoration: none;
+    transition:
+      border-color 200ms var(--ease-soft),
+      color 200ms var(--ease-soft);
+  }
+  .toc-link:hover .toc-label {
+    color: var(--color-ink);
+  }
+  .toc-num {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+    transition: color 200ms var(--ease-soft);
+  }
+  .toc-label {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--color-muted);
+    line-height: 1.4;
+    transition: color 200ms var(--ease-soft);
+  }
+  .toc-link.is-active {
+    border-left-color: var(--color-primary);
+  }
+  .toc-link.is-active .toc-num {
+    color: var(--color-primary);
+  }
+  .toc-link.is-active .toc-label {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  @media (max-width: 1023px) {
+    .toc-sidebar {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Activa el item del sidebar según la sección visible. Vanilla IntersectionObserver.
+  const sections = document.querySelectorAll<HTMLElement>("section[id]");
+  const links = document.querySelectorAll<HTMLAnchorElement>(".toc-link");
+
+  if (sections.length && links.length) {
+    // Primer item activo al cargar.
+    links[0].classList.add("is-active");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            links.forEach((link) => {
+              link.classList.toggle(
+                "is-active",
+                link.dataset.id === entry.target.id,
+              );
+            });
+          }
+        });
+      },
+      { rootMargin: "-20% 0px -70% 0px", threshold: 0 },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+  }
+</script>

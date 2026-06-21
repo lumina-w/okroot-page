@@ -1,0 +1,157 @@
+---
+import ScannerIllo from "@/components/ScannerIllo.astro";
+---
+
+<section
+  id="como-funciona"
+  class="py-24 lg:py-32"
+  style="background:var(--root-cream)"
+>
+  <div class="mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10">
+    {/* Header */}
+    <div class="max-w-[620px]">
+      <div class="reveal">
+        <div class="eyebrow">Cómo funciona</div>
+      </div>
+      <h2
+        class="reveal mt-5 font-display font-extrabold leading-[1.02] tracking-[-0.04em]"
+        style="font-size:clamp(2rem, 4.5vw, 3.75rem);color:var(--root-ink)"
+      >
+        Una foto.
+        <br />
+        Una respuesta{" "}
+        <span style="font-style:italic;color:var(--root-violet)">clara</span>.
+      </h2>
+    </div>
+
+    {/* Showcase + steps */}
+    <div class="mt-14 grid gap-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-stretch">
+      {/* Scanner showcase — ScannerIllo is now the panel itself (no wrapper box) */}
+      <div class="reveal flex items-center">
+        <ScannerIllo />
+      </div>
+
+      {/* Steps */}
+      <div class="grid gap-5 sm:grid-cols-2">
+        {/* StepCard 01 */}
+        <div
+          class="reveal flex flex-col gap-5 rounded-3xl border bg-white p-8"
+          style="border-color:var(--root-line);--reveal-delay:0ms"
+        >
+          <div class="flex items-center justify-between">
+            <div
+              class="flex h-12 w-12 items-center justify-center rounded-2xl"
+              style="background:var(--root-violet-soft);color:var(--root-violet)"
+            >
+              <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden>
+                <rect x="5" y="10" width="22" height="16" rx="3" stroke="currentColor" stroke-width="1.8" />
+                <circle cx="16" cy="18" r="4.5" stroke="currentColor" stroke-width="1.8" />
+                <path d="M12 10l1.8-3h4.4L20 10" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <span
+              class="font-display text-sm font-bold tracking-[0.04em]"
+              style="color:var(--root-faint)"
+            >
+              01
+            </span>
+          </div>
+          <h3
+            class="font-display text-[22px] font-bold leading-tight tracking-[-0.025em]"
+            style="color:var(--root-ink)"
+          >
+            Fotografía
+          </h3>
+          <p class="text-[15.5px] leading-relaxed" style="color:var(--root-mute)">
+            Abres la app y escaneas la etiqueta de cualquier producto. Sin escribir nada.
+          </p>
+        </div>
+
+        {/* StepCard 02 */}
+        <div
+          class="reveal flex flex-col gap-5 rounded-3xl border bg-white p-8"
+          style="border-color:var(--root-line);--reveal-delay:100ms"
+        >
+          <div class="flex items-center justify-between">
+            <div
+              class="flex h-12 w-12 items-center justify-center rounded-2xl"
+              style="background:var(--root-violet-soft);color:var(--root-violet)"
+            >
+              {/* AI sparkle — the analysis reasons over the label */}
+              <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden>
+                <path d="M16 4c.6 5.6 2.4 7.4 8 8-5.6.6-7.4 2.4-8 8-.6-5.6-2.4-7.4-8-8 5.6-.6 7.4-2.4 8-8Z" fill="currentColor" />
+                <path d="M25 19c.3 2.4 1.1 3.2 3.5 3.5-2.4.3-3.2 1.1-3.5 3.5-.3-2.4-1.1-3.2-3.5-3.5 2.4-.3 3.2-1.1 3.5-3.5Z" fill="currentColor" />
+              </svg>
+            </div>
+            <span
+              class="font-display text-sm font-bold tracking-[0.04em]"
+              style="color:var(--root-faint)"
+            >
+              02
+            </span>
+          </div>
+          <h3
+            class="font-display text-[22px] font-bold leading-tight tracking-[-0.025em]"
+            style="color:var(--root-ink)"
+          >
+            Análisis IA
+          </h3>
+          <p class="text-[15.5px] leading-relaxed" style="color:var(--root-mute)">
+            La IA lee los ingredientes y los compara contra{" "}
+            <strong style="color:var(--root-ink)">tu perfil</strong>. No es una base de
+            datos: razona sobre nombres técnicos y trazas ocultas.
+          </p>
+        </div>
+
+        {/* StepCard 03 */}
+        <div
+          class="reveal flex flex-col gap-5 rounded-3xl border bg-white p-8"
+          style="border-color:var(--root-line);--reveal-delay:200ms"
+        >
+          <div class="flex items-center justify-between">
+            <div
+              class="flex h-12 w-12 items-center justify-center rounded-2xl"
+              style="background:var(--root-violet-soft);color:var(--root-violet)"
+            >
+              <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden>
+                <circle cx="16" cy="16" r="11" stroke="currentColor" stroke-width="1.8" />
+                <path d="M11 16.5l3.2 3.2L21 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <span
+              class="font-display text-sm font-bold tracking-[0.04em]"
+              style="color:var(--root-faint)"
+            >
+              03
+            </span>
+          </div>
+          <h3
+            class="font-display text-[22px] font-bold leading-tight tracking-[-0.025em]"
+            style="color:var(--root-ink)"
+          >
+            Respuesta instantánea
+          </h3>
+          <p class="text-[15.5px] leading-relaxed" style="color:var(--root-mute)">
+            <span style="color:var(--root-violet);font-weight:700">OK verde</span> o{" "}
+            <span style="color:var(--root-danger);font-weight:700">NO rojo</span>, con la razón
+            específica. Sabes por qué, no solo qué.
+          </p>
+        </div>
+
+        {/* Differentiator note */}
+        <div
+          class="reveal flex flex-col justify-center gap-2 rounded-3xl p-7 text-white"
+          style="background:linear-gradient(155deg,#9433ea 0%,#581c87 100%);--reveal-delay:300ms"
+        >
+          <div class="text-[11px] font-bold uppercase tracking-[0.18em] opacity-80">
+            El diferenciador
+          </div>
+          <p class="text-[15.5px] font-semibold leading-snug">
+            Restricciones compuestas: valida celiaquía + diabetes + lactosa al mismo tiempo.{" "}
+            <span style="color:#e9d4ff">No en silos.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

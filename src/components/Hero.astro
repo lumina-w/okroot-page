@@ -1,0 +1,95 @@
+---
+import ScannerHero from "@/components/ScannerHero.astro";
+
+/* ─── Section ────────────────────────────────────────────────────────────── */
+---
+
+<section id="hero" class="px-5 pb-6 pt-3 sm:px-6 sm:pt-4 lg:px-6">
+  {/* Hero card with radial gradient */}
+  <div
+    class="relative mx-auto w-full max-w-[1200px] overflow-hidden rounded-[28px] border"
+    style="background:radial-gradient(120% 90% at 0% 0%, #ece1ff 0%, #faf8f5 55%, #faf8f5 100%);border-color:var(--root-line);min-height:600px"
+  >
+    {/* Decorative blob */}
+    <div
+      aria-hidden
+      class="pointer-events-none absolute -right-16 -top-20 h-[360px] w-[360px] rounded-full"
+      style="background:radial-gradient(circle, rgba(148,51,234,0.18), transparent 70%)"
+    />
+
+    <div class="grid items-center gap-8 px-8 py-20 sm:px-12 sm:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+      {/* Left column */}
+      <div class="relative z-10">
+        <div class="load-rise" style="animation-delay:0ms">
+          {/* Badge */}
+          <div class="eyebrow">
+            IA real, no una base de datos
+          </div>
+        </div>
+
+        <h1
+          class="load-rise mt-6 font-display font-extrabold leading-[1.0] tracking-[-0.045em] text-ink"
+          style="font-size:clamp(2.25rem, 5.4vw, 4.25rem);animation-delay:90ms"
+        >
+          Fotografía la etiqueta.
+          <br />
+          Sabe en segundos si{" "}
+          <span
+            style="font-style:italic;background:linear-gradient(135deg,#9433ea,#581c87);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"
+          >
+            puedes comerla.
+          </span>
+        </h1>
+
+        <p
+          class="load-rise mt-6 max-w-[520px] text-[18px] leading-relaxed"
+          style="color:var(--root-mute);animation-delay:220ms"
+        >
+          Para quien tiene celiaquía, diabetes o intolerancia a la lactosa,{" "}
+          <strong style="color:var(--root-ink)">o las tres a la vez.</strong>
+        </p>
+
+        <div
+          class="load-rise mt-9 flex flex-col items-start gap-3"
+          style="animation-delay:320ms"
+        >
+          <a href="#lista-de-espera" class="btn btn-primary btn-md">
+            Quiero comer sin adivinar
+          </a>
+          <p class="text-[13px]" style="color:var(--root-faint)">
+            <strong style="color:var(--root-mute)">Análisis en menos de 3 segundos</strong>
+            {" · "}Sin tarjeta · Funciona offline.
+          </p>
+        </div>
+
+        <div class="load-rise mt-11" style="animation-delay:430ms">
+          {/* TrustPill — enlaza a los casos de éxito (sección fundadora) */}
+          <a
+            href="#casos-de-exito"
+            class="flex max-w-[560px] items-center gap-3.5 rounded-full border px-[18px] py-3.5 transition-colors hover:border-[var(--root-violet)]"
+            style="background:#fff;border-color:var(--root-line)"
+          >
+            <img
+              src="/valentina.webp"
+              alt="Valentina Ramírez, fundadora de OKRoot"
+              width="42"
+              height="42"
+              loading="lazy"
+              decoding="async"
+              class="h-[42px] w-[42px] shrink-0 rounded-full object-cover"
+            />
+            <p class="text-[12.5px] leading-snug" style="color:var(--root-mute)">
+              <span class="font-semibold" style="color:var(--root-ink)">
+                Hecho por Valentina Ramírez
+              </span>
+              : celíaca, diabética e intolerante a la lactosa.
+            </p>
+          </a>
+        </div>
+      </div>
+
+      {/* Right column — Motion-driven scanner (entrance + scan-line + badge) */}
+      <ScannerHero />
+    </div>
+  </div>
+</section>

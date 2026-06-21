@@ -1,0 +1,312 @@
+---
+import { APP_URL } from "@/lib/consts";
+
+// Navbar. Logo tipográfico (sin ícono), links centrales, y a la derecha
+// "Iniciar sesión" + CTA. Mismo destino de login que antes tenía "Entrar a la
+// app" (eliminado de los links centrales). El comportamiento de scroll (frost)
+// no se toca.
+const NAV_LINKS = [
+  { href: "/#como-funciona", label: "Cómo funciona" },
+  { href: "/#funcionalidades", label: "Recetas" },
+  { href: "/#casos-de-exito", label: "Casos de éxito" },
+  { href: "/#preguntas", label: "Preguntas" },
+];
+
+const LOGIN_URL = `${APP_URL}/login`;
+---
+
+<header class="sticky top-0 z-50 px-5 py-4 sm:px-6">
+  <nav
+    aria-label="Navegación principal"
+    class="site-header__bar mx-auto flex h-14 w-full max-w-[1200px] items-center justify-between rounded-full border px-5 transition-all duration-300"
+    style="background:#fff;border-color:var(--root-line)"
+  >
+    {/* Logo — tipográfico puro, un solo bloque */}
+    <a href="/" class="nav-logo" aria-label="OKRoot, inicio">
+      <span class="nav-logo__ok">OK</span><span class="nav-logo__root">root</span>
+    </a>
+
+    {/* Links centrales (desktop) */}
+    <ul class="hidden items-center gap-7 lg:flex">
+      {
+        NAV_LINKS.map((link) => (
+          <li>
+            <a href={link.href} class="nav-link">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    {/* Zona derecha (desktop) */}
+    <div class="hidden items-center gap-5 lg:flex">
+      <a
+        href={LOGIN_URL}
+        rel="noopener noreferrer"
+        aria-label="Iniciar sesión en OKRoot"
+        class="nav-login"
+      >
+        Iniciar sesión
+      </a>
+      <a href="/#lista-de-espera" class="btn btn-primary btn-sm">Quiero acceso</a>
+    </div>
+
+    {/* Hamburguesa (mobile + tablet) — barras que se transforman en X */}
+    <button
+      type="button"
+      class="nav-burger lg:hidden"
+      data-menu-toggle
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="nav-burger__box" aria-hidden="true">
+        <span class="nav-burger__bar"></span>
+        <span class="nav-burger__bar"></span>
+        <span class="nav-burger__bar"></span>
+      </span>
+    </button>
+  </nav>
+
+  {/* Panel móvil — animado con max-height/opacity; `inert` cuando está cerrado */}
+  <div id="mobile-menu" class="nav-mobile lg:hidden" inert>
+    <ul class="nav-mobile__list">
+      {
+        NAV_LINKS.map((link) => (
+          <li>
+            <a href={link.href} class="nav-mobile__link">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <hr class="nav-mobile__sep" />
+    <a
+      href={LOGIN_URL}
+      rel="noopener noreferrer"
+      aria-label="Iniciar sesión en OKRoot"
+      class="nav-login nav-mobile__login"
+    >
+      Iniciar sesión
+    </a>
+    <a href="/#lista-de-espera" class="btn btn-primary btn-sm nav-mobile__cta"
+      >Quiero acceso</a
+    >
+  </div>
+</header>
+
+<style>
+  /* ── Logo tipográfico ── */
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    text-decoration: none;
+  }
+  .nav-logo__ok {
+    font-weight: 800;
+    color: var(--color-primary);
+  }
+  .nav-logo__root {
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  /* ── Links centrales ── */
+  .nav-link {
+    display: inline-block;
+    padding: 0.375rem 0;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: color 200ms var(--ease-soft);
+  }
+  .nav-link:hover {
+    color: var(--color-primary);
+  }
+
+  /* ── Iniciar sesión ── */
+  .nav-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 200ms var(--ease-soft);
+  }
+  .nav-login:hover {
+    color: var(--color-primary-hover);
+  }
+
+  /* ── Hamburguesa → X ── */
+  .nav-burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    color: var(--color-ink);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  /* Scoped `display:inline-flex` above outranks Tailwind's `lg:hidden`
+     (equal specificity, scoped wins on order) — hide explicitly at lg+. */
+  @media (min-width: 1024px) {
+    .nav-burger {
+      display: none;
+    }
+  }
+  .nav-burger__box {
+    position: relative;
+    width: 22px;
+    height: 16px;
+  }
+  .nav-burger__bar {
+    position: absolute;
+    left: 0;
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition:
+      top 0.3s var(--ease-soft),
+      transform 0.3s var(--ease-soft),
+      opacity 0.2s ease;
+  }
+  .nav-burger__bar:nth-child(1) {
+    top: 0;
+  }
+  .nav-burger__bar:nth-child(2) {
+    top: 7px;
+  }
+  .nav-burger__bar:nth-child(3) {
+    top: 14px;
+  }
+  /* Open state: top/bottom bars cross into an X, middle fades out. */
+  .nav-burger[aria-expanded="true"] .nav-burger__bar:nth-child(1) {
+    top: 7px;
+    transform: rotate(45deg);
+  }
+  .nav-burger[aria-expanded="true"] .nav-burger__bar:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-burger[aria-expanded="true"] .nav-burger__bar:nth-child(3) {
+    top: 7px;
+    transform: rotate(-45deg);
+  }
+
+  /* ── Panel móvil ── */
+  .nav-mobile {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1200px;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition:
+      max-height 0.32s var(--ease-soft),
+      opacity 0.25s ease,
+      transform 0.25s var(--ease-soft),
+      margin-top 0.32s var(--ease-soft);
+    /* Box visuals applied to the inner wrapper so they fade with the panel. */
+    border-radius: 20px;
+    border: 1px solid transparent;
+    background: var(--root-cream);
+    box-shadow: 0 12px 30px -12px rgba(20, 20, 20, 0);
+  }
+  .nav-mobile.is-open {
+    margin-top: 8px;
+    max-height: 440px;
+    opacity: 1;
+    transform: translateY(0);
+    padding: 16px;
+    border-color: var(--root-line);
+    box-shadow: 0 12px 30px -12px rgba(20, 20, 20, 0.18);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav-mobile {
+      transition: none;
+    }
+    .nav-burger__bar {
+      transition: none;
+    }
+  }
+  .nav-mobile__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .nav-mobile__link {
+    display: block;
+    padding: 12px 8px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: color 200ms var(--ease-soft);
+  }
+  .nav-mobile__link:hover {
+    color: var(--color-primary);
+  }
+  .nav-mobile__sep {
+    border: none;
+    border-top: 1px solid var(--root-line);
+    margin: 8px 0;
+  }
+  .nav-mobile__login {
+    padding: 12px 8px;
+    font-size: 16px;
+  }
+  .nav-mobile__cta {
+    margin-top: 12px;
+    width: 100%;
+  }
+</style>
+
+<script>
+  // Frost the header bar once the page is scrolled a touch. (Lógica existente.)
+  const bar = document.querySelector<HTMLElement>(".site-header__bar");
+  if (bar) {
+    const onScroll = () => {
+      const scrolled = window.scrollY > 12;
+      bar.style.background = scrolled ? "rgba(250,248,245,0.88)" : "#fff";
+      bar.style.backdropFilter = scrolled ? "blur(12px)" : "none";
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  // Menú móvil: toggle del panel + estado accesible.
+  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const menu = document.getElementById("mobile-menu");
+  if (toggle && menu) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+      menu.classList.toggle("is-open", open);
+      // `inert` removes the collapsed panel from tab order + a11y tree.
+      menu.toggleAttribute("inert", !open);
+    };
+    toggle.addEventListener("click", () => {
+      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    });
+    // Cerrar al elegir un destino.
+    menu.querySelectorAll("a").forEach((a) =>
+      a.addEventListener("click", () => setOpen(false)),
+    );
+  }
+</script>

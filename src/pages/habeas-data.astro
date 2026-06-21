@@ -1,0 +1,486 @@
+---
+import Base from "@/layouts/Base.astro";
+import PageShell from "@/components/PageShell.astro";
+
+// Habeas Data — Ley 1581 de 2012 (arts. 8, 9, 10, 14, 15, 16), Decreto 1377 de
+// 2013, Circular 002 de 2015 SIC. Documento PROCEDIMENTAL: cómo el titular
+// ejerce sus derechos (complementa /privacidad/, no lo repite).
+// Contacto: contact@luminaw.co. Última actualización: 21 de junio de 2026.
+
+// Sección 2 — los derechos del titular, una card por derecho.
+const RIGHTS = [
+  {
+    title: "Derecho a conocer",
+    que: "Saber exactamente qué datos tenemos sobre ti.",
+    okroot:
+      "Tu perfil de salud vive en tu dispositivo. El servidor guarda tu email (lista de espera) y los resultados de análisis de etiquetas. Podés pedir un resumen completo de todo lo que tenemos escribiéndonos.",
+    // lupa
+    icon: "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4",
+  },
+  {
+    title: "Derecho a actualizar",
+    que: "Corregir datos que están desactualizados o son inexactos.",
+    okroot:
+      "Tu perfil de salud lo actualizás vos mismo desde la app en cualquier momento. Si el email que registraste cambió, escribinos y lo corregimos.",
+    // refrescar
+    icon: "M4 12a8 8 0 0 1 13.7-5.6L20 8M20 4v4h-4M20 12a8 8 0 0 1-13.7 5.6L4 16M4 20v-4h4",
+  },
+  {
+    title: "Derecho a rectificar",
+    que: "Corregir datos incorrectos que tengamos sobre ti.",
+    okroot:
+      "Si encontrás información incorrecta en lo que tenemos registrado, escribinos y lo corregimos en máximo 10 días hábiles.",
+    // lápiz
+    icon: "M4 20h4l10-10a2.8 2.8 0 0 0-4-4L4 16v4zM13.5 6.5l4 4",
+  },
+  {
+    title: "Derecho a suprimir",
+    que: "Que eliminemos tus datos cuando ya no sean necesarios o retires tu autorización.",
+    okroot:
+      "Podés eliminar tu perfil y todos tus datos desde la app directamente. También podés escribirnos y lo hacemos nosotros en 15 días hábiles. Excepción: si hay obligación legal de conservar algún dato (por ejemplo, registros contables), lo informamos.",
+    // papelera
+    icon: "M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13M10 11v6M14 11v6",
+  },
+  {
+    title: "Derecho a revocar la autorización",
+    que: "Retirar el consentimiento que diste para que tratemos tus datos.",
+    okroot:
+      "Podés revocar en cualquier momento. La revocación no tiene efecto retroactivo: no afecta el tratamiento realizado antes de la revocación. Al revocar, eliminamos tus datos según el proceso de supresión descrito arriba.",
+    // candado abierto
+    icon: "M7 11V8a5 5 0 0 1 9.6-2M6 11h12v9H6zM12 15v2",
+  },
+  {
+    title: "Derecho a presentar queja ante la SIC",
+    que: "Si no respondemos o no quedás conforme con nuestra respuesta, podés acudir a la Superintendencia de Industria y Comercio (SIC).",
+    okroot:
+      "Cuándo: solo después de haber enviado la solicitud directamente a OKRoot y no haber recibido respuesta satisfactoria en los plazos legales. Cómo: en www.sic.gov.co, sección de protección de datos personales.",
+    // edificio institucional
+    icon: "M4 21h16M5 21V9l7-4 7 4v12M9 21v-5h6v5M9 12h.01M15 12h.01",
+  },
+];
+
+// Tabla de contenidos — alimenta el sidebar sticky de PageShell.
+const TOC = [
+  { id: "s1", label: "Qué es el Habeas Data" },
+  { id: "s2", label: "Tus derechos" },
+  { id: "s3", label: "Cómo ejercer tus derechos" },
+  { id: "s4", label: "Datos sensibles de salud" },
+  { id: "s5", label: "Autorización de tratamiento" },
+  { id: "s6", label: "Contacto y responsable" },
+];
+---
+
+<Base
+  title="Habeas Data · OKRoot"
+  description="Ejercé tus derechos de Habeas Data en OKRoot: conocé, actualizá, rectificá o eliminá tus datos de salud. Proceso claro paso a paso."
+>
+  <PageShell
+    eyebrow="Documento legal"
+    title="Habeas Data."
+    intro="Tienes derecho a saber qué datos tenemos sobre ti, corregirlos, eliminarlos o revocar tu autorización. Esta página explica cómo hacerlo, paso a paso."
+    toc={TOC}
+  >
+    {/* Metadatos del documento */}
+    <dl
+      class="grid gap-x-8 gap-y-3 border-y border-line py-5 text-sm sm:grid-cols-2"
+    >
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Última actualización
+        </dt>
+        <dd class="text-ink">21 de junio de 2026</dd>
+      </div>
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Marco legal
+        </dt>
+        <dd class="text-ink">Colombia · Ley 1581 de 2012</dd>
+      </div>
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Responsable
+        </dt>
+        <dd class="text-ink">Lúmina W</dd>
+      </div>
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Canal de contacto
+        </dt>
+        <dd class="text-ink">contact@luminaw.co</dd>
+      </div>
+    </dl>
+
+    {/* Índice — solo móvil; en desktop lo reemplaza el sidebar sticky */}
+    <nav aria-label="Contenido" class="mt-12 lg:hidden">
+      <h2 class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+        Contenido
+      </h2>
+      <ol class="mt-3 grid gap-x-8 gap-y-1.5 text-sm sm:grid-cols-2">
+        {
+          TOC.map((item, i) => (
+            <li>
+              <a
+                href={`#${item.id}`}
+                class="text-muted transition-colors hover:text-primary"
+              >
+                <span class="tabular-nums text-primary">{i + 1}.</span>{" "}
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <article class="mt-14 flex flex-col gap-14">
+      {/* 1. Qué es el Habeas Data */}
+      <section id="s1" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 1
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Qué es el Habeas Data
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          El Habeas Data es tu derecho constitucional a controlar la información
+          personal que otros tienen sobre ti. En Colombia lo protege la Ley 1581
+          de 2012.
+        </p>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          En OKRoot esto es especialmente importante porque tratamos datos
+          sensibles de salud: tu celiaquía, diabetes e intolerancia a la
+          lactosa. Esos datos tienen protección reforzada y solo los usamos con
+          tu autorización explícita.
+        </p>
+      </section>
+
+      {/* 2. Tus derechos — cards */}
+      <section id="s2" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 2
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Tus derechos
+        </h2>
+        <ul class="mt-5 grid list-none gap-4 sm:grid-cols-2">
+          {
+            RIGHTS.map((right) => (
+              <li
+                class="flex flex-col gap-3 rounded-xl border border-line p-6"
+                style="background-color: var(--root-cream);"
+              >
+                <span
+                  class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white text-primary"
+                  aria-hidden="true"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d={right.icon} />
+                  </svg>
+                </span>
+                <h3 class="font-display text-lg font-semibold text-ink">
+                  {right.title}
+                </h3>
+                <p class="text-sm leading-relaxed text-ink">
+                  <span class="font-semibold">Qué es:</span> {right.que}
+                </p>
+                <p class="text-sm leading-relaxed text-muted">
+                  <span class="font-semibold text-ink">En OKRoot:</span>{" "}
+                  {right.okroot}
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      {/* 3. Cómo ejercer tus derechos — stepper */}
+      <section id="s3" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 3
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Cómo ejercer tus derechos
+        </h2>
+        <ol class="mt-6 flex flex-col gap-8">
+          {/* Paso 1 */}
+          <li class="grid grid-cols-[auto_1fr] gap-x-4 sm:gap-x-6">
+            <span
+              class="font-display text-[32px] font-bold leading-none text-primary opacity-30 tabular-nums"
+              aria-hidden="true"
+            >
+              1
+            </span>
+            <div>
+              <h3 class="font-display text-lg font-semibold text-ink">
+                Enviá tu solicitud
+              </h3>
+              <p class="mt-2 text-base leading-[1.7] text-ink">
+                Email a: <span class="font-medium">contact@luminaw.co</span>
+                <br />
+                Asunto sugerido: "Solicitud Habeas Data · [tu nombre]"
+              </p>
+              <p class="mt-2 text-base leading-[1.7] text-ink">
+                Incluí en tu mensaje:
+              </p>
+              <ul
+                class="mt-1 flex list-disc flex-col gap-1 pl-5 text-base leading-[1.7] text-muted"
+              >
+                <li>Tu nombre completo.</li>
+                <li>El email con el que te registraste en OKRoot.</li>
+                <li>
+                  Qué derecho querés ejercer (conocer, actualizar, rectificar,
+                  suprimir o revocar).
+                </li>
+                <li>Una descripción breve de lo que solicitás.</li>
+              </ul>
+            </div>
+          </li>
+
+          {/* Paso 2 */}
+          <li class="grid grid-cols-[auto_1fr] gap-x-4 sm:gap-x-6">
+            <span
+              class="font-display text-[32px] font-bold leading-none text-primary opacity-30 tabular-nums"
+              aria-hidden="true"
+            >
+              2
+            </span>
+            <div>
+              <h3 class="font-display text-lg font-semibold text-ink">
+                Confirmación de recepción
+              </h3>
+              <p class="mt-2 text-base leading-[1.7] text-ink">
+                Te confirmamos que recibimos tu solicitud en máximo 2 días
+                hábiles.
+              </p>
+            </div>
+          </li>
+
+          {/* Paso 3 */}
+          <li class="grid grid-cols-[auto_1fr] gap-x-4 sm:gap-x-6">
+            <span
+              class="font-display text-[32px] font-bold leading-none text-primary opacity-30 tabular-nums"
+              aria-hidden="true"
+            >
+              3
+            </span>
+            <div>
+              <h3 class="font-display text-lg font-semibold text-ink">
+                Evaluación
+              </h3>
+              <p class="mt-2 text-base leading-[1.7] text-ink">
+                Verificamos tu identidad y evaluamos la solicitud. Podemos
+                pedirte información adicional si es necesario para proteger tus
+                datos de solicitudes no autorizadas.
+              </p>
+            </div>
+          </li>
+
+          {/* Paso 4 */}
+          <li class="grid grid-cols-[auto_1fr] gap-x-4 sm:gap-x-6">
+            <span
+              class="font-display text-[32px] font-bold leading-none text-primary opacity-30 tabular-nums"
+              aria-hidden="true"
+            >
+              4
+            </span>
+            <div>
+              <h3 class="font-display text-lg font-semibold text-ink">
+                Respuesta
+              </h3>
+              <p class="mt-2 text-base leading-[1.7] text-ink">
+                Plazos legales según el tipo de solicitud:
+              </p>
+              <ul
+                class="mt-1 flex list-disc flex-col gap-1 pl-5 text-base leading-[1.7] text-muted"
+              >
+                <li>
+                  Consultas (conocer): 10 días hábiles, prorrogables 5 días más
+                  con notificación al titular.
+                </li>
+                <li>
+                  Reclamos (actualizar, rectificar, suprimir, revocar): 15 días
+                  hábiles, prorrogables 8 días más con notificación al titular.
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          {/* Paso 5 */}
+          <li class="grid grid-cols-[auto_1fr] gap-x-4 sm:gap-x-6">
+            <span
+              class="font-display text-[32px] font-bold leading-none text-primary opacity-30 tabular-nums"
+              aria-hidden="true"
+            >
+              5
+            </span>
+            <div>
+              <h3 class="font-display text-lg font-semibold text-ink">
+                Si no quedás conforme
+              </h3>
+              <p class="mt-2 text-base leading-[1.7] text-ink">
+                Podés acudir a la SIC en{" "}
+                <a
+                  href="https://www.sic.gov.co"
+                  class="font-medium text-primary underline-offset-2 hover:underline"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  www.sic.gov.co
+                </a>.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      {/* 4. Datos sensibles de salud — DESTACADA */}
+      <section id="s4" class="scroll-mt-24">
+        <div
+          class="rounded-xl border border-line p-6"
+          style="background-color: var(--root-violet-soft); border-left: 3px solid var(--color-primary);"
+        >
+          <p
+            class="text-xs font-medium uppercase tracking-[0.08em] text-primary"
+          >
+            Protección reforzada
+          </p>
+          <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+            Datos sensibles de salud
+          </h2>
+          <p class="mt-4 text-base leading-[1.7] text-ink">
+            Tu perfil de salud en OKRoot (celiaquía, diabetes, intolerancia a la
+            lactosa) es un dato sensible bajo el artículo 6 de la Ley 1581. Esto
+            significa:
+          </p>
+          <ul
+            class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+          >
+            <li>
+              Solo lo tratamos con tu autorización explícita, no implícita ni
+              genérica.
+            </li>
+            <li>
+              No podemos negarte el acceso al servicio si no autorizás el
+              tratamiento de datos sensibles, pero sin esos datos OKRoot no puede
+              analizar etiquetas según tu perfil.
+            </li>
+            <li>
+              Tenés derecho a saber exactamente dónde están almacenados y quién
+              puede acceder a ellos.
+            </li>
+            <li>
+              La respuesta a solicitudes sobre datos sensibles tiene prioridad
+              sobre otras solicitudes.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      {/* 5. Autorización de tratamiento */}
+      <section id="s5" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 5
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Autorización de tratamiento
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          Este es el texto de la autorización que otorgás al crear tu perfil en
+          OKRoot:
+        </p>
+        <blockquote
+          class="mt-4 rounded-xl border border-line p-6 text-base leading-[1.7] text-ink"
+          style="background-color: var(--root-cream);"
+        >
+          <p>
+            "Al configurar mi perfil de salud en OKRoot, autorizo a Lúmina W,
+            operadora de OKRoot, a tratar mis datos de salud (celiaquía,
+            diabetes tipo 2, intolerancia a la lactosa) con la única finalidad de
+            personalizar el análisis de etiquetas de alimentos.
+          </p>
+          <p class="mt-3">Entiendo que:</p>
+          <ul class="mt-1 flex list-disc flex-col gap-1 pl-5">
+            <li>Mis datos de salud se almacenan en mi dispositivo.</li>
+            <li>
+              Al escanear una etiqueta, mi perfil se usa para contextualizar el
+              análisis: la imagen se envía a la API de Anthropic y se descarta.
+            </li>
+            <li>
+              Puedo revocar esta autorización en cualquier momento eliminando mi
+              perfil desde la app o escribiendo a contact@luminaw.co."
+            </li>
+          </ul>
+        </blockquote>
+      </section>
+
+      {/* 6. Contacto y responsable */}
+      <section id="s6" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 6
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Contacto y responsable
+        </h2>
+        <div class="mt-4 grid gap-6 sm:grid-cols-2">
+          <div>
+            <h3 class="font-display text-lg font-semibold text-ink">
+              Responsable del tratamiento
+            </h3>
+            <p class="mt-2 text-base leading-[1.7] text-ink">
+              Lúmina W
+              <br />
+              <span class="text-muted">Operadora de OKRoot · Colombia</span>
+              <br />
+              <span class="font-medium">contact@luminaw.co</span>
+            </p>
+            <p class="mt-2 text-sm leading-relaxed text-muted">
+              Respuesta en máximo 2 días hábiles para confirmación. Plazos
+              legales para resolución según la sección 3.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-display text-lg font-semibold text-ink">
+              Autoridad de control
+            </h3>
+            <p class="mt-2 text-base leading-[1.7] text-ink">
+              Superintendencia de Industria y Comercio (SIC)
+              <br />
+              <a
+                href="https://www.sic.gov.co"
+                class="font-medium text-primary underline-offset-2 hover:underline"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                www.sic.gov.co
+              </a>
+              <br />
+              <span class="text-muted">Línea gratuita: 01 8000 910 165</span>
+            </p>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    {/* Footer del documento */}
+    <footer class="mt-16 border-t border-line pt-6 text-sm text-muted">
+      <nav aria-label="Documentos legales" class="flex flex-wrap gap-x-2 gap-y-1">
+        <a href="/privacidad/" class="hover:text-primary">Privacidad</a>
+        <span aria-hidden="true">·</span>
+        <a href="/terminos/" class="hover:text-primary">Términos</a>
+        <span aria-hidden="true">·</span>
+        <a href="/cookies/" class="hover:text-primary">Cookies</a>
+      </nav>
+      <p class="mt-3">© 2026 Lúmina W · OKRoot</p>
+    </footer>
+  </PageShell>
+</Base>

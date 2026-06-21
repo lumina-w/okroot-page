@@ -1,0 +1,517 @@
+---
+import Base from "@/layouts/Base.astro";
+import PageShell from "@/components/PageShell.astro";
+
+// Política de Cookies — Ley 1581 de 2012. GA4 solo con consentimiento explícito
+// (opt-in), nunca por defecto. El banner (CookieBanner.astro) ejecuta esta
+// política.
+
+const NECESARIAS = [
+  {
+    nombre: "okroot_session",
+    finalidad: "Mantiene tu sesión autenticada en app.okroot.co.",
+    duracion: "Sesión",
+    proveedor: "OKRoot · app.okroot.co",
+  },
+  {
+    nombre: "okroot_cookie_consent",
+    finalidad: "Guarda tu preferencia de cookies (si aceptaste o rechazaste analytics).",
+    duracion: "365 días",
+    proveedor: "OKRoot · okroot.co",
+  },
+  {
+    nombre: "okroot_theme",
+    finalidad: "Recuerda tu preferencia de tema, si aplica.",
+    duracion: "365 días",
+    proveedor: "OKRoot · okroot.co",
+  },
+];
+
+const ANALITICAS = [
+  {
+    nombre: "_ga",
+    finalidad: "Distingue usuarios únicos.",
+    duracion: "2 años",
+    proveedor: "Google LLC, EE.UU.",
+  },
+  {
+    nombre: "_ga_[ID]",
+    finalidad: "Mantiene el estado de sesión de GA4.",
+    duracion: "2 años",
+    proveedor: "Google LLC, EE.UU.",
+  },
+  {
+    nombre: "_gid",
+    finalidad: "Distingue usuarios (caduca rápido).",
+    duracion: "24 horas",
+    proveedor: "Google LLC, EE.UU.",
+  },
+];
+
+// Páginas de ayuda de cada navegador para eliminar cookies.
+const BROWSER_HELP = [
+  { label: "Chrome", url: "https://support.google.com/chrome/answer/95647" },
+  { label: "Firefox", url: "https://support.mozilla.org/es/kb/Borrar%20cookies" },
+  {
+    label: "Safari",
+    url: "https://support.apple.com/es-es/guide/safari/sfri11471/mac",
+  },
+  {
+    label: "Edge",
+    url: "https://support.microsoft.com/es-es/microsoft-edge/eliminar-las-cookies-en-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09",
+  },
+];
+
+// Tabla de contenidos — alimenta el sidebar sticky de PageShell.
+const TOC = [
+  { id: "s1", label: "Qué son las cookies" },
+  { id: "s2", label: "Cookies que usamos" },
+  { id: "s3", label: "Google Analytics 4 en detalle" },
+  { id: "s4", label: "Gestión de cookies" },
+  { id: "s5", label: "Transferencia internacional" },
+  { id: "s6", label: "Cambios a esta política" },
+  { id: "s7", label: "Contacto" },
+];
+---
+
+<Base
+  title="Política de Cookies · OKRoot"
+  description="OKRoot usa cookies mínimas. Las de analytics (GA4) solo se activan con tu permiso. Conocé qué cookies usamos y cómo gestionarlas."
+>
+  <PageShell
+    eyebrow="Documento legal"
+    title="Política de Cookies."
+    intro="OKRoot usa cookies mínimas y necesarias por defecto. Las cookies de analytics (Google Analytics 4) solo se activan si vos las aceptás."
+    toc={TOC}
+  >
+    {/* Metadatos */}
+    <dl
+      class="grid gap-x-8 gap-y-3 border-y border-line py-5 text-sm sm:grid-cols-2"
+    >
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Última actualización
+        </dt>
+        <dd class="text-ink">21 de junio de 2026</dd>
+      </div>
+      <div class="flex flex-col gap-0.5">
+        <dt class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Responsable
+        </dt>
+        <dd class="text-ink">Lúmina W · contact@luminaw.co</dd>
+      </div>
+    </dl>
+
+    {/* Índice — solo móvil; en desktop lo reemplaza el sidebar sticky */}
+    <nav aria-label="Contenido" class="mt-12 lg:hidden">
+      <h2 class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+        Contenido
+      </h2>
+      <ol class="mt-3 grid gap-x-8 gap-y-1.5 text-sm sm:grid-cols-2">
+        {
+          TOC.map((item, i) => (
+            <li>
+              <a
+                href={`#${item.id}`}
+                class="text-muted transition-colors hover:text-primary"
+              >
+                <span class="tabular-nums text-primary">{i + 1}.</span>{" "}
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <article class="mt-14 flex flex-col gap-12">
+      {/* 1. Qué son las cookies */}
+      <section id="s1" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 1
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Qué son las cookies
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          Las cookies son pequeños archivos de texto que los sitios web guardan
+          en tu navegador o dispositivo. Sirven para recordar tus preferencias,
+          mantener tu sesión activa o entender cómo se usa el sitio.
+        </p>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          OKRoot usa la cantidad mínima de cookies necesarias para funcionar.
+          Nada más.
+        </p>
+      </section>
+
+      {/* 2. Cookies que usamos */}
+      <section id="s2" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 2
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Cookies que usamos
+        </h2>
+        <div class="mt-5 overflow-x-auto">
+          <table class="w-full min-w-[640px] border-collapse text-left text-sm">
+            <thead>
+              <tr class="border-b border-line">
+                <th scope="col" class="py-3 pr-4 font-display font-semibold text-ink">
+                  Nombre
+                </th>
+                <th scope="col" class="py-3 pr-4 font-display font-semibold text-ink">
+                  Tipo
+                </th>
+                <th scope="col" class="py-3 pr-4 font-display font-semibold text-ink">
+                  Finalidad
+                </th>
+                <th scope="col" class="py-3 pr-4 font-display font-semibold text-ink">
+                  Duración
+                </th>
+                <th scope="col" class="py-3 font-display font-semibold text-ink">
+                  Proveedor
+                </th>
+              </tr>
+            </thead>
+
+            {/* Grupo: Necesarias */}
+            <tbody>
+              <tr style="background-color: var(--root-violet-soft);">
+                <th
+                  scope="colgroup"
+                  colspan="5"
+                  class="py-2.5 pl-3 pr-4 text-left"
+                >
+                  <span class="font-display font-semibold text-ink">
+                    Necesarias
+                  </span>
+                  <span
+                    class="ml-2 inline-block rounded-full px-2.5 py-0.5 text-xs font-medium text-primary"
+                    style="background-color: rgba(255,255,255,0.65);"
+                  >
+                    Siempre activa
+                  </span>
+                </th>
+              </tr>
+              {
+                NECESARIAS.map((c, i) => (
+                  <tr
+                    class="border-b border-line align-top"
+                    style={
+                      i % 2 === 1
+                        ? "background-color: var(--root-cream);"
+                        : "background-color: #ffffff;"
+                    }
+                  >
+                    <th
+                      scope="row"
+                      class="py-3 pl-3 pr-4 font-mono text-[13px] font-medium text-ink"
+                    >
+                      {c.nombre}
+                    </th>
+                    <td class="py-3 pr-4 text-muted">Necesaria</td>
+                    <td class="py-3 pr-4 text-muted">{c.finalidad}</td>
+                    <td class="py-3 pr-4 text-muted">{c.duracion}</td>
+                    <td class="py-3 text-muted">{c.proveedor}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+
+            {/* Grupo: Analíticas */}
+            <tbody>
+              <tr style="background-color: #ffffff;">
+                <th
+                  scope="colgroup"
+                  colspan="5"
+                  class="border-t border-line py-2.5 pl-3 pr-4 text-left"
+                >
+                  <span class="font-display font-semibold text-ink">
+                    Analíticas
+                  </span>
+                  <span
+                    class="ml-2 inline-block rounded-full border border-line bg-white px-2.5 py-0.5 text-xs font-medium text-muted"
+                  >
+                    Requiere tu permiso
+                  </span>
+                </th>
+              </tr>
+              {
+                ANALITICAS.map((c, i) => (
+                  <tr
+                    class="border-b border-line align-top"
+                    style={
+                      i % 2 === 1
+                        ? "background-color: var(--root-cream);"
+                        : "background-color: #ffffff;"
+                    }
+                  >
+                    <th
+                      scope="row"
+                      class="py-3 pl-3 pr-4 font-mono text-[13px] font-medium text-ink"
+                    >
+                      {c.nombre}
+                    </th>
+                    <td class="py-3 pr-4 text-muted">Analítica</td>
+                    <td class="py-3 pr-4 text-muted">{c.finalidad}</td>
+                    <td class="py-3 pr-4 text-muted">{c.duracion}</td>
+                    <td class="py-3 text-muted">{c.proveedor}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+
+            {/* Grupo: Terceros · Anthropic (no instala cookies) */}
+            <tbody>
+              <tr style="background-color: #ffffff;">
+                <th
+                  scope="colgroup"
+                  colspan="5"
+                  class="border-t border-line py-2.5 pl-3 pr-4 text-left"
+                >
+                  <span class="font-display font-semibold text-ink">
+                    Terceros · Anthropic (no instala cookies)
+                  </span>
+                </th>
+              </tr>
+              <tr class="border-b border-line">
+                <td colspan="5" class="py-3 pl-3 pr-4 text-muted">
+                  El análisis de etiquetas por IA usa la API de Anthropic, pero
+                  no instala ninguna cookie en tu dispositivo: el procesamiento
+                  ocurre servidor a servidor. Lo mencionamos por transparencia,
+                  no es una cookie.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* 3. Google Analytics 4 en detalle */}
+      <section id="s3" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 3
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Google Analytics 4 en detalle
+        </h2>
+
+        <h3 class="mt-5 font-display text-lg font-semibold text-ink">
+          Qué recopila GA4 en OKRoot
+        </h3>
+        <ul
+          class="mt-2 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>Páginas visitadas en okroot.co.</li>
+          <li>Tiempo en cada sección.</li>
+          <li>Dispositivo y navegador (sin datos personales).</li>
+          <li>País aproximado (no ciudad exacta).</li>
+          <li>Fuente de tráfico (cómo llegaste al sitio).</li>
+        </ul>
+
+        <h3 class="mt-5 font-display text-lg font-semibold text-ink">
+          Qué NO recopila GA4
+        </h3>
+        <ul
+          class="mt-2 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>Tu perfil de salud.</li>
+          <li>Las etiquetas que escaneás.</li>
+          <li>Tu diario alimentario.</li>
+          <li>Tu nombre ni tu email.</li>
+        </ul>
+
+        <ul
+          class="mt-5 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>
+            <span class="font-medium">Dónde se procesa:</span> servidores de
+            Google, EE.UU.
+          </li>
+          <li>
+            <span class="font-medium">Base legal:</span> consentimiento explícito
+            (opt-in).
+          </li>
+        </ul>
+
+        <h3 class="mt-5 font-display text-lg font-semibold text-ink">
+          Cómo desactivarlo
+        </h3>
+        <ul
+          class="mt-2 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>Desde el banner que aparece al entrar al sitio.</li>
+          <li>Con el botón de revocar que está aquí abajo.</li>
+          <li>
+            Desde tu navegador, eliminando las cookies:{" "}
+            {
+              BROWSER_HELP.map((b, i) => (
+                <>
+                  <a
+                    href={b.url}
+                    class="font-medium text-primary underline-offset-2 hover:underline"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {b.label}
+                  </a>
+                  {i < BROWSER_HELP.length - 1 ? <span> · </span> : <span>.</span>}
+                </>
+              ))
+            }
+          </li>
+          <li>
+            Con el plugin de inhabilitación de Google Analytics:{" "}
+            <a
+              href="https://tools.google.com/dlpage/gaoptout"
+              class="font-medium text-primary underline-offset-2 hover:underline"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              tools.google.com/dlpage/gaoptout
+            </a>.
+          </li>
+        </ul>
+
+        <button
+          type="button"
+          id="revoke-analytics"
+          class="mt-6 inline-flex items-center justify-center rounded-lg border border-line bg-white px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-primary hover:text-primary"
+        >
+          Revocar consentimiento de analytics
+        </button>
+      </section>
+
+      {/* 4. Gestión de cookies */}
+      <section id="s4" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 4
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Gestión de cookies
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          Tenés tres formas de gestionar tus cookies:
+        </p>
+        <ul
+          class="mt-2 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>
+            <span class="font-medium">Desde el banner:</span> al entrar al sitio
+            por primera vez.
+          </li>
+          <li>
+            <span class="font-medium">Desde esta página:</span> con el botón de
+            abajo, que reactiva el banner.
+          </li>
+          <li>
+            <span class="font-medium">Desde el navegador:</span> en la
+            configuración de privacidad de cada browser.
+          </li>
+        </ul>
+        <p class="mt-4 text-base leading-[1.7] text-muted">
+          Nota: eliminar las cookies de analytics desde el navegador equivale a
+          revocar el consentimiento. La cookie okroot_cookie_consent también se
+          elimina, por lo que el banner volverá a aparecer.
+        </p>
+        <button type="button" id="change-prefs" class="btn btn-primary btn-sm mt-6">
+          Cambiar mis preferencias
+        </button>
+      </section>
+
+      {/* 5. Transferencia internacional */}
+      <section id="s5" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 5
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Transferencia internacional
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          Las cookies de GA4 implican transferencia de datos a Google LLC en
+          EE.UU., bajo las Cláusulas Contractuales Estándar (SCCs) adoptadas por
+          la Comisión Europea y reconocidas como garantía adecuada bajo
+          estándares internacionales de protección de datos.
+        </p>
+      </section>
+
+      {/* 6. Cambios a esta política */}
+      <section id="s6" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 6
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Cambios a esta política
+        </h2>
+        <ul
+          class="mt-4 flex list-disc flex-col gap-2 pl-5 text-base leading-[1.7] text-ink"
+        >
+          <li>
+            Cambios materiales (nuevas cookies o nuevos proveedores):
+            notificación por email y un nuevo banner de consentimiento.
+          </li>
+          <li>
+            Cambios menores: actualización de la fecha en este documento.
+          </li>
+        </ul>
+      </section>
+
+      {/* 7. Contacto */}
+      <section id="s7" class="scroll-mt-24">
+        <p class="text-xs font-medium uppercase tracking-[0.08em] text-primary">
+          Sección 7
+        </p>
+        <h2 class="mt-1 font-display text-[22px] font-semibold text-ink">
+          Contacto
+        </h2>
+        <p class="mt-4 text-base leading-[1.7] text-ink">
+          Escribinos a <span class="font-medium">contact@luminaw.co</span>.
+        </p>
+        <p class="mt-2 text-base leading-[1.7] text-ink">
+          Más información sobre privacidad en{" "}
+          <a
+            href="/privacidad/"
+            class="font-medium text-primary underline-offset-2 hover:underline"
+          >
+            /privacidad/
+          </a>. Para ejercer tus derechos, seguí el proceso en{" "}
+          <a
+            href="/habeas-data/"
+            class="font-medium text-primary underline-offset-2 hover:underline"
+          >
+            /habeas-data/
+          </a>.
+        </p>
+      </section>
+    </article>
+
+    {/* Footer del documento */}
+    <footer class="mt-16 border-t border-line pt-6 text-sm text-muted">
+      <nav aria-label="Documentos legales" class="flex flex-wrap gap-x-2 gap-y-1">
+        <a href="/privacidad/" class="hover:text-primary">Privacidad</a>
+        <span aria-hidden="true">·</span>
+        <a href="/terminos/" class="hover:text-primary">Términos</a>
+        <span aria-hidden="true">·</span>
+        <a href="/habeas-data/" class="hover:text-primary">Habeas Data</a>
+      </nav>
+      <p class="mt-3">© 2026 Lúmina W · OKRoot</p>
+    </footer>
+  </PageShell>
+</Base>
+
+<script>
+  // Revocar / cambiar preferencias: borra la cookie de consentimiento y recarga.
+  // Al recargar, Analytics.astro ya no carga GA4 y el banner vuelve a aparecer.
+  function clearConsentAndReload() {
+    document.cookie =
+      "okroot_cookie_consent=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    location.reload();
+  }
+
+  document
+    .getElementById("revoke-analytics")
+    ?.addEventListener("click", clearConsentAndReload);
+  document
+    .getElementById("change-prefs")
+    ?.addEventListener("click", clearConsentAndReload);
+</script>

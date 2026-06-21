@@ -1,0 +1,134 @@
+---
+const FAQS = [
+  {
+    q: "¿Necesito descargarla?",
+    a: "No. Se instala directo desde el navegador, sin pasar por la App Store ni Play Store.",
+  },
+  {
+    q: "¿Funciona sin internet?",
+    a: "Sí. El diario es 100% offline y sincroniza solo cuando vuelves a tener señal.",
+  },
+  {
+    q: "¿Es gratis?",
+    a: "El early access es gratuito para quienes están en la lista de espera.",
+  },
+  {
+    q: "¿Qué pasa con mis datos de salud?",
+    a: "Tu perfil vive en tu dispositivo. No lo vendemos ni lo compartimos.",
+  },
+  {
+    q: "¿Solo funciona para las tres condiciones?",
+    a: "Hoy: celiaquía, diabetes tipo 2 e intolerancia a la lactosa. Más condiciones vienen en el roadmap.",
+  },
+];
+
+// FAQPage structured data — mirrors the FAQs rendered below.
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
+---
+
+<section id="preguntas" class="py-24 lg:py-32" style="background:var(--root-cream-warm)">
+  <div class="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
+    <div class="reveal text-center">
+      <div class="eyebrow">Preguntas frecuentes</div>
+      <h2
+        class="mt-5 font-display font-extrabold leading-[1.02] tracking-[-0.04em]"
+        style="font-size:clamp(1.875rem, 4vw, 3rem);color:var(--root-ink)"
+      >
+        Antes de que preguntes
+      </h2>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-3.5">
+      {FAQS.map(({ q, a }, i) => (
+        <details
+          class="reveal group rounded-2xl border bg-white p-5 sm:p-6"
+          style={`border-color:var(--root-line);--reveal-delay:${i * 60}ms`}
+        >
+          <summary
+            class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-[17px] font-semibold tracking-[-0.01em]"
+            style="color:var(--root-ink)"
+          >
+            {q}
+            <span
+              class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-lg transition-transform duration-200 group-open:rotate-45"
+              style="background:var(--root-violet-soft);color:var(--root-violet)"
+              aria-hidden
+            >
+              +
+            </span>
+          </summary>
+          <div class="faq-answer">
+            <div class="pt-3 text-[15.5px] leading-relaxed" style="color:var(--root-mute)">
+              {a}
+            </div>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+
+  <script>
+    // Native <details> snaps shut with no transition. This animates the
+    // .faq-answer height on BOTH open and close: intercept the summary click,
+    // drive the height, and only flip the `open` attribute at the right moment
+    // (kept open through the close so its content stays in the layout). Pure
+    // vanilla, no deps. Reduced-motion → instant toggle.
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document
+      .querySelectorAll<HTMLDetailsElement>("#preguntas details")
+      .forEach((d) => {
+        const summary = d.querySelector("summary")!;
+        const answer = d.querySelector<HTMLElement>(".faq-answer")!;
+
+        summary.addEventListener("click", (e) => {
+          if (reduce) return; // let the browser toggle natively
+          e.preventDefault();
+          if (answer.dataset.animating) return;
+
+          if (d.open) {
+            // Closing: from current height down to 0, then drop `open`.
+            answer.dataset.animating = "1";
+            answer.style.height = `${answer.scrollHeight}px`;
+            requestAnimationFrame(() => {
+              answer.style.height = "0px";
+            });
+            answer.addEventListener(
+              "transitionend",
+              () => {
+                d.open = false;
+                answer.style.height = "";
+                delete answer.dataset.animating;
+              },
+              { once: true },
+            );
+          } else {
+            // Opening: reveal content, then grow 0 → natural height.
+            d.open = true;
+            answer.dataset.animating = "1";
+            const target = answer.scrollHeight;
+            answer.style.height = "0px";
+            requestAnimationFrame(() => {
+              answer.style.height = `${target}px`;
+            });
+            answer.addEventListener(
+              "transitionend",
+              () => {
+                answer.style.height = "";
+                delete answer.dataset.animating;
+              },
+              { once: true },
+            );
+          }
+        });
+      });
+  </script>
+</section>

@@ -1,0 +1,315 @@
+---
+import { EARLY_ACCESS_SPOTS } from "@/lib/consts";
+
+const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra"];
+---
+
+<section id="lista-de-espera" class="px-5 py-12 sm:px-6 lg:py-20">
+  <div class="reveal mx-auto w-full max-w-[1200px]" data-waitlist>
+    <div
+      class="overflow-hidden rounded-[32px] border p-8 sm:p-12"
+      style="background:var(--root-violet-soft);border-color:var(--root-violet-mist)"
+    >
+      {/* Success state — hidden until the submit resolves */}
+      <div data-wl-success hidden class="py-8 text-center">
+        <div
+          class="mx-auto flex h-16 w-16 items-center justify-center rounded-full text-3xl text-white"
+          style="background:var(--root-violet)"
+          aria-hidden
+        >
+          ✓
+        </div>
+        <h2
+          class="mt-6 font-display font-extrabold leading-tight tracking-[-0.035em]"
+          style="font-size:clamp(1.75rem, 3.5vw, 2.5rem);color:var(--root-ink)"
+        >
+          Ya estás dentro.
+        </h2>
+        <p class="mt-3 text-[17px] leading-relaxed" style="color:var(--root-mute)">
+          Te avisamos cuando abra acceso.
+        </p>
+      </div>
+
+      {/* Form state */}
+      <div data-wl-form-wrap>
+        <div class="text-center">
+          <h2
+            class="font-display font-extrabold leading-[1.05] tracking-[-0.04em]"
+            style="font-size:clamp(2rem, 4.5vw, 3.25rem);color:var(--root-ink)"
+          >
+            Quiero acceso <span style="font-style:italic;color:var(--root-violet-deep)">anticipado</span>
+          </h2>
+          <p
+            class="mx-auto mt-4 max-w-[460px] text-[17px] leading-relaxed"
+            style="color:var(--root-mute)"
+          >
+            Entra a la lista de espera. Te escribimos cuando abramos los primeros cupos.
+          </p>
+
+          {
+            EARLY_ACCESS_SPOTS > 0 && (
+              <div
+                class="mx-auto mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13.5px] font-semibold"
+                style="background:#fff;color:var(--root-purple);border:1px solid var(--root-violet-mist)"
+              >
+                <span class="relative flex h-2 w-2">
+                  <span
+                    class="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
+                    style="background:var(--root-violet)"
+                  />
+                  <span
+                    class="relative inline-flex h-2 w-2 rounded-full"
+                    style="background:var(--root-violet)"
+                  />
+                </span>
+                Solo quedan {EARLY_ACCESS_SPOTS} cupos de acceso anticipado
+              </div>
+            )
+          }
+        </div>
+
+        <form data-wl-form class="mx-auto mt-9 max-w-[460px]" novalidate>
+          {/* Name */}
+          <label for="wl-name" class="block text-sm font-semibold" style="color:var(--root-ink)">
+            Nombre <span aria-hidden="true" style="color:var(--root-danger)">*</span>
+          </label>
+          <input
+            id="wl-name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            placeholder="Tu nombre"
+            aria-describedby="wl-error"
+            class="mt-2 w-full rounded-2xl px-4 py-3.5 text-[15px] outline-none transition-colors focus:border-[var(--root-violet)]"
+            style="background:#fff;border:2px solid var(--root-line-strong);color:var(--root-ink)"
+          />
+
+          {/* Email */}
+          <label for="wl-email" class="mt-6 block text-sm font-semibold" style="color:var(--root-ink)">
+            Correo <span aria-hidden="true" style="color:var(--root-danger)">*</span>
+          </label>
+          <input
+            id="wl-email"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder="tu@correo.com"
+            aria-describedby="wl-error"
+            class="mt-2 w-full rounded-2xl px-4 py-3.5 text-[15px] outline-none transition-colors focus:border-[var(--root-violet)]"
+            style="background:#fff;border:2px solid var(--root-line-strong);color:var(--root-ink)"
+          />
+
+          {/* Conditions */}
+          <fieldset class="mt-6 border-0 p-0">
+            <legend class="text-sm font-semibold" style="color:var(--root-ink)">
+              ¿Cuál es tu restricción? <span aria-hidden="true" style="color:var(--root-danger)">*</span>
+            </legend>
+            <div class="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+              {
+                CONDITIONS.map((c) => (
+                  <label
+                    class="wl-cond flex cursor-pointer items-center gap-2.5 rounded-2xl px-4 py-3 text-[14.5px] transition-colors"
+                    style="background:#fff;border:2px solid var(--root-line-strong);color:var(--root-ink-2)"
+                  >
+                    <input
+                      type="checkbox"
+                      name="condition"
+                      value={c}
+                      class="h-4 w-4 shrink-0 accent-[var(--root-violet)]"
+                    />
+                    {c}
+                  </label>
+                ))
+              }
+
+              {/* "Otra" free-text — full width, revealed only when "Otra" is checked */}
+              <div data-wl-other-wrap hidden class="sm:col-span-2">
+                <label for="wl-other" class="sr-only">¿Cuál?</label>
+                <input
+                  id="wl-other"
+                  name="other_condition"
+                  type="text"
+                  maxlength="80"
+                  placeholder="¿Cuál? Cuéntanos tu restricción"
+                  class="w-full rounded-2xl px-4 py-3 text-[14.5px] outline-none transition-colors focus:border-[var(--root-violet)]"
+                  style="background:#fff;border:2px solid var(--root-line-strong);color:var(--root-ink)"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          {/* Submit */}
+          <button type="submit" data-wl-submit class="btn btn-primary btn-lg mt-7 w-full">
+            Quiero comer sin adivinar
+          </button>
+
+          <p
+            id="wl-error"
+            data-wl-error
+            hidden
+            role="alert"
+            class="mt-3 text-center text-[13px]"
+            style="color:var(--root-danger)"
+          >
+            Algo falló. Intenta de nuevo en un momento.
+          </p>
+
+          <p
+            class="mt-4 text-center text-[12.5px] leading-relaxed"
+            style="color:var(--root-faint)"
+          >
+            Sin spam. Sin tarjeta. Solo te escribimos cuando hay algo que vale.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Minimal Supabase waitlist insert via PostgREST — no SDK, zero bundle cost.
+  // The anon key is public by design; Row Level Security protects the table
+  // (anon may INSERT only, never SELECT).
+  const root = document.querySelector<HTMLElement>("[data-waitlist]");
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>("[data-wl-form]")!;
+    const submit = root.querySelector<HTMLButtonElement>("[data-wl-submit]")!;
+    const errEl = root.querySelector<HTMLElement>("[data-wl-error]")!;
+    const formWrap = root.querySelector<HTMLElement>("[data-wl-form-wrap]")!;
+    const success = root.querySelector<HTMLElement>("[data-wl-success]")!;
+
+    const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL;
+    const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+
+    const otherWrap = root.querySelector<HTMLElement>("[data-wl-other-wrap]")!;
+    const otherInput = root.querySelector<HTMLInputElement>("#wl-other")!;
+
+    // Highlight the chip border while a condition is checked. The "Otra" chip
+    // also reveals a full-width free-text input to specify which restriction.
+    root.querySelectorAll<HTMLInputElement>('input[name="condition"]').forEach((cb) => {
+      cb.addEventListener("change", () => {
+        const label = cb.closest<HTMLElement>(".wl-cond");
+        if (label) {
+          label.style.borderColor = cb.checked ? "var(--root-violet)" : "var(--root-line)";
+        }
+        if (cb.value === "Otra") {
+          otherWrap.hidden = !cb.checked;
+          if (cb.checked) {
+            otherInput.focus();
+          } else {
+            otherInput.value = "";
+          }
+        }
+      });
+    });
+
+    type WaitlistRow = {
+      email: string;
+      name: string;
+      conditions: string[];
+      other_condition: string | null;
+    };
+
+    async function insertWaitlist(row: WaitlistRow) {
+      if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+        console.warn("[OKRoot] Supabase no configurado. Submit simulado.", row);
+        return;
+      }
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/okroot-waitlist`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+          Prefer: "return=minimal",
+        },
+        body: JSON.stringify(row),
+      });
+      // A duplicate email (409) counts as success — "you're already in".
+      if (res.status === 409) return;
+      if (!res.ok) throw new Error(`Supabase ${res.status}`);
+    }
+
+    const input = form.elements.namedItem("email") as HTMLInputElement;
+    const nameInput = form.elements.namedItem("name") as HTMLInputElement;
+
+    function showError(msg: string, field?: HTMLInputElement) {
+      errEl.textContent = msg;
+      errEl.hidden = false;
+      field?.setAttribute("aria-invalid", "true");
+    }
+    function clearError() {
+      errEl.hidden = true;
+      input.removeAttribute("aria-invalid");
+      nameInput.removeAttribute("aria-invalid");
+    }
+    input.addEventListener("input", clearError);
+    nameInput.addEventListener("input", clearError);
+
+    let loading = false;
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (loading) return;
+
+      const name = nameInput.value.trim();
+      const email = input.value.trim();
+      const conditions = Array.from(
+        root.querySelectorAll<HTMLInputElement>('input[name="condition"]:checked'),
+      ).map((c) => c.value);
+      // Free-text detail only matters when "Otra" is among the picks.
+      const other = conditions.includes("Otra") ? otherInput.value.trim() : "";
+
+      // All fields required. `novalidate` disables the native bubble, so we
+      // surface each error in the live region instead.
+      if (!name) {
+        showError("Escribe tu nombre para continuar.", nameInput);
+        nameInput.focus();
+        return;
+      }
+      if (!email || !input.checkValidity()) {
+        showError("Escribe un correo válido para continuar.", input);
+        input.focus();
+        return;
+      }
+      if (conditions.length === 0) {
+        const firstCond =
+          root.querySelector<HTMLInputElement>('input[name="condition"]');
+        showError("Elige al menos una restricción para continuar.", firstCond ?? input);
+        firstCond?.focus();
+        return;
+      }
+      if (conditions.includes("Otra") && !other) {
+        showError("Cuéntanos cuál es tu restricción.", otherInput);
+        otherInput.focus();
+        return;
+      }
+      clearError();
+
+      loading = true;
+      submit.disabled = true;
+      submit.textContent = "Enviando…";
+
+      try {
+        await insertWaitlist({
+          email,
+          name,
+          conditions,
+          other_condition: other || null,
+        });
+        formWrap.hidden = true;
+        success.hidden = false;
+        // Move focus into the success panel so AT users learn it worked.
+        success.setAttribute("tabindex", "-1");
+        success.focus();
+      } catch (err) {
+        console.error("[OKRoot] waitlist submit failed", err);
+        showError("Algo falló. Intenta de nuevo en un momento.");
+        submit.disabled = false;
+        submit.textContent = "Quiero comer sin adivinar";
+        loading = false;
+      }
+    });
+  }
+</script>

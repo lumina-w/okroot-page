@@ -1,0 +1,83 @@
+---
+import Base from "@/layouts/Base.astro";
+
+// Scanner-frame corners — mirrors ScannerIllo, ties the 404 to the product.
+const corners = [
+  "top:16px;left:16px;border-top:2px solid var(--root-violet);border-left:2px solid var(--root-violet)",
+  "top:16px;right:16px;border-top:2px solid var(--root-violet);border-right:2px solid var(--root-violet)",
+  "bottom:16px;left:16px;border-bottom:2px solid var(--root-violet);border-left:2px solid var(--root-violet)",
+  "bottom:16px;right:16px;border-bottom:2px solid var(--root-violet);border-right:2px solid var(--root-violet)",
+];
+---
+
+<Base title="404 · OKRoot" noindex>
+  <section class="flex min-h-[78vh] items-center justify-center px-5 py-16 sm:px-8">
+    <div class="w-full max-w-[560px] text-center">
+      {/* Scanner illustration — the app can't read this "label" */}
+      <div class="not-found-illo relative mx-auto h-[220px] max-w-[420px] overflow-hidden rounded-[28px] border"
+        style="background:linear-gradient(155deg,#ece1ff 0%,#faf8f5 100%);border-color:var(--root-violet-mist)"
+      >
+        {corners.map((s) => (
+          <div class="absolute h-6 w-6" style={s} aria-hidden></div>
+        ))}
+
+        {/* Scan-line sweep (reuses the global keyframe; off under reduced-motion) */}
+        <div
+          class="animate-scanner-line pointer-events-none absolute inset-x-0 top-0 h-full"
+          aria-hidden
+          style="background:linear-gradient(to bottom, color-mix(in srgb, var(--color-primary) 28%, transparent) 0%, transparent 18%)"
+        >
+        </div>
+
+        <div class="relative flex h-full flex-col items-center justify-center">
+          <span
+            class="font-display font-extrabold leading-none tracking-[-0.05em]"
+            style="font-size:clamp(5rem,18vw,7rem);color:var(--root-violet)"
+          >404</span>
+          <span class="mt-1 text-[11px] font-semibold uppercase tracking-[0.18em]" style="color:var(--root-faint)">
+            Etiqueta ilegible
+          </span>
+        </div>
+      </div>
+
+      <span class="mt-9 block text-sm font-semibold uppercase tracking-wide text-primary">
+        Error 404
+      </span>
+      <h1 class="mt-2 font-display text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl">
+        Esta página no existe
+      </h1>
+      <p class="mx-auto mt-4 max-w-[420px] text-lg leading-relaxed text-muted">
+        El enlace que seguiste no lleva a ningún lado. Volvamos a terreno seguro.
+      </p>
+
+      <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <a href="/" class="btn btn-primary btn-lg">Ir al inicio</a>
+        <a href="/#lista-de-espera" class="btn btn-ghost btn-lg">
+          Quiero acceso anticipado
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Soft, lightweight float — GPU-friendly transform only. */
+  @keyframes nf-float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(-1deg);
+    }
+    50% {
+      transform: translateY(-10px) rotate(1deg);
+    }
+  }
+  .not-found-illo {
+    animation: nf-float 6s var(--ease-soft) infinite;
+    box-shadow: 0 24px 50px -24px rgba(148, 51, 234, 0.35);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .not-found-illo {
+      animation: none;
+    }
+  }
+</style>

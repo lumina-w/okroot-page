@@ -3,11 +3,17 @@
 -- Table name has a hyphen, so it must always be double-quoted in SQL.
 
 create table if not exists public."okroot-waitlist" (
-  id          uuid primary key default gen_random_uuid(),
-  email       text not null unique,
-  conditions  text[] not null default '{}',
-  created_at  timestamptz not null default now()
+  id              uuid primary key default gen_random_uuid(),
+  email           text not null unique,
+  name            text,
+  conditions      text[] not null default '{}',
+  other_condition text,
+  created_at      timestamptz not null default now()
 );
+
+-- Migration for tables created before name/other_condition existed.
+alter table public."okroot-waitlist" add column if not exists name text;
+alter table public."okroot-waitlist" add column if not exists other_condition text;
 
 -- RLS on: nobody can read/update/delete via the publishable (anon) key.
 alter table public."okroot-waitlist" enable row level security;

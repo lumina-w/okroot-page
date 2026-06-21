@@ -1,0 +1,170 @@
+---
+import "../index.css";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Analytics from "@/components/Analytics.astro";
+import CookieBanner from "@/components/CookieBanner.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Override the social-card title. Defaults to the page <title>. */
+  ogTitle?: string;
+  /** Override the social-card description. Defaults to `description`. */
+  ogDescription?: string;
+  /** Social-card image path, relative to the site root. */
+  ogImage?: string;
+  /** Keep the page out of search indexes (e.g. 404). */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = "Fotografía la etiqueta de cualquier producto y sabe en segundos si puedes comerla. Scanner con IA para celíacos, diabéticos e intolerantes a la lactosa.",
+  ogTitle = title,
+  ogDescription = description,
+  ogImage = "/og.png",
+  noindex = false,
+} = Astro.props;
+
+// Per-page canonical + absolute OG URLs, derived from the request path and
+// `site` in astro.config.mjs — never hardcode the homepage on inner pages.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#9433ea" />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="description" content={description} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogTitle} />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content="OKRoot" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>{title}</title>
+
+    {/* No-JS fallback: reveal-on-scroll elements stay visible if the
+        IntersectionObserver script never runs. */}
+    <noscript>
+      <style>
+        .reveal {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      </style>
+    </noscript>
+
+    <script type="application/ld+json" is:inline>
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://okroot.co/#org",
+            "name": "OKRoot",
+            "url": "https://okroot.co/",
+            "logo": "https://okroot.co/apple-touch-icon.png"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://okroot.co/#website",
+            "url": "https://okroot.co/",
+            "name": "OKRoot",
+            "inLanguage": "es",
+            "publisher": { "@id": "https://okroot.co/#org" }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "OKRoot",
+            "applicationCategory": "HealthApplication",
+            "operatingSystem": "Web, iOS, Android",
+            "url": "https://app.okroot.co",
+            "description": "App offline-first para celíacos, diabéticos e intolerantes a la lactosa. Fotografía una etiqueta y sabe en segundos si puedes comerla.",
+            "inLanguage": "es",
+            "publisher": { "@id": "https://okroot.co/#org" },
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          }
+        ]
+      }
+    </script>
+
+    <Analytics />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Saltar al contenido</a>
+    <div class="flex min-h-screen flex-col">
+      <Header />
+      <main id="main" class="flex-1">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+
+    <CookieBanner />
+
+    <script>
+      // Reveal-on-scroll: toggle `is-visible` on `.reveal` elements as they enter view.
+      // Children may set `--reveal-delay` inline for a stagger effect.
+      const reveals = document.querySelectorAll<HTMLElement>(".reveal");
+      if (reveals.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+        );
+        reveals.forEach((el) => io.observe(el));
+      }
+    </script>
+
+    <script>
+      // In-page anchors scroll natively now: `scroll-behavior: smooth` +
+      // `scroll-padding-top: 88px` in index.css handle the smooth jump and the
+      // sticky-header offset (no JS scroll lib). This tiny shim only moves
+      // keyboard/AT focus to the target — native anchor nav leaves focus on the
+      // link otherwise. preventScroll keeps the native smooth scroll intact.
+      document.addEventListener("click", (e) => {
+        const link = (e.target as HTMLElement).closest<HTMLAnchorElement>(
+          'a[href^="#"]',
+        );
+        const hash = link?.getAttribute("href");
+        if (!hash || hash === "#") return;
+        const target = document.querySelector<HTMLElement>(hash);
+        if (!target) return;
+        target.setAttribute("tabindex", "-1");
+        target.focus({ preventScroll: true });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,296 @@
+---
+const PAINS = [
+  { n: "01", title: "Leer cada etiqueta del súper, una por una.", glyph: "label" },
+  { n: "02", title: 'Descifrar "almidón modificado" a las 8pm con hambre.', glyph: "decode" },
+  { n: "03", title: "Cruzar celiaquía y diabetes en la misma comida.", glyph: "stack" },
+  { n: "04", title: "Interrogar al mesero: ¿lleva gluten?, ¿lactosa?", glyph: "menu" },
+  { n: "05", title: "Contar los carbohidratos de cada plato a mano.", glyph: "calc" },
+  { n: "06", title: "Descartar recetas que parecían seguras y no lo eran.", glyph: "recheck" },
+];
+---
+
+<section id="problema" data-pain-root class="relative py-24 lg:py-32" style="background:var(--root-cream-warm)">
+  {/* Decorative background */}
+  <div
+    aria-hidden
+    class="pointer-events-none absolute inset-0"
+    style="background-image:radial-gradient(620px circle at 10% 14%, rgba(148,51,234,0.12), transparent 60%), radial-gradient(720px circle at 92% 88%, rgba(88,28,135,0.10), transparent 62%);"
+  ></div>
+  <div
+    aria-hidden
+    class="pointer-events-none absolute inset-0 opacity-[0.5]"
+    style="background-image:radial-gradient(rgba(88,28,135,0.07) 1.1px, transparent 1.1px);background-size:24px 24px;mask-image:linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);"
+  ></div>
+
+  {/* Header */}
+  <div class="relative z-10 mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10">
+    <div class="max-w-[720px]">
+      <div class="reveal">
+        <div class="eyebrow">Lo que vives cada día</div>
+      </div>
+
+      <h2
+        class="reveal mt-5 font-display font-extrabold leading-[1.02] tracking-[-0.04em]"
+        style="font-size:clamp(2rem, 4.5vw, 3.75rem);color:var(--root-ink)"
+      >
+        ¿Te suena{" "}
+        <span style="font-style:italic;color:var(--root-violet)">familiar</span>?
+      </h2>
+
+      <p
+        class="reveal mt-6 text-[clamp(1.05rem,2vw,1.3rem)] font-semibold leading-snug"
+        style="color:var(--root-ink);--reveal-delay:80ms"
+      >
+        Equivocarse con la etiqueta no es molesto.{" "}
+        <span style="color:var(--root-violet)">Para nosotros, es enfermarse.</span>
+      </p>
+    </div>
+  </div>
+
+  {/* Horizontal scroll-pinned cards (full-bleed) */}
+  <div class="pain-pin relative z-10 mt-8" data-pain-pin>
+    <div class="pain-stage" data-pain-stage>
+      <div class="pain-track" data-pain-track>
+        {PAINS.map((p) => (
+          <article class="pain-card flex flex-col gap-6 rounded-3xl border bg-white p-8 sm:p-10" style="border-color:var(--root-line)">
+            <div class="flex items-center justify-between">
+              <div
+                class="flex h-20 w-20 items-center justify-center rounded-2xl"
+                style="background:var(--root-violet-soft);color:var(--root-purple)"
+              >
+                {p.glyph === "label" && (
+                  <svg width="56" height="56" viewBox="0 0 40 40" fill="none" aria-hidden>
+                    <rect x="10" y="12" width="20" height="18" rx="2" stroke="currentColor" stroke-width="1.6" />
+                    <path d="M14 17h12M14 21h8M14 25h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                    <circle cx="27" cy="13" r="4" fill="var(--root-cream)" stroke="currentColor" stroke-width="1.4" />
+                    <path d="M27 11.5v1.5l1 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+                  </svg>
+                )}
+                {p.glyph === "decode" && (
+                  <svg width="56" height="56" viewBox="0 0 40 40" fill="none" aria-hidden>
+                    <circle cx="18" cy="18" r="10" stroke="currentColor" stroke-width="1.6" />
+                    <path d="M25 25l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    <path d="M15 16.5c0-2 1.5-3.5 3.5-3.5s3.3 1.4 3.3 3.1c0 2.4-3 2.6-3 4.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                    <circle cx="18.6" cy="24" r="0.9" fill="currentColor" />
+                  </svg>
+                )}
+                {p.glyph === "stack" && (
+                  <svg width="56" height="56" viewBox="0 0 40 40" fill="none" aria-hidden>
+                    <path d="M20 9l11 5.5L20 20 9 14.5 20 9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                    <path d="M9 20l11 5.5L31 20" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                    <path d="M9 25.5L20 31l11-5.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                  </svg>
+                )}
+                {p.glyph === "menu" && (
+                  <svg width="56" height="56" viewBox="0 0 40 40" fill="none" aria-hidden>
+                    <path d="M14 9v8a3 3 0 01-3 3M14 9v22M11 9v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    <path d="M27 9c-2 0-3.5 2.5-3.5 6s1.5 5 3.5 5v11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                )}
+                {p.glyph === "calc" && (
+                  <svg width="56" height="56" viewBox="0 0 40 40" fill="none" aria-hidden>
+                    <rect x="11" y="8" width="18" height="24" rx="3" stroke="currentColor" stroke-width="1.6" />
+                    <rect x="14.5" y="11.5" width="11" height="5" rx="1" stroke="currentColor" stroke-width="1.4" />
+                    <path d="M15 22h.01M20 22h.01M25 22h.01M15 27h.01M20 27h.01M25 27h.01" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+                  </svg>
+                )}
+                {p.glyph === "recheck" && (
+                  <svg width="56" height="56" viewBox="0 0 40 40" fill="none" aria-hidden>
+                    <circle cx="18" cy="18" r="10" stroke="currentColor" stroke-width="1.6" />
+                    <path d="M25 25l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    <path d="M14.5 18l2.5 2.5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                )}
+              </div>
+              <div class="pain-num font-display font-extrabold" style="color:var(--root-purple)">
+                {p.n}
+              </div>
+            </div>
+            <div
+              class="mt-auto font-display text-[clamp(1.4rem,2.4vw,1.85rem)] font-bold leading-snug"
+              style="letter-spacing:-0.025em;color:var(--root-ink)"
+            >
+              {p.title}
+            </div>
+          </article>
+        ))}
+
+        {/* Focus card — the resolution, violet + centered */}
+        <article
+          class="pain-card pain-focus flex flex-col items-center justify-center gap-6 rounded-3xl p-8 text-center text-white sm:p-10"
+          style="background:linear-gradient(155deg,#9433ea 0%,#581c87 100%)"
+        >
+          <div
+            class="flex h-20 w-20 items-center justify-center rounded-2xl"
+            style="background:rgba(255,255,255,0.15)"
+          >
+            <svg width="44" height="44" viewBox="0 0 40 40" fill="none" aria-hidden>
+              <path d="M11 20.5l6 6 12-13" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="font-display text-[clamp(1.6rem,2.8vw,2.1rem)] font-extrabold leading-tight tracking-[-0.03em]">
+            OKroot lo hace por ti.{" "}
+            <span style="font-style:italic;color:#e9d4ff">En una foto.</span>
+          </div>
+          <p class="max-w-[300px] text-[15px] leading-relaxed opacity-90">
+            Una foto y sabes si es seguro para ti. Sin descifrar etiquetas.
+          </p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Default = native horizontal swipe carousel (mobile / reduced-motion / no-JS) */
+  .pain-stage {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .pain-stage::-webkit-scrollbar { display: none; }
+
+  .pain-track {
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+    /* Lead-in/out so the first and last card snap to the horizontal center. */
+    padding-inline: calc((100vw - clamp(280px, 82vw, 380px)) / 2);
+    padding-block: 4px;
+  }
+
+  .pain-card {
+    flex: 0 0 auto;
+    width: clamp(280px, 82vw, 380px);
+    min-height: 340px;
+    scroll-snap-align: center;
+  }
+
+  .pain-num {
+    font-size: clamp(2.6rem, 4.6vw, 4rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    opacity: 0.9;
+  }
+
+  /* Desktop = scroll-pinned. JS sets .pain-pin height; stage sticks and track translates. */
+  @media (min-width: 1024px) {
+    .pain-stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      align-items: center;
+      overflow: hidden;
+      scroll-snap-type: none;
+    }
+    .pain-track {
+      align-items: center;
+      gap: 28px;
+      will-change: transform;
+    }
+    .pain-card {
+      width: clamp(360px, 30vw, 440px);
+      min-height: 400px;
+      transition: opacity 0.15s linear, transform 0.15s linear;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pain-card { transition: none; }
+  }
+</style>
+
+<script>
+  type Stage = HTMLElement & { _painCleanup?: () => void };
+
+  const setup = (root: HTMLElement) => {
+    const pin = root.querySelector<HTMLElement>("[data-pain-pin]");
+    const stage = root.querySelector<Stage>("[data-pain-stage]");
+    const track = root.querySelector<HTMLElement>("[data-pain-track]");
+    if (!pin || !stage || !track) return;
+    const cards = Array.from(track.children) as HTMLElement[];
+
+    const wide = window.matchMedia("(min-width: 1024px)");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    let active = false;
+    let maxT = 0;
+    let pinTop = 0;
+    let ticking = false;
+
+    const clearStyles = () => {
+      pin.style.height = "";
+      track.style.transform = "";
+      track.style.paddingLeft = "";
+      track.style.paddingRight = "";
+      cards.forEach((c) => {
+        c.style.opacity = "";
+        c.style.transform = "";
+      });
+    };
+
+    const render = () => {
+      if (!active) return;
+      const y = window.scrollY - pinTop;
+      const p = Math.min(1, Math.max(0, y / maxT));
+      const x = -p * maxT;
+      track.style.transform = `translate3d(${x}px,0,0)`;
+
+      const focus = stage.clientWidth * 0.5;
+      cards.forEach((c) => {
+        const cx = c.offsetLeft + c.offsetWidth / 2 + x;
+        const d = Math.min(1, Math.abs(cx - focus) / (c.offsetWidth * 1.1));
+        c.style.opacity = (1 - d * 0.78).toFixed(3);
+        c.style.transform = `scale(${(1 - d * 0.06).toFixed(3)})`;
+      });
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        render();
+        ticking = false;
+      });
+    };
+
+    const measure = () => {
+      // Pin only on wide screens with motion allowed and real overflow.
+      if (!wide.matches || reduce.matches) {
+        active = false;
+        clearStyles();
+        return;
+      }
+      // Lead-in/out padding so the first and last card sit at the center.
+      const pad = Math.max(0, (stage.clientWidth - cards[0].offsetWidth) / 2);
+      track.style.paddingLeft = `${pad}px`;
+      track.style.paddingRight = `${pad}px`;
+
+      maxT = track.scrollWidth - stage.clientWidth;
+      if (maxT <= 0) {
+        active = false;
+        clearStyles();
+        return;
+      }
+      active = true;
+      pin.style.height = `${window.innerHeight + maxT}px`;
+      pinTop = pin.getBoundingClientRect().top + window.scrollY;
+      render();
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", measure);
+    wide.addEventListener("change", measure);
+    reduce.addEventListener("change", measure);
+    stage._painCleanup = () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", measure);
+    };
+
+    measure();
+  };
+
+  document.querySelectorAll<HTMLElement>("[data-pain-root]").forEach(setup);
+</script>
