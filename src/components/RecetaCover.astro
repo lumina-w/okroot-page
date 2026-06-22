@@ -1,0 +1,173 @@
+---
+import { Icon } from "astro-icon/components";
+
+// Portada ilustrada de receta — pura CSS + ícono real de Lucide (astro-icon).
+// El gradiente y el ícono salen de la categoría, así cada card tiene identidad
+// visual coherente con la marca (violeta + crema) sin tergiversar el plato.
+interface Props {
+  categoria: string;
+  /** Tamaño visual: ajusta la escala del ícono y el alto mínimo. */
+  size?: "hero" | "bento" | "card" | "chip";
+  class?: string;
+}
+
+const { categoria, size = "card", class: className = "" } = Astro.props;
+
+// Cada categoría: dos paradas de gradiente (mezclas de tokens de marca) +
+// ícono real de Lucide que coincide con el tipo de plato.
+const COVERS: Record<
+  string,
+  { from: string; to: string; ink: string; icon: string }
+> = {
+  Desayuno: {
+    from: "color-mix(in srgb, var(--color-cream-warm) 70%, #fff)",
+    to: "color-mix(in srgb, var(--color-primary) 22%, var(--color-cream))",
+    ink: "var(--color-primary)",
+    icon: "lucide:egg-fried",
+  },
+  Almuerzo: {
+    from: "color-mix(in srgb, var(--color-violet-mist) 80%, #fff)",
+    to: "color-mix(in srgb, var(--color-primary) 32%, var(--color-cream))",
+    ink: "var(--color-primary)",
+    icon: "lucide:soup",
+  },
+  Cena: {
+    from: "color-mix(in srgb, var(--color-accent) 90%, var(--color-primary))",
+    to: "var(--color-purple-ink)",
+    ink: "#fff",
+    icon: "lucide:utensils-crossed",
+  },
+  Snack: {
+    from: "color-mix(in srgb, var(--color-cream-warm) 60%, #fff)",
+    to: "color-mix(in srgb, var(--color-primary) 26%, var(--color-cream))",
+    ink: "var(--color-primary)",
+    icon: "lucide:cookie",
+  },
+  Postre: {
+    from: "color-mix(in srgb, var(--color-primary) 70%, var(--color-accent))",
+    to: "var(--color-accent)",
+    ink: "#fff",
+    icon: "lucide:cake-slice",
+  },
+  Bebida: {
+    from: "color-mix(in srgb, var(--color-violet-mist) 70%, #fff)",
+    to: "color-mix(in srgb, var(--color-primary) 30%, var(--color-cream))",
+    ink: "var(--color-primary)",
+    icon: "lucide:cup-soda",
+  },
+};
+
+const cover = COVERS[categoria] ?? COVERS.Snack;
+---
+
+<div
+  class:list={["receta-cover", `receta-cover--${size}`, className]}
+  style={`--cover-from:${cover.from};--cover-to:${cover.to};--cover-ink:${cover.ink}`}
+  aria-hidden="true"
+>
+  <span class="receta-cover__icon">
+    <Icon name={cover.icon} />
+  </span>
+  <span class="receta-cover__cat">{categoria}</span>
+</div>
+
+<style>
+  .receta-cover {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background:
+      radial-gradient(
+        120% 120% at 15% 10%,
+        color-mix(in srgb, #fff 28%, transparent),
+        transparent 55%
+      ),
+      linear-gradient(135deg, var(--cover-from), var(--cover-to));
+    color: var(--cover-ink);
+  }
+  /* Textura sutil de puntos para que no se lea como fill plano */
+  .receta-cover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(currentColor 0.9px, transparent 0.9px);
+    background-size: 14px 14px;
+    opacity: 0.1;
+    pointer-events: none;
+  }
+  .receta-cover__icon {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    width: 52%;
+    max-width: 140px;
+    min-width: 64px;
+    /* Caja cuadrada definida: el <svg> de astro-icon de la primera aparición de
+       cada ícono no trae viewBox (vive en su <symbol> interno), así que sin una
+       altura concreta el <use> colapsa y el ícono desaparece. */
+    aspect-ratio: 1 / 1;
+    opacity: 0.95;
+  }
+  .receta-cover__icon :global(svg) {
+    width: 100%;
+    height: 100%;
+    stroke-width: 1.5;
+  }
+  .receta-cover__cat {
+    position: absolute;
+    left: 0.875rem;
+    bottom: 0.75rem;
+    z-index: 1;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.55rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, #fff 70%, transparent);
+    color: var(--color-primary);
+    backdrop-filter: blur(4px);
+  }
+
+  /* Tamaños */
+  .receta-cover--card {
+    aspect-ratio: 16 / 10;
+  }
+  .receta-cover--bento {
+    aspect-ratio: 16 / 9;
+    min-height: 100%;
+  }
+  .receta-cover--hero {
+    min-height: 280px;
+    height: 100%;
+  }
+  /* Chip: cuadrado pequeño para filas de lista. Sin etiqueta de categoría. */
+  .receta-cover--chip {
+    aspect-ratio: 1 / 1;
+    border-radius: 0.875rem;
+  }
+  .receta-cover--chip .receta-cover__icon {
+    width: 50%;
+    max-width: 40px;
+    min-width: 28px;
+  }
+  .receta-cover--chip .receta-cover__cat {
+    display: none;
+  }
+  .receta-cover--chip::after {
+    background-size: 9px 9px;
+  }
+  @media (min-width: 1024px) {
+    .receta-cover--hero {
+      min-height: 360px;
+    }
+  }
+  /* Ícono más grande en el hero */
+  .receta-cover--hero .receta-cover__icon {
+    width: 44%;
+    max-width: 180px;
+  }
+</style>

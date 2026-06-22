@@ -1,0 +1,94 @@
+# OKRoot, contenido completo para modelos de lenguaje
+
+> OKRoot (marca del producto Root) es una app de nutrición personalizada para personas con celiaquía, diabetes tipo 2 e intolerancia a la lactosa, o las tres a la vez. Fotografías la etiqueta de cualquier producto y en segundos sabes si puedes comerlo según tu perfil de restricciones. Sitio web: https://okroot.co. App en vivo: https://app.okroot.co. Idioma: español. Mercado inicial: Colombia.
+
+OKRoot es una herramienta de apoyo a la decisión, no un dispositivo médico, de diagnóstico ni de tratamiento. No reemplaza el criterio del médico ni la revisión de la etiqueta ante una duda seria. La crea Valentina Ramírez, celíaca, diabética e intolerante a la lactosa, en el estudio de producto Lúmina W.
+
+## Propuesta de valor
+
+Para quien tiene celiaquía, diabetes o intolerancia a la lactosa, o las tres a la vez: fotografía la etiqueta y sabe en segundos si puedes comerla. El análisis tarda menos de 3 segundos, no pide tarjeta y funciona sin conexión.
+
+## Cómo funciona
+
+- Se instala directo desde el navegador y queda como un ícono en la pantalla de inicio, sin pasar por App Store ni Play Store y sin ocupar el espacio de una descarga tradicional.
+- Lee la etiqueta de ingredientes tal como está e identifica ingredientes técnicos y trazas que suelen pasarse por alto.
+- Un solo perfil cubre las tres condiciones a la vez y genera alertas de ingredientes según ese perfil.
+- El diario y el perfil de restricciones viven en el dispositivo del usuario, no en un servidor abierto. Al recuperar conexión, todo se sincroniza solo.
+- Hoy está afinada para celiaquía, diabetes tipo 2 e intolerancia a la lactosa, sobre etiquetas en español y productos disponibles en Colombia. Más condiciones, idiomas y mercados están en el roadmap.
+
+## Limitaciones actuales
+
+- Funciona sobre la etiqueta de ingredientes. Cuando no hay etiqueta (productos a granel, fruta suelta, platos de restaurante) todavía no hay nada que leer.
+- Es una ayuda para decidir, no un reemplazo del criterio médico.
+
+## Acceso y precios
+
+- Early access gratuito para quienes están en la lista de espera, hasta el 30 de julio de 2026. Después habrá plan de pago; entrar ahora asegura acceso sin costo durante esta etapa y precio preferente al lanzar.
+- Los cupos de early access se abren por tandas; se avisa por correo cuando es el turno.
+- Plan mensual: 59.900 COP (aproximadamente 15 USD).
+- Plan anual: 449.000 COP (aproximadamente 112 USD), con ahorro aproximado del 38% frente al mensual.
+- Beneficios del plan: escaneo ilimitado de etiquetas; un perfil para las tres condiciones a la vez; alertas de ingredientes según tu perfil; recetas verificadas para tus restricciones; funciona sin conexión.
+
+## Preguntas frecuentes
+
+P: ¿Necesito descargarla?
+R: No. Se instala directo desde el navegador y queda como un ícono en tu pantalla de inicio, igual que cualquier app, sin pasar por la App Store ni Play Store.
+
+P: ¿Qué tan confiable es el análisis?
+R: Lee la etiqueta tal como está e identifica ingredientes técnicos y trazas que suelen pasarse por alto. Aun así es una ayuda para decidir, no un reemplazo del criterio de tu médico ni de revisar la etiqueta cuando tengas una duda seria.
+
+P: ¿Y si el producto no tiene etiqueta?
+R: Hoy funciona sobre la etiqueta de ingredientes. Cuando no hay etiqueta, como en productos a granel, fruta suelta o un plato de restaurante, todavía no hay nada que leer. Es algo que se quiere resolver más adelante.
+
+P: ¿Funciona con etiquetas en español?
+R: Sí. Está pensada para etiquetas en español y para los productos que se encuentran en Colombia. Más idiomas y mercados llegan después.
+
+P: ¿Funciona sin internet?
+R: Sí. El diario y el perfil viven en el dispositivo, así que se puede registrar y consultar sin señal. Al volver la conexión, todo se sincroniza solo.
+
+P: ¿Solo funciona para las tres condiciones?
+R: Hoy está afinada para celiaquía, diabetes tipo 2 e intolerancia a la lactosa. Más condiciones y combinaciones están en el roadmap.
+
+P: ¿Es gratis?
+R: El early access es gratuito para la lista de espera. Más adelante habrá un plan de pago, pero entrar ahora asegura acceso sin costo durante esta etapa y precio preferente al lanzar.
+
+P: ¿Qué pasa con mis datos de salud?
+R: El perfil de restricciones vive en el dispositivo, no en un servidor abierto. No se venden ni se comparten los datos con terceros: son del usuario y se usan solo para dar respuestas más precisas al escanear un producto.
+
+P: Me anoté, ¿cuándo entro?
+R: Los cupos se abren por tandas. Se avisa por correo en cuanto sea el turno, sin tener que estar pendiente.
+
+## Sobre la fundadora
+
+Lúmina W es el estudio de producto fundado por Valentina Ramírez, creadora de la idea y usuaria número uno de Root. Construye herramientas que resuelven problemas vividos en carne propia. Portafolio: https://wavival.dev.
+
+## Recetas
+
+Recetas verificadas, todas sin gluten y marcadas por restricción (celiaquía, diabetes, lactosa). Índice: https://okroot.co/recetas/
+
+- [Batido verde de aguacate y espinaca](https://okroot.co/recetas/batido-verde-aguacate-espinaca-sin-gluten/)
+- [Bizcocho húmedo de ahuyama y cacao](https://okroot.co/recetas/bizcocho-ahuyama-cacao-sin-gluten/)
+- [Bolitas de cacao y almendras](https://okroot.co/recetas/bolitas-cacao-almendras-sin-gluten/)
+- [Bowl de quinoa con pollo al ajillo y vegetales asados](https://okroot.co/recetas/bowl-quinoa-pollo-ajillo-vegetales-sin-gluten/)
+- [Chips de yuca al horno con guacamole](https://okroot.co/recetas/chips-yuca-horno-guacamole-sin-gluten/)
+- [Chocolate caliente de cacao y leche de coco](https://okroot.co/recetas/chocolate-caliente-cacao-leche-coco-sin-gluten/)
+- [Guiso de garbanzos con ahuyama y espinaca](https://okroot.co/recetas/guiso-garbanzos-ahuyama-espinaca-sin-gluten/)
+- [Helado de banano y cacao](https://okroot.co/recetas/helado-banano-cacao-sin-gluten/)
+- [Huevos revueltos con aguacate y yuca tostada](https://okroot.co/recetas/huevos-aguacate-yuca-tostada-sin-gluten/)
+- [Hummus de fríjol rojo con bastones de zanahoria](https://okroot.co/recetas/hummus-frijol-rojo-zanahoria-sin-gluten/)
+- [Mousse de cacao y leche de coco](https://okroot.co/recetas/mousse-cacao-leche-coco-sin-gluten/)
+- [Pescado al horno con ensalada de aguacate y mango verde](https://okroot.co/recetas/pescado-horno-ensalada-aguacate-mango-verde-sin-gluten/)
+- [Porridge de quinoa con fruta de temporada](https://okroot.co/recetas/porridge-quinoa-frutas-colombianas-sin-gluten/)
+- [Pudín de chía con leche de coco y mora](https://okroot.co/recetas/pudin-chia-leche-coco-mora-sin-gluten/)
+- [Sopa de lentejas rojas con cúrcuma y coco](https://okroot.co/recetas/sopa-lentejas-rojas-curcuma-coco-sin-gluten/)
+- [Tortilla de plátano verde y huevo](https://okroot.co/recetas/tortilla-platano-verde-huevo-sin-gluten/)
+
+## Enlaces
+
+- Sitio: https://okroot.co
+- App en vivo: https://app.okroot.co
+- Contacto: https://okroot.co/contacto/
+- Privacidad: https://okroot.co/privacidad/
+- Términos: https://okroot.co/terminos/
+- Cookies: https://okroot.co/cookies/
+- Habeas Data: https://okroot.co/habeas-data/

@@ -1,11 +1,11 @@
 ---
-// Footer de OKRoot. Tres zonas: conversión (último CTA), columnas de navegación,
+// Footer de OKroot. Tres zonas: conversión (último CTA), columnas de navegación,
 // subfooter legal. Toda la info está hardcodeada — sin props.
 // Anclas reales del landing: #lista-de-espera (waitlist), #como-funciona,
 // #funcionalidades (incluye recetas), #preguntas.
 ---
 
-<footer class="ftr">
+<footer class="ftr" transition:persist>
   <div class="ftr__inner">
     {/* ZONA 1 — Conversión */}
     <div class="ftr__cta">
@@ -47,22 +47,6 @@
               aria-label="Entrar a la app (abre en una pestaña nueva)"
             >
               Entrar a la app
-              <svg
-                class="ftr__ext"
-                width="10"
-                height="10"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
             </a>
           </li>
         </ul>
@@ -142,7 +126,7 @@
     {/* ZONA 3 — Subfooter legal */}
     <div class="ftr__sub">
       <p class="ftr__copy">
-        © 2026 Lúmina W · OKRoot. Todos los derechos reservados.
+        © 2026 Lúmina W · OKroot. Todos los derechos reservados.
       </p>
       <nav class="ftr__sublinks" aria-label="Enlaces legales">
         <a href="/privacidad/">Privacidad</a>
@@ -265,14 +249,17 @@
     font-weight: 400;
     font-size: 14px;
     color: rgba(242, 242, 242, 0.6);
-    text-decoration: none;
-    transition: color 200ms var(--ease-soft);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition:
+      color 150ms var(--ease-soft),
+      text-decoration-color 150ms var(--ease-soft);
   }
-  .ftr__link:hover {
+  .ftr__link:hover,
+  .ftr__link:focus-visible {
     color: rgba(242, 242, 242, 1);
-  }
-  .ftr__ext {
-    opacity: 0.6;
+    text-decoration-color: currentColor;
   }
   .ftr__list--contact .ftr__icon {
     color: var(--root-cream);
@@ -325,12 +312,17 @@
     font-family: var(--font-sans);
     font-weight: 400;
     color: rgba(250, 248, 245, 0.5);
-    text-decoration: none;
-    transition: opacity 200ms var(--ease-soft);
-  }
-  .ftr__sublinks a:hover {
-    color: rgba(250, 248, 245, 1);
     text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition:
+      color 150ms var(--ease-soft),
+      text-decoration-color 150ms var(--ease-soft);
+  }
+  .ftr__sublinks a:hover,
+  .ftr__sublinks a:focus-visible {
+    color: rgba(250, 248, 245, 1);
+    text-decoration-color: currentColor;
   }
   .ftr__sublinks span {
     color: rgba(250, 248, 245, 0.3);

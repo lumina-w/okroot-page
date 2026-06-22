@@ -1,4 +1,6 @@
 ---
+import { Font } from "astro:assets";
+import { ClientRouter } from "astro:transitions";
 import "../index.css";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -54,20 +56,23 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={ogTitle} />
     <meta property="og:locale" content="es_CO" />
-    <meta property="og:site_name" content="OKRoot" />
+    <meta property="og:site_name" content="OKroot" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={ogTitle} />
     <meta name="twitter:description" content={ogDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    {/* Self-hosted fonts: @font-face + preload, served from 'self'. Both are
+        above-the-fold (headings + body), so preload the woff2 to cut LCP. */}
+    <Font cssVariable="--ff-display" preload />
+    <Font cssVariable="--ff-sans" preload />
 
     <title>{title}</title>
+
+    {/* SPA-mode: navegación con View Transitions (crossfade suave, ~pocos KB,
+        sin framework). Respeta prefers-reduced-motion automáticamente. */}
+    <ClientRouter />
+
 
     {/* No-JS fallback: reveal-on-scroll elements stay visible if the
         IntersectionObserver script never runs. */}
@@ -87,7 +92,7 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
           {
             "@type": "Organization",
             "@id": "https://okroot.co/#org",
-            "name": "OKRoot",
+            "name": "OKroot",
             "url": "https://okroot.co/",
             "logo": "https://okroot.co/apple-touch-icon.png"
           },
@@ -95,13 +100,13 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
             "@type": "WebSite",
             "@id": "https://okroot.co/#website",
             "url": "https://okroot.co/",
-            "name": "OKRoot",
+            "name": "OKroot",
             "inLanguage": "es",
             "publisher": { "@id": "https://okroot.co/#org" }
           },
           {
             "@type": "SoftwareApplication",
-            "name": "OKRoot",
+            "name": "OKroot",
             "applicationCategory": "HealthApplication",
             "operatingSystem": "Web, iOS, Android",
             "url": "https://app.okroot.co",
@@ -131,8 +136,10 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
     <script>
       // Reveal-on-scroll: toggle `is-visible` on `.reveal` elements as they enter view.
       // Children may set `--reveal-delay` inline for a stagger effect.
-      const reveals = document.querySelectorAll<HTMLElement>(".reveal");
-      if (reveals.length) {
+      // Corre en la carga inicial y tras cada navegación SPA (astro:page-load).
+      document.addEventListener("astro:page-load", () => {
+        const reveals = document.querySelectorAll<HTMLElement>(".reveal");
+        if (!reveals.length) return;
         const io = new IntersectionObserver(
           (entries) => {
             for (const entry of entries) {
@@ -145,7 +152,7 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
           { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
         );
         reveals.forEach((el) => io.observe(el));
-      }
+      });
     </script>
 
     <script>

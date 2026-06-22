@@ -1,15 +1,16 @@
 ---
 // Consent banner for analytics cookies (GA4). Astro puro, sin dependencias.
 //
-// GA4 NUNCA se carga en el <head>. Solo se inyecta vía loadGA4() y solo si el
-// usuario lo acepta. La preferencia se guarda en la cookie okroot_cookie_consent
-// (true / false), que se lee en cada carga para decidir si cargar GA4.
+// GA4 NUNCA se carga en el <head>. Solo se inyecta vía window.okrootLoadGA4()
+// (definida en Analytics.astro) y solo si el usuario lo acepta. La preferencia
+// se guarda en la cookie okroot_cookie_consent (true / false), que se lee en
+// cada carga para decidir si cargar GA4.
 //
-// [GA4-ID] es un placeholder: reemplazar por el ID real (G-XXXXXXXXXX) antes de
-// publicar. Mientras siga entre corchetes, loadGA4() no hace ninguna petición.
+// El measurement ID vive en la env var PUBLIC_GA_ID (la lee Analytics.astro). Si
+// no está definida, okrootLoadGA4() no hace ninguna petición.
 ---
 
-<div id="cookie-banner" class="cookie-banner" role="region" aria-label="Aviso de cookies" hidden>
+<div id="cookie-banner" class="cookie-banner" role="region" aria-label="Aviso de cookies" hidden transition:persist>
   <div class="cookie-banner__card">
     <div class="cookie-banner__text">
       <p class="cookie-banner__title">Usamos cookies mínimas.</p>
@@ -23,10 +24,10 @@
       </a>
     </div>
     <div class="cookie-banner__actions">
-      <button type="button" class="cookie-btn cookie-btn--secondary" data-action="reject">
+      <button type="button" class="btn btn-ghost btn-sm" data-action="reject">
         Solo necesarias
       </button>
-      <button type="button" class="cookie-btn cookie-btn--primary" data-action="accept">
+      <button type="button" class="btn btn-primary btn-sm" data-action="accept">
         Aceptar analytics
       </button>
     </div>
@@ -89,18 +90,22 @@
     color: rgb(180, 178, 174);
   }
   .cookie-banner__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+    display: inline-block;
     margin-top: 10px;
     font-size: 14px;
     font-weight: 600;
     color: var(--root-cream);
     text-decoration: underline;
-    text-underline-offset: 2px;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition:
+      color 150ms var(--ease-soft),
+      text-decoration-color 150ms var(--ease-soft);
   }
-  .cookie-banner__link:hover {
+  .cookie-banner__link:hover,
+  .cookie-banner__link:focus-visible {
     color: #fff;
+    text-decoration-color: currentColor;
   }
 
   .cookie-banner__actions {
@@ -116,53 +121,28 @@
     }
   }
 
-  .cookie-btn {
+  /* Botones del sistema .btn. En móvil ocupan el ancho; en desktop, auto. */
+  .cookie-banner__actions .btn {
     flex: 1;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s var(--ease-soft);
   }
   @media (min-width: 640px) {
-    .cookie-btn {
+    .cookie-banner__actions .btn {
       flex: 0 0 auto;
     }
   }
-  /* Primario y secundario con peso visual similar (sin dark patterns). */
-  .cookie-btn--primary {
-    order: 1;
-    background: var(--color-primary);
+  /* La secundaria (.btn-ghost) vive sobre fondo oscuro: contorno claro, igual
+     que adaptamos los links del footer. Mantiene la forma del sistema .btn. */
+  .cookie-banner__actions :global(.btn-ghost) {
     color: #fff;
-    border: 1px solid var(--color-primary);
+    border: 1px solid rgba(255, 255, 255, 0.25);
   }
-  .cookie-btn--primary:hover {
-    background: var(--color-primary-hover);
-  }
-  .cookie-btn--secondary {
-    order: 2;
-    background: transparent;
-    color: var(--root-cream);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-  .cookie-btn--secondary:hover {
+  .cookie-banner__actions :global(.btn-ghost:hover) {
+    color: #fff;
     background: rgba(255, 255, 255, 0.08);
-  }
-  /* Móvil: primario arriba, secundario abajo. Desktop: secundario izq, primario der. */
-  @media (min-width: 640px) {
-    .cookie-btn--secondary {
-      order: 1;
-    }
-    .cookie-btn--primary {
-      order: 2;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cookie-banner__card,
-    .cookie-btn {
+    .cookie-banner__card {
       transition: none;
     }
   }
@@ -187,6 +167,9 @@
     document.cookie = `${CONSENT_COOKIE}=${value}; Max-Age=${oneYear}; Path=/; SameSite=Lax; Secure`;
   }
 
+  // Re-engancha tras cada navegación SPA (ClientRouter): el banner se re-renderiza
+  // en cada swap, así que los listeners de sus botones hay que volver a ponerlos.
+  document.addEventListener("astro:page-load", () => {
   const banner = document.getElementById("cookie-banner");
   if (banner) {
     const dismiss = () => {
@@ -218,4 +201,5 @@
       banner.hidden = false;
     }
   }
+  });
 </script>

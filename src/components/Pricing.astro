@@ -1,0 +1,340 @@
+---
+import { PRICING } from "@/lib/consts";
+
+// Formato de miles en español (449000 → "449.000"). Sin decimales: son enteros.
+const cop = (n: number) => new Intl.NumberFormat("es-CO").format(n);
+const { free, pro } = PRICING;
+
+// Equivalente mensual del plan anual, para mostrar el ahorro de forma concreta.
+const anualPorMes = Math.round(pro.anual.cop / 12);
+---
+
+<section id="precios" class="px-5 py-12 sm:px-6 lg:py-20">
+  <div class="mx-auto w-full max-w-[1200px]">
+    {/* Encabezado */}
+    <header class="reveal mx-auto max-w-2xl text-center">
+      <div class="eyebrow">Precios</div>
+      <h2
+        class="mt-5 font-display text-3xl font-bold leading-tight tracking-tight text-ink sm:text-4xl"
+      >
+        Empieza gratis. Mejora a Pro cuando quieras.
+      </h2>
+      <p class="mt-4 text-lg leading-relaxed text-muted">
+        La versión gratuita es tuya para siempre. Pro lo pruebas{" "}
+        <strong class="text-purple">{pro.pruebaDias} días gratis</strong>,
+        sin tarjeta. Sin letra pequeña.
+      </p>
+    </header>
+
+    {/* Planes */}
+    <div class="precios-grid reveal mt-12">
+      {/* Gratis */}
+      <article class="precio-card">
+        <h3 class="precio-card__name">{free.nombre}</h3>
+        <div class="precio-card__price">
+          <span class="precio-card__amount">$0</span>
+          <span class="precio-card__unit">para siempre</span>
+        </div>
+        <p class="precio-card__usd">Sin tarjeta. Sin caducidad.</p>
+        <ul class="precio-card__list">
+          {free.beneficios.map((b) => <li>{b}</li>)}
+        </ul>
+        <a href="/#lista-de-espera" class="btn btn-ghost btn-lg w-full">
+          Empezar gratis
+        </a>
+      </article>
+
+      {/* Pro (destacado, con toggle mensual / anual) */}
+      <article
+        class="precio-card precio-card--destacado"
+        id="precio-pro"
+        data-billing="anual"
+      >
+        <span class="precio-card__flag">{pro.pruebaDias} días gratis</span>
+        <h3 class="precio-card__name">{pro.nombre}</h3>
+
+        {/* Toggle de facturación */}
+        <div
+          class="precio-toggle"
+          role="group"
+          aria-label="Periodo de facturación"
+        >
+          <button type="button" class="precio-toggle__btn" data-billing="mensual">
+            Mensual
+          </button>
+          <button type="button" class="precio-toggle__btn" data-billing="anual">
+            Anual
+            <span class="precio-toggle__save">-{pro.anual.ahorroPct}%</span>
+          </button>
+        </div>
+
+        {/* Precios: crossfade entre mensual y anual al cambiar de tab */}
+        <div class="precio-pro__switch">
+        {/* Precio mensual */}
+        <div class="precio-pro__mensual">
+          <div class="precio-card__price">
+            <span class="precio-card__amount">${cop(pro.mensual.cop)}</span>
+            <span class="precio-card__unit">{PRICING.moneda.cop} / mes</span>
+          </div>
+          <p class="precio-card__usd">
+            Aprox. ${pro.mensual.usd} {PRICING.moneda.usd}
+          </p>
+        </div>
+
+        {/* Precio anual */}
+        <div class="precio-pro__anual">
+          <div class="precio-card__price">
+            <span class="precio-card__amount">${cop(pro.anual.cop)}</span>
+            <span class="precio-card__unit">{PRICING.moneda.cop} / año</span>
+          </div>
+          <p class="precio-card__usd">
+            Aprox. ${pro.anual.usd} {PRICING.moneda.usd} · equivale a ${cop(
+              anualPorMes,
+            )} al mes
+          </p>
+        </div>
+        </div>
+
+        <p class="precio-card__incluye">Todo lo de Gratis, y además:</p>
+        <ul class="precio-card__list">
+          {pro.extra.map((b) => <li>{b}</li>)}
+        </ul>
+        <a href="/#lista-de-espera" class="btn btn-primary btn-lg w-full">
+          Probar Pro {pro.pruebaDias} días
+        </a>
+        <p class="precio-card__nota">
+          {pro.pruebaDias} días gratis, luego el plan que elijas. Cancela cuando
+          quieras.
+        </p>
+      </article>
+    </div>
+
+    <p class="reveal mt-6 text-center text-[13px] text-faint">
+      Precios de lanzamiento. La versión gratuita seguirá siendo gratis.
+    </p>
+  </div>
+</section>
+
+<style>
+  .precios-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    max-width: 760px;
+    margin-inline: auto;
+  }
+  @media (min-width: 768px) {
+    .precios-grid {
+      grid-template-columns: repeat(2, 1fr);
+      align-items: start;
+    }
+  }
+
+  .precio-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: 1.5rem;
+    padding: 2rem 1.75rem;
+  }
+  .precio-card--destacado {
+    border-color: var(--color-primary);
+    background: var(--root-violet-soft);
+    box-shadow: 0 24px 60px -30px color-mix(in srgb, var(--color-primary) 60%, transparent);
+  }
+  .precio-card__flag {
+    position: absolute;
+    top: -0.75rem;
+    left: 1.75rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 9999px;
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .precio-card__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-ink);
+  }
+
+  /* ── Toggle de facturación ── */
+  .precio-toggle {
+    display: inline-flex;
+    margin-top: 1rem;
+    padding: 0.25rem;
+    gap: 0.25rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--color-primary) 10%, #fff);
+    border: 1px solid color-mix(in srgb, var(--color-primary) 18%, transparent);
+  }
+  .precio-toggle__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.9rem;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition:
+      background-color 150ms var(--ease-soft),
+      color 150ms var(--ease-soft);
+  }
+  .precio-toggle__btn[aria-pressed="true"] {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .precio-toggle__save {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    opacity: 0.9;
+  }
+
+  /* Crossfade mensual <-> anual al cambiar de tab. El periodo activo va en
+     flujo (define la altura y es el fallback sin JS); el inactivo se superpone
+     y se desvanece, así la transición es suave en vez de un corte seco. */
+  .precio-pro__switch {
+    position: relative;
+    margin-top: 0.25rem;
+  }
+  .precio-pro__mensual,
+  .precio-pro__anual {
+    transition:
+      opacity 220ms var(--ease-soft),
+      transform 260ms var(--ease-soft);
+  }
+  /* Inactivo: superpuesto, transparente, sin interacción. */
+  #precio-pro[data-billing="anual"] .precio-pro__mensual,
+  #precio-pro[data-billing="mensual"] .precio-pro__anual {
+    position: absolute;
+    inset: 0 0 auto 0;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+  }
+  /* Activo: en flujo y visible. */
+  #precio-pro[data-billing="anual"] .precio-pro__anual,
+  #precio-pro[data-billing="mensual"] .precio-pro__mensual {
+    position: relative;
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .precio-pro__mensual,
+    .precio-pro__anual {
+      transition: none;
+    }
+  }
+
+  .precio-card__price {
+    margin-top: 1rem;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .precio-card__amount {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 2.5rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+  .precio-card__unit {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-muted);
+  }
+  .precio-card__usd {
+    margin-top: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--color-faint);
+  }
+  .precio-card__incluye {
+    margin-top: 1.5rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--color-ink);
+  }
+  .precio-card__list {
+    list-style: none;
+    margin: 1rem 0 2rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+  }
+  .precio-card__list li {
+    position: relative;
+    padding-left: 1.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    color: var(--color-ink-2);
+  }
+  /* Check de marca como viñeta (no glifo de flecha) */
+  .precio-card__list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 9999px;
+    background: var(--color-primary);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
+      center / 0.7rem no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
+      center / 0.7rem no-repeat;
+  }
+  .precio-card__nota {
+    margin-top: 0.875rem;
+    text-align: center;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--color-faint);
+  }
+</style>
+
+<script>
+  // Toggle mensual / anual del plan Pro. Flipea `data-billing` en la card; el
+  // CSS decide qué precio se ve (crossfade). aria-pressed refleja el estado
+  // para AT. Corre tras cada navegación SPA (ClientRouter) además de la carga.
+  document.addEventListener("astro:page-load", () => {
+    const card = document.getElementById("precio-pro");
+    const btns = card?.querySelectorAll<HTMLButtonElement>(".precio-toggle__btn");
+    if (!card || !btns?.length) return;
+    const sync = () => {
+      const activo = card.dataset.billing;
+      btns.forEach((b) =>
+        b.setAttribute("aria-pressed", b.dataset.billing === activo ? "true" : "false"),
+      );
+    };
+    btns.forEach((b) =>
+      b.addEventListener("click", () => {
+        if (b.dataset.billing) card.dataset.billing = b.dataset.billing;
+        sync();
+      }),
+    );
+    sync();
+  });
+</script>

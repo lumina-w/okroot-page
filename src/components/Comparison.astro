@@ -1,9 +1,12 @@
 ---
+/* Tabla enfrentada fila por fila: cada dimensión compara "otras apps" (✗, gris)
+   contra OKroot (✓, banda violeta). La columna Root pesa por color, no por
+   tamaño, para que el contraste siga legible. Mobile: la grid reflota a stack. */
 const ROWS = [
-  { others: "Una restricción a la vez", root: "Celiaquía + diabetes + lactosa, juntas" },
-  { others: "Base de datos estática", root: "IA que lee la etiqueta real" },
-  { others: "Requiere conexión", root: "100% offline" },
-  { others: "Solo escanea", root: "Escanea + recetas + diario" },
+  { dim: "Restricciones", others: "Una a la vez", root: "Celiaquía + diabetes + lactosa, juntas" },
+  { dim: "Datos", others: "Base de datos estática", root: "Lee la etiqueta real" },
+  { dim: "Conexión", others: "Requiere conexión", root: "100% offline" },
+  { dim: "Alcance", others: "Solo escanea", root: "Escanea + recetas + diario" },
 ];
 ---
 
@@ -22,69 +25,194 @@ const ROWS = [
       >
         Las otras apps validan{" "}
         <span style="font-style:italic;color:var(--root-violet)">una</span> cosa.
-        <br class="hidden sm:block" /> <span style="color:var(--root-violet)">OK</span>Root valida las tres.
+        <br class="hidden sm:block" /> <span style="color:var(--root-violet)">OK</span>root valida las tres.
       </h2>
     </div>
 
-    {/* Two-column comparison */}
-    <div class="reveal mt-12 grid gap-5 lg:grid-cols-2" style="--reveal-delay:120ms">
-      {/* Others */}
-      <div
-        class="flex flex-col rounded-[28px] border bg-white p-8 sm:p-10"
-        style="border-color:var(--root-line)"
-      >
-        <div
-          class="text-[12px] font-bold uppercase tracking-[0.16em]"
-          style="color:var(--root-faint)"
-        >
-          Otras apps
-        </div>
-        <ul class="mt-6 flex flex-col gap-px">
-          {ROWS.map((r) => (
-            <li
-              class="flex items-start gap-3 border-b py-4 text-[15.5px] leading-snug last:border-0"
-              style="border-color:var(--root-line);color:var(--root-mute)"
-            >
-              <span style="color:var(--root-faint)">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden class="shrink-0">
-                  <path d="M7 7l10 10M17 7L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                </svg>
-              </span>
-              {r.others}
-            </li>
-          ))}
-        </ul>
-      </div>
+    {/* Tabla enfrentada */}
+    <div class="cmp reveal mt-12" style="--reveal-delay:120ms">
+      {/* Cabecera */}
+      <div class="cmp__head cmp__head--dim" aria-hidden></div>
+      <div class="cmp__head cmp__head--others">Otras apps</div>
+      <div class="cmp__head cmp__head--root">OKroot</div>
 
-      {/* OKRoot — highlighted */}
-      <div
-        class="relative flex flex-col overflow-hidden rounded-[28px] p-8 text-white sm:p-10"
-        style="background:linear-gradient(160deg,#9433ea 0%,#581c87 100%)"
-      >
-        <div
-          aria-hidden
-          class="pointer-events-none absolute -right-12 -top-16 h-[240px] w-[240px] rounded-full"
-          style="background:radial-gradient(circle, rgba(255,255,255,0.16), transparent 70%)"
-        ></div>
-        <div class="relative z-10 text-[12px] font-bold uppercase tracking-[0.16em]" style="color:#e9d4ff">
-          OKRoot
-        </div>
-        <ul class="relative z-10 mt-6 flex flex-col gap-px">
-          {ROWS.map((r) => (
-            <li
-              class="flex items-start gap-3 border-b py-4 text-[15.5px] font-semibold leading-snug last:border-0"
-              style="border-color:rgba(255,255,255,0.16)"
-            >
-              <span style="color:#e9d4ff">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden class="shrink-0">
-                  <path d="M5 12.5l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </span>
+      {/* Filas */}
+      {ROWS.map((r) => (
+        <>
+          <div class="cmp__dim">{r.dim}</div>
+
+          <div class="cmp__cell cmp__cell--others">
+            <span class="cmp__ico" aria-hidden>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M7 7l10 10M17 7L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </span>
+            <span>
+              <span class="cmp__tag">Otras apps</span>
+              {r.others}
+            </span>
+          </div>
+
+          <div class="cmp__cell cmp__cell--root">
+            <span class="cmp__ico" aria-hidden>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12.5l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span>
+              <span class="cmp__tag">OKroot</span>
               {r.root}
-            </li>
-          ))}
-        </ul>
-      </div>
+            </span>
+          </div>
+        </>
+      ))}
     </div>
+
+    {/* Cierre: amarra con el patrón de chips de "Cómo funciona" */}
+    <p class="cmp__foot reveal" style="--reveal-delay:200ms">
+      Celiaquía + diabetes + lactosa
+      <span class="cmp__foot-eq" aria-hidden>=</span>
+      <span class="cmp__foot-hl">una sola respuesta</span>
+    </p>
   </div>
 </section>
+
+<style>
+  .cmp {
+    display: grid;
+    grid-template-columns: minmax(6.5rem, 0.7fr) 1fr 1.2fr;
+    background: #fff;
+    border: 1px solid var(--root-line);
+    border-radius: 28px;
+    overflow: hidden;
+  }
+
+  /* Cabecera */
+  .cmp__head {
+    padding: 1.15rem 1.5rem;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  .cmp__head--others {
+    color: var(--root-faint);
+  }
+
+  /* La columna Root: banda violeta continua (cabecera + celdas) */
+  .cmp__head--root,
+  .cmp__cell--root {
+    background: linear-gradient(160deg, #9433ea 0%, #581c87 100%);
+    color: #fff;
+  }
+
+  /* Etiqueta de dimensión */
+  .cmp__dim {
+    display: flex;
+    align-items: center;
+    padding: 1.05rem 1.5rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--root-ink);
+    border-top: 1px solid var(--root-line);
+  }
+
+  /* Celdas de valor */
+  .cmp__cell {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 1.05rem 1.5rem;
+    font-size: 15.5px;
+    line-height: 1.35;
+    border-top: 1px solid var(--root-line);
+  }
+  .cmp__cell--others {
+    color: var(--root-mute);
+  }
+  .cmp__cell--root {
+    font-weight: 600;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+  }
+  .cmp__ico {
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .cmp__cell--others .cmp__ico {
+    color: var(--root-faint);
+  }
+  .cmp__cell--root .cmp__ico {
+    color: #e9d4ff;
+  }
+
+  /* Etiqueta de origen — solo visible en el stack mobile */
+  .cmp__tag {
+    display: none;
+  }
+
+  /* Cierre */
+  .cmp__foot {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    letter-spacing: -0.01em;
+    color: var(--root-ink);
+  }
+  .cmp__foot-eq {
+    margin: 0 0.5rem;
+    color: var(--root-violet);
+  }
+  .cmp__foot-hl {
+    color: var(--root-violet);
+    background: var(--root-violet-soft);
+    padding: 0.1em 0.5em;
+    border-radius: 0.5rem;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  /* ── Mobile: la grid reflota a stack (dim → otras → root, por dimensión) ── */
+  @media (max-width: 640px) {
+    .cmp {
+      grid-template-columns: 1fr;
+      border-radius: 20px;
+    }
+    .cmp__head {
+      display: none;
+    }
+    .cmp__dim {
+      padding: 1.1rem 1.25rem 0.4rem;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--root-faint);
+    }
+    .cmp__dim:first-of-type {
+      border-top: 0;
+    }
+    .cmp__cell {
+      border-top: 0;
+      padding: 0.3rem 1.25rem;
+    }
+    /* Root pasa a tarjeta violeta destacada bajo cada dimensión */
+    .cmp__cell--root {
+      margin: 0.5rem 1.25rem 1.25rem;
+      padding: 0.85rem 1rem;
+      border-radius: 14px;
+    }
+    .cmp__tag {
+      display: block;
+      margin-bottom: 0.15rem;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.7;
+    }
+  }
+</style>

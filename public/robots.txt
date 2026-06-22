@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://okroot.co/sitemap.xml
+Sitemap: https://okroot.co/sitemap-index.xml

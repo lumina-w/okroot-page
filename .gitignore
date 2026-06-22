@@ -1,14 +1,39 @@
+# Dependencies
 node_modules
+
+# Build output
 dist
 dist-ssr
-*.local
-*.tsbuildinfo
-.vite
+
+# Astro / Vite / TS caches
 .astro
-.DS_Store
+.vite
+*.tsbuildinfo
+
+# Env (keep the example)
 .env
 .env.*
 !.env.example
+*.local
+
+# Netlify CLI
+.netlify
+
+# Editor / IDE
+.vscode
+.idea
+*.swp
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Tooling local state
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
