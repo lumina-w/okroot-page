@@ -30,6 +30,29 @@ notas_medicas: >
   pura (no mezclas) o eritritol. En diabetes, consultá con tu médico o
   nutricionista cuál es el más adecuado para tu caso, cada organismo
   responde diferente a los sustitutos del azúcar.
+beneficios:
+  intro: "Un postre con base de ahuyama y harina de almendras, endulzado solo por el vegetal y con cacao puro: combina grasas saludables, proteína completa y compuestos vegetales con respaldo en la literatura."
+  puntos:
+    - icono: "lucide:nut"
+      punto: "Almendras y perfil metabólico"
+      detalle: "En un ensayo aleatorizado en personas con diabetes tipo 2, sumar almendras a la dieta se asoció a mejoras en marcadores de control glucémico y en el perfil de lípidos."
+      fuente: "Ensayo aleatorizado, Metabolism (2010)"
+      fuente_url: "https://www.metabolismjournal.com/article/S0026-0495(10)00128-9/abstract"
+    - icono: "lucide:heart"
+      punto: "Flavanoles del cacao puro"
+      detalle: "Una revisión sistemática y metaanálisis de ensayos aleatorizados asocia el consumo de cacao y flavan-3-oles con beneficios en marcadores de salud cardiovascular."
+      fuente: "Revisión sistemática y metaanálisis, Am J Clin Nutr (2023)"
+      fuente_url: "https://ajcn.nutrition.org/article/S0002-9165(23)02692-8/fulltext"
+    - icono: "lucide:egg"
+      punto: "Proteína de alta calidad del huevo"
+      detalle: "El huevo aporta proteína completa, con los nueve aminoácidos esenciales y alta digestibilidad, y se asocia a mayor saciedad."
+      fuente: "Revisión, Nutrients / PMC NIH (2022)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9316657/"
+    - icono: "lucide:carrot"
+      punto: "Carotenoides de la ahuyama"
+      detalle: "La ahuyama es rica en betacaroteno y otros carotenoides, compuestos con actividad antioxidante que el cuerpo puede convertir en vitamina A."
+      fuente: "Revisión, Food Safety and Health (2025)"
+      fuente_url: "https://iadns.onlinelibrary.wiley.com/doi/full/10.1002/fsh3.70001"
 fuente_inspiracion: "Receta original OKroot"
 publicada: true
 destacada: true
@@ -62,9 +85,3 @@ destacada: true
 - **Polvo de hornear:** no todas las marcas son sin gluten; algunas usan almidón de trigo. Verifica el empaque y busca el sello sin gluten.
 - **Cacao:** el cacao puro 100% en polvo es libre, sin trazas de azúcar. Da un sabor intenso y poco dulce, coherente con esta receta.
 - **Más dulzor natural:** sumar 2 cucharadas de pasta de dátil aumenta el dulzor, pero entonces aplica el aviso de fructosa: moderar la porción en diabetes.
-
-## Notas
-
-El único dulzor de este bizcocho viene de la ahuyama, naturalmente dulce, sin azúcar añadida. Por eso es un postre intenso en cacao y poco dulce, pensado para las tres condiciones a la vez.
-
-Si lo quieres más dulce: podés usar stevia pura (no mezclas) o eritritol. En diabetes, consultar con tu médico o nutricionista cuál es el más adecuado para tu caso, cada organismo responde diferente a los sustitutos del azúcar.

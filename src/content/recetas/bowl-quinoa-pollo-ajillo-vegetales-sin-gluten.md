@@ -25,6 +25,30 @@ ingredientes:
   - "2 tazas de agua o caldo de pollo casero"
   - "1 cucharadita de orégano seco"
   - "Sal y pimienta al gusto"
+notas: "Receta 100% libre de gluten, lactosa y azúcar, siempre que verifiques dos cosas. Primera, la certificación sin gluten de la quinoa. Segunda, y muy importante para celíacos: los caldos comerciales (en cubo, en polvo o líquidos) con frecuencia contienen gluten oculto, usado como espesante o potenciador de sabor. Usa caldo de pollo casero o revisa la etiqueta y busca el sello sin gluten. Ante la duda, usa agua."
+beneficios:
+  intro: "Este plato sigue un principio de alimentación de índice glucémico bajo: el carbohidrato (quinoa) llega acompañado de proteína, fibra y grasa saludable, en lugar de azúcares o harinas refinadas. Esa combinación es lo que ayuda a moderar el azúcar en sangre después de comer."
+  puntos:
+    - icono: "lucide:wheat"
+      punto: "Quinoa de índice glucémico bajo y proteína completa"
+      detalle: "La quinoa tiene un índice glucémico bajo (alrededor de 53) y aporta proteína completa, fibra y antioxidantes, una combinación que la literatura asocia a mejor control glucémico y sensibilidad a la insulina."
+      fuente: "Revisión sobre quinoa, enfermedad cardiovascular y diabetes, Frontiers in Nutrition (2024)"
+      fuente_url: "https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2024.1470834/full"
+    - icono: "lucide:leaf"
+      punto: "Fibra que aplana el pico de glucosa"
+      detalle: "La fibra soluble de la quinoa y los vegetales aumenta la viscosidad en el intestino, retrasa el vaciado gástrico y enlentece la absorción de glucosa, lo que reduce el pico de azúcar tras la comida."
+      fuente: "Revisión sobre fibra soluble y respuesta glucémica, Foods / MDPI (2022)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9736284/"
+    - icono: "lucide:droplet"
+      punto: "Aceite de oliva: grasa monoinsaturada y polifenoles"
+      detalle: "Preferir aceite de oliva virgen extra frente a grasas saturadas reduce la respuesta glucémica a una comida de índice glucémico alto; sus polifenoles y su grasa monoinsaturada ayudan a moderar la absorción de carbohidratos."
+      fuente: "Ensayo clínico aleatorizado, Diabetes Care (2016)"
+      fuente_url: "https://diabetesjournals.org/care/article/39/4/518/29062/Extra-Virgin-Olive-Oil-Reduces-Glycemic-Response"
+    - icono: "lucide:drumstick"
+      punto: "Proteína magra del pollo: saciedad y menor pico glucémico"
+      detalle: "La proteína estimula hormonas de saciedad e insulina; comer proteína y fibra antes que el almidón ayuda a reducir la glucosa posterior a la comida."
+      fuente: "Revisión sobre secuencia de comida en diabetes tipo 2, PMC (2020)"
+      fuente_url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7551485/"
 fuente_inspiracion: "Receta original OKroot"
 publicada: true
 ancho: true
@@ -56,7 +80,3 @@ ancho: true
 - **Quinoa:** verifica que el empaque diga "sin gluten" o "libre de gluten" para descartar contaminación cruzada en el procesamiento.
 - **Vegetales:** batata, calabacín o brócoli también funcionan asados con el mismo método.
 - **Versión vegetariana:** reemplaza el pollo por garbanzos cocidos salteados con el ajo.
-
-## Notas
-
-Receta 100% libre de gluten, lactosa y azúcar, siempre que verifiques dos cosas. Primera, la certificación sin gluten de la quinoa. Segunda, y muy importante para celíacos: los **caldos comerciales** (en cubo, en polvo o líquidos) con frecuencia contienen gluten oculto, usado como espesante o potenciador de sabor. Usa caldo de pollo casero o revisa la etiqueta y busca el sello sin gluten. Ante la duda, usa agua.

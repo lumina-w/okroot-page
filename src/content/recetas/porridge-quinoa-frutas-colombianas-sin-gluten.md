@@ -27,6 +27,24 @@ notas_medicas: >
   pero sigue siendo azúcar. Si tienes diabetes, mantén la porción en una
   fruta y consulta con tu médico o nutricionista la cantidad adecuada para
   tu caso. No reemplaces la fruta entera por jugo ni por concentrado.
+beneficios:
+  intro: "Un desayuno de índice glucémico bajo que combina un grano integral completo con semillas y especias de respaldo científico para una energía más estable."
+  puntos:
+    - icono: "lucide:wheat"
+      punto: "Grano integral de índice glucémico bajo"
+      detalle: "La quinoa aporta proteína completa y fibra, y tiene un índice glucémico bajo. Se asocia a una respuesta de glucosa más moderada que los cereales refinados."
+      fuente: "Estudio piloto, Nutrients (2022)"
+      fuente_url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9183167/"
+    - icono: "lucide:sprout"
+      punto: "Fibra viscosa y omega-3 de la chía"
+      detalle: "La chía aporta fibra soluble que forma gel y ácido alfa-linolénico (omega-3 vegetal). En revisiones de ensayos clínicos se asocia a mejoras en colesterol, triglicéridos y presión arterial."
+      fuente: "Revisión sistemática y meta-análisis, Nutrients (2024)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC11406937/"
+    - icono: "lucide:flame"
+      punto: "Canela y control glucémico"
+      detalle: "Meta-análisis de ensayos clínicos asocian la canela con menores niveles de glucosa en ayunas y mejor sensibilidad a la insulina como complemento de la dieta."
+      fuente: "Meta-análisis general, Frontiers in Nutrition (2025)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12620228/"
 fuente_inspiracion: "Receta original OKroot"
 publicada: true
 ---
@@ -53,9 +71,3 @@ publicada: true
 - **Quinoa:** verifica que el empaque diga "sin gluten" o "libre de gluten". La quinoa es naturalmente libre de gluten, pero puede contaminarse durante el procesamiento si se maneja junto a cereales con gluten.
 - **Leche vegetal:** la leche de coco sin azúcar se puede cambiar por leche de almendras o de arroz integral, todas libres y sin declaración.
 - **Fruta:** maracuyá, mora, tomate de árbol o lulo funcionan. Elige fruta entera de temporada, nunca jugo.
-
-## Notas
-
-La fruta es el único endulzante de esta receta. La fructosa de la fruta entera eleva la glucosa más lento que el azúcar porque viene acompañada de fibra, pero sigue siendo azúcar. Si tienes diabetes, mantén la porción en una fruta y consulta con tu médico o nutricionista la cantidad adecuada para tu caso.
-
-Si quieres más dulzor sin agregar fruta: podés usar stevia pura (no mezclas) o eritritol. En diabetes, consultar con tu médico o nutricionista cuál es el más adecuado para tu caso, cada organismo responde diferente a los sustitutos del azúcar.

@@ -21,6 +21,30 @@ ingredientes:
   - "2 cucharadas de cilantro fresco picado"
   - "1 diente de ajo picado"
   - "Sal y pimienta al gusto"
+notas: "Cena 100% libre de gluten, lactosa y azúcar, sin necesidad de declaraciones. El mango verde (biche) es la clave para diabetes: tiene mucho menos azúcar que el mango maduro y aporta acidez y textura. El pescado da proteína magra y el aguacate, grasa buena. Una cena ligera y completa para las tres condiciones."
+beneficios:
+  intro: "Una cena ligera que combina proteína magra de pescado con grasas saludables del aguacate y el aceite de oliva, y un mango verde de bajo contenido de azúcar."
+  puntos:
+    - icono: "lucide:fish"
+      punto: "Pescado y omega-3"
+      detalle: "El consumo de pescado se asocia a menor mortalidad cardiovascular, con una reducción cercana al 4% por cada 20 g adicionales de pescado al día en estudios de cohorte."
+      fuente: "Meta-análisis de cohortes prospectivas, Nutrients (2021)"
+      fuente_url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8308510/"
+    - icono: "lucide:leaf"
+      punto: "Grasa buena del aguacate"
+      detalle: "El aguacate aporta grasa monoinsaturada (ácido oleico) y su consumo regular se asocia a un perfil de riesgo cardiovascular más favorable."
+      fuente: "Revisión sistemática y meta-análisis, Food Science & Nutrition (2025)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12221997/"
+    - icono: "lucide:droplet"
+      punto: "Aceite de oliva con polifenoles"
+      detalle: "El aceite de oliva virgen extra combina grasa monoinsaturada y polifenoles, que ayudan a moderar la oxidación de la LDL y otros marcadores de estrés oxidativo."
+      fuente: "Revisión sistemática y meta-análisis, Nutrients (2023)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10171518/"
+    - icono: "lucide:citrus"
+      punto: "Mango verde: menos azúcar"
+      detalle: "El mango verde (biche) tiene mucho menos azúcar que el maduro, ya que el almidón aún no se convirtió en azúcares, y conserva más vitamina C."
+      fuente: "Composición química del mango, Foods (2019)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6807195/"
 fuente_inspiracion: "Sabores de la costa colombiana"
 publicada: true
 ---
@@ -56,7 +80,3 @@ publicada: true
 - **Pescado:** sirve cualquier pescado blanco fresco. También funciona a la plancha si prefieres no usar horno.
 - **Mango verde:** el mango biche es ácido y bajo en azúcar, ideal aquí. Si solo consigues mango maduro, úsalo en menos cantidad: aporta más fructosa.
 - **Picante:** un poco de ají fresco picado le da un toque costeño.
-
-## Notas
-
-Cena 100% libre de gluten, lactosa y azúcar, sin necesidad de declaraciones. El mango **verde** (biche) es la clave para diabetes: tiene mucho menos azúcar que el mango maduro y aporta acidez y textura. El pescado da proteína magra y el aguacate, grasa buena. Una cena ligera y completa para las tres condiciones.

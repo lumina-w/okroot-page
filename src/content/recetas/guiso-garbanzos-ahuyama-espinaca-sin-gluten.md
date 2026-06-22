@@ -25,6 +25,30 @@ ingredientes:
   - "3 cucharadas de aceite de oliva"
   - "1 1/2 tazas de agua o caldo de verduras casero"
   - "Cilantro fresco y sal al gusto"
+notas: "Plato 100% libre de gluten, lactosa y azúcar, con una verificación: los garbanzos de lata. Garbanzos, ahuyama y espinaca aportan fibra y proteína vegetal, una combinación que ayuda a una digestión lenta y a una glucosa más estable. La ahuyama suma carbohidrato: si tienes diabetes, cuida el tamaño de la porción."
+beneficios:
+  intro: "Un plato de una sola olla en el que los garbanzos, la espinaca y el aceite de oliva combinan fibra, proteína vegetal y grasa monoinsaturada, con perfil de índice glucémico bajo."
+  puntos:
+    - icono: "lucide:bean"
+      punto: "Garbanzos y respuesta glucémica"
+      detalle: "Una revisión sistemática y metaanálisis de ensayos controlados observó que consumir garbanzos se asocia a una menor respuesta de glucosa después de comer frente a controles con carbohidratos equivalentes."
+      fuente: "Revisión sistemática y metaanálisis, Nutrition Journal (2025)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12261582/"
+    - icono: "lucide:heart"
+      punto: "Legumbres y salud cardiovascular"
+      detalle: "El consumo de legumbres se asocia a un mejor perfil de lípidos, con descensos de colesterol LDL y triglicéridos atribuidos sobre todo a su fibra soluble y proteína vegetal."
+      fuente: "Revisión, Nutrients (2020)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7566181/"
+    - icono: "lucide:leaf"
+      punto: "Espinaca y presión arterial"
+      detalle: "La espinaca es una de las mayores fuentes de nitrato dietético; un metaanálisis de ensayos aleatorizados asocia el nitrato de vegetales a una reducción de la presión arterial y a una mejor función endotelial."
+      fuente: "Metaanálisis dosis-respuesta, Nutrition Journal (2025)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC11931885/"
+    - icono: "lucide:droplet"
+      punto: "Aceite de oliva con grasa monoinsaturada"
+      detalle: "El aceite de oliva, rico en grasa monoinsaturada y polifenoles, se asocia en estudios de cohorte a un menor riesgo cardiovascular y de mortalidad por cualquier causa."
+      fuente: "Metaanálisis de cohortes, PMC (2022)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9623257/"
 fuente_inspiracion: "Receta original OKroot"
 publicada: true
 ---
@@ -56,7 +80,3 @@ publicada: true
 - **Garbanzos en lata:** la mayoría son solo garbanzos, agua y sal, pero algunos llevan aditivos. Verifica la etiqueta y busca el sello sin gluten, o cuece garbanzos secos en casa.
 - **Pimentón (paprika):** revisa que el pimentón en polvo no incluya antiaglomerantes con gluten.
 - **Más proteína:** un huevo cocido en cuartos encima lo hace más completo.
-
-## Notas
-
-Plato 100% libre de gluten, lactosa y azúcar, con una verificación: los garbanzos de lata. Garbanzos, ahuyama y espinaca aportan fibra y proteína vegetal, una combinación que ayuda a una digestión lenta y a una glucosa más estable. La ahuyama suma carbohidrato: si tienes diabetes, cuida el tamaño de la porción.

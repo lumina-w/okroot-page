@@ -21,6 +21,7 @@
     "typescript": "~5.6.3"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
     "@iconify-json/lucide": "^1.2.114",
     "astro-icon": "^1.1.5"
   }

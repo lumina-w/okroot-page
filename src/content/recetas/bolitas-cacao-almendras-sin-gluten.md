@@ -26,6 +26,29 @@ notas_medicas: >
   azúcar, pero sigue siendo azúcar. Si tienes diabetes, moderá la porción
   (una o dos bolitas) y consultá con tu médico o nutricionista la cantidad
   adecuada para tu caso. Para cero azúcar, mira la variación sin dátil.
+beneficios:
+  intro: "Un snack a base de almendra y cacao puro, sin azúcar refinada: combina grasa saludable, fibra y polifenoles, con dátil de índice glucémico bajo como único endulzante."
+  puntos:
+    - icono: "lucide:nut"
+      punto: "Almendras que ayudan a moderar la glucosa"
+      detalle: "Las almendras aportan grasa monoinsaturada, fibra y proteína. En ensayos controlados, comerlas junto a la comida se asocia a una menor subida de glucosa después de comer en personas con diabetes tipo 2."
+      fuente: "Ensayo controlado aleatorizado, Nutrition Journal / PMC (2017)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC5541642/"
+    - icono: "lucide:heart"
+      punto: "Magnesio y grasa buena para el corazón"
+      detalle: "Las almendras son fuente de grasa monoinsaturada, magnesio y potasio. Su consumo regular se asocia a mejor perfil de lípidos y a una presión arterial más baja."
+      fuente: "Revisión exhaustiva, Nutrients / PMC (2024)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC11207051/"
+    - icono: "lucide:droplet"
+      punto: "Cacao puro rico en flavanoles"
+      detalle: "El cacao 100% sin azúcar aporta flavanoles, un tipo de polifenol. Una revisión sistemática con metaanálisis los asocia a una mejora de la función del endotelio, el tejido que recubre los vasos sanguíneos."
+      fuente: "Revisión sistemática y metaanálisis, Food & Function (2019)"
+      fuente_url: "https://pubs.rsc.org/en/content/articlehtml/2019/fo/c9fo01747j"
+    - icono: "lucide:cherry"
+      punto: "Dátil como endulzante de índice glucémico bajo"
+      detalle: "El dátil entero conserva su fibra y, según estudios en personas con y sin diabetes, tiene índice glucémico bajo: en porciones pequeñas no provoca subidas marcadas de glucosa, a diferencia del azúcar refinada."
+      fuente: "Estudio en sujetos sanos y con diabetes, Nutrition Journal (2011)"
+      fuente_url: "https://link.springer.com/article/10.1186/1475-2891-10-59"
 fuente_inspiracion: "Receta original OKroot"
 publicada: true
 ---
@@ -52,7 +75,3 @@ publicada: true
 - **Sin dátil (cero azúcar):** omite el dátil y liga la masa con 2 cucharadas de aceite de coco derretido. Suma 1/2 cucharadita extra de canela y un toque más de vainilla para reforzar el sabor. Quedan menos dulces, amargas y profundas.
 - **Cacao:** el cacao puro 100% en polvo es libre, sin trazas de azúcar. No lo cambies por chocolate de mesa, que sí lleva azúcar.
 - **Frutos secos:** las almendras se pueden cambiar por nueces o avellanas. No usamos maní en estas recetas.
-
-## Notas
-
-El dátil es el único endulzante de esta receta y aporta fructosa natural. La fructosa del dátil entero eleva la glucosa con menos velocidad que el azúcar refinada porque viene con fibra, pero sigue siendo azúcar. Si tienes diabetes, modera la porción a una o dos bolitas y consulta con tu médico o nutricionista la cantidad adecuada para tu caso. Si necesitas cero azúcar, usa la variación sin dátil.

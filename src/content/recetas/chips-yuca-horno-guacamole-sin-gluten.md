@@ -23,6 +23,25 @@ ingredientes:
   - "1 tomate pequeño picado"
   - "2 cucharadas de cilantro fresco picado"
   - "1/4 de cebolla blanca picada fina (opcional)"
+notas: "Receta 100% libre de gluten, lactosa y azúcar, con una sola verificación: el pimentón o paprika en polvo. Las especias molidas comerciales a veces incluyen aditivos o antiaglomerantes con gluten, algo fácil de pasar por alto. Revisa la lista de ingredientes del empaque. La yuca aporta carbohidrato: si tienes diabetes, cuida la porción y acompaña siempre con la grasa buena del aguacate."
+beneficios:
+  intro: "Un snack que cambia harinas refinadas por yuca al horno y suma la grasa buena del aguacate y el aceite de oliva, una combinación que ayuda a moderar la respuesta de glucosa."
+  puntos:
+    - icono: "lucide:salad"
+      punto: "El aguacate modera la glucosa de la comida"
+      detalle: "Su grasa monoinsaturada y su fibra enlentecen el vaciado gástrico: añadir aguacate a una comida se asocia a una menor respuesta de glucosa después de comer."
+      fuente: "Ensayo controlado aleatorizado, Nutrients (2019)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6164649/"
+    - icono: "lucide:droplet"
+      punto: "Aceite de oliva con grasa buena y polifenoles"
+      detalle: "El aceite de oliva aporta ácido oleico y polifenoles con efecto antioxidante y antiinflamatorio, un perfil de grasa que se asocia a beneficios cardiovasculares."
+      fuente: "Revisión, Nutrients (2025)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC11852600/"
+    - icono: "lucide:sprout"
+      punto: "Yuca cocida y enfriada genera almidón resistente"
+      detalle: "Al cocinar y enfriar la yuca se forma almidón resistente, que las bacterias del colon fermentan en ácidos grasos de cadena corta asociados a la salud intestinal y a un mejor manejo de la glucosa."
+      fuente: "Revisión, Ageing Research Reviews (2016)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC5005825/"
 fuente_inspiracion: "Receta original OKroot"
 publicada: true
 ---
@@ -57,7 +76,3 @@ publicada: true
 - **Paprika:** algunos pimentones y mezclas de especias en polvo usan harina de trigo como antiaglomerante. Verifica la etiqueta y busca el sello sin gluten, o usa solo sal y aceite.
 - **Más crocante:** terminar 2 minutos en modo grill ayuda, vigilando de cerca.
 - **Picante:** una pizca de ají al guacamole le da carácter.
-
-## Notas
-
-Receta 100% libre de gluten, lactosa y azúcar, con una sola verificación: el pimentón o paprika en polvo. Las especias molidas comerciales a veces incluyen aditivos o antiaglomerantes con gluten, algo fácil de pasar por alto. Revisa la lista de ingredientes del empaque. La yuca aporta carbohidrato: si tienes diabetes, cuida la porción y acompaña siempre con la grasa buena del aguacate.

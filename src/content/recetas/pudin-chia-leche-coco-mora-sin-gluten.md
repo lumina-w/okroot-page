@@ -26,6 +26,29 @@ notas_medicas: >
   pero sigue siendo azúcar. Si tenés diabetes, mantené la porción de fruta
   moderada y consultá con tu médico o nutricionista la cantidad adecuada
   para tu caso. La chía aporta fibra que ayuda a una digestión más lenta.
+beneficios:
+  intro: "Un desayuno sin azúcar añadido en el que la chía y la canela aportan fibra y compuestos asociados a una respuesta de glucosa más suave, mientras la mora suma polifenoles."
+  puntos:
+    - icono: "lucide:sprout"
+      punto: "Fibra soluble de la chía"
+      detalle: "La chía es rica en fibra soluble que forma un gel viscoso; se asocia a una menor respuesta de glucosa después de comer y a un mejor perfil glucémico."
+      fuente: "Revisión sistemática y metaanálisis, Frontiers in Nutrition (2024)"
+      fuente_url: "https://pubmed.ncbi.nlm.nih.gov/38917708/"
+    - icono: "lucide:droplet"
+      punto: "Omega-3 vegetal (ALA)"
+      detalle: "La chía es una de las fuentes vegetales más ricas en ácido alfa-linolénico (ALA), un omega-3 que se asocia a menores niveles de colesterol, triglicéridos y presión arterial."
+      fuente: "Nutritional and therapeutic perspectives of Chia, revisión, J Food Sci Technol / PMC (2016)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4926888/"
+    - icono: "lucide:flame"
+      punto: "Canela y glucosa postprandial"
+      detalle: "La canela aporta compuestos que se han asociado a una reducción de la glucosa en ayunas y después de las comidas en estudios controlados."
+      fuente: "Revisión sistemática y metaanálisis, PMC (2025)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12224812/"
+    - icono: "lucide:cherry"
+      punto: "Antocianinas de la mora"
+      detalle: "Las moras aportan antocianinas, polifenoles con capacidad antioxidante que se asocian a beneficios sobre marcadores cardiometabólicos como el perfil lipídico."
+      fuente: "Revisión sistemática y metaanálisis, PMC (2017)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC5593100/"
 fuente_inspiracion: "Receta original OKroot"
 publicada: true
 ---
@@ -51,9 +74,3 @@ publicada: true
 - **Fruta:** la mora se puede cambiar por maracuyá, fresa o lulo, siempre fruta entera y de temporada. Nunca jugo ni concentrado.
 - **Leche vegetal:** leche de almendras o de arroz integral funcionan igual, todas libres.
 - **Más cuerpo:** una cucharada de harina de almendras en la mezcla lo hace más sustancioso.
-
-## Notas
-
-La fruta es el único endulzante de este pudín. La fructosa de la mora entera eleva la glucosa más lento que el azúcar porque viene acompañada de fibra, pero sigue siendo azúcar. Si tienes diabetes, mantén la porción de fruta moderada y consulta con tu médico o nutricionista la cantidad adecuada para tu caso.
-
-Si quieres más dulzor sin más fruta: podés usar stevia pura (no mezclas) o eritritol. En diabetes, consultar con tu médico o nutricionista cuál es el más adecuado para tu caso, cada organismo responde diferente a los sustitutos del azúcar.

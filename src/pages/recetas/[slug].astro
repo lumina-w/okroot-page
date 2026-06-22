@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
+import { Icon } from "astro-icon/components";
 import Base from "@/layouts/Base.astro";
 import RecetaCover from "@/components/RecetaCover.astro";
 
@@ -8,15 +9,41 @@ import RecetaCover from "@/components/RecetaCover.astro";
 // frontmatter (URL amigable para SEO), no el id del archivo.
 export const getStaticPaths = (async () => {
   const recetas = await getCollection("recetas", ({ data }) => data.publicada);
-  return recetas.map((receta) => ({
-    params: { slug: receta.data.slug },
-    props: { receta },
-  }));
+  // Mismo orden que el índice (alfabético por título) → prev/next coherente con
+  // el recorrido que ve el usuario. Lista circular: la última enlaza a la
+  // primera y viceversa, así nunca hay un extremo sin navegación.
+  const orden = [...recetas].sort((a, b) =>
+    a.data.title.localeCompare(b.data.title, "es"),
+  );
+  return orden.map((receta, i) => {
+    const slim = (r: (typeof orden)[number]) => ({
+      slug: r.data.slug,
+      title: r.data.title,
+      categoria: r.data.categoria,
+    });
+    const anterior = slim(orden[(i - 1 + orden.length) % orden.length]);
+    const siguiente = slim(orden[(i + 1) % orden.length]);
+    return {
+      params: { slug: receta.data.slug },
+      props: { receta, anterior, siguiente },
+    };
+  });
 }) satisfies GetStaticPaths;
 
-const { receta } = Astro.props;
+const { receta, anterior, siguiente } = Astro.props;
 const { data } = receta;
-const { Content } = await render(receta);
+// `headings` los autogenera Astro a partir de los ## del markdown (con id slug).
+// Alimentan la TOC del sidebar y el scroll-spy. Solo nivel 2.
+const { Content, headings } = await render(receta);
+// TOC = ## del markdown (Ingredientes, Preparación, Sustituciones) + las cards
+// que renderizamos desde frontmatter (Beneficios, Notas), en ese orden.
+const toc = [
+  ...headings.filter((h) => h.depth === 2),
+  ...(data.beneficios?.puntos.length
+    ? [{ depth: 2, slug: "beneficios", text: "Beneficios" }]
+    : []),
+  ...(data.notas ? [{ depth: 2, slug: "notas", text: "Notas" }] : []),
+];
 
 const total = data.tiempo_prep + data.tiempo_coccion;
 const necesitaVerificar =
@@ -24,79 +51,156 @@ const necesitaVerificar =
 
 const title = `${data.title} · Recetas OKroot`;
 const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diabetes. Verificada por OKroot.`;
+
+// ── Structured data ──────────────────────────────────────────────────────
+// Recipe + BreadcrumbList JSON-LD para rich results de Google (chip de tiempo,
+// lista de ingredientes, carrusel). Los pasos salen del bloque `## Preparación`
+// del markdown (lista numerada); los ingredientes del frontmatter.
+const canonical = new URL(`/recetas/${data.slug}/`, Astro.site).href;
+const imageUrl = new URL("/og.png", Astro.site).href;
+
+const prepBlock = receta.body?.match(/##\s*Preparación\s*([\s\S]*?)(?:\n##\s|$)/);
+const pasos = prepBlock
+  ? prepBlock[1]
+      .trim()
+      .split(/\n(?=\s*\d+\.\s)/)
+      .map((s) => s.replace(/^\s*\d+\.\s*/, "").replace(/\s+/g, " ").trim())
+      .filter(Boolean)
+  : [];
+
+const dietas = [
+  data.restricciones.celiaca && "https://schema.org/GlutenFreeDiet",
+  data.restricciones.diabetes && "https://schema.org/DiabeticDiet",
+  data.restricciones.lactosa && "https://schema.org/LowLactoseDiet",
+].filter(Boolean);
+
+const recipeSchema = {
+  "@context": "https://schema.org",
+  "@type": "Recipe",
+  name: data.title,
+  description: data.descripcion,
+  inLanguage: "es",
+  image: imageUrl,
+  author: { "@type": "Organization", name: "OKroot", url: "https://okroot.co/" },
+  recipeCategory: data.categoria,
+  recipeYield: `${data.porciones} porciones`,
+  prepTime: `PT${data.tiempo_prep}M`,
+  ...(data.tiempo_coccion > 0 && { cookTime: `PT${data.tiempo_coccion}M` }),
+  totalTime: `PT${total}M`,
+  recipeIngredient: data.ingredientes,
+  ...(pasos.length && {
+    recipeInstructions: pasos.map((text, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      text,
+    })),
+  }),
+  ...(dietas.length && { suitableForDiet: dietas }),
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://okroot.co/" },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Recetas",
+      item: "https://okroot.co/recetas/",
+    },
+    { "@type": "ListItem", position: 3, name: data.title, item: canonical },
+  ],
+};
 ---
 
 <Base title={title} description={description}>
-  <article class="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 lg:px-10 lg:py-24">
-    {/* Breadcrumb */}
-    <nav aria-label="Ruta de navegación" class="receta-crumbs">
-      <a href="/">Inicio</a>
-      <span aria-hidden="true">·</span>
-      <a href="/recetas/">Recetas</a>
-      <span aria-hidden="true">·</span>
-      <span aria-current="page">{data.title}</span>
-    </nav>
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(recipeSchema)}
+  />
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
+  <article class="receta-wrap" data-slug={data.slug}>
+    {/* ── Encabezado a ancho completo ── */}
+    <header class="receta-head">
+      <nav aria-label="Ruta de navegación" class="receta-crumbs">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true">·</span>
+        <a href="/recetas/">Recetas</a>
+        <span aria-hidden="true">·</span>
+        <span aria-current="page">{data.title}</span>
+      </nav>
 
-    {/* Portada ilustrada */}
-    <div class="receta-banner mt-6">
-      <RecetaCover categoria={data.categoria} size="bento" />
-    </div>
-
-    {/* Encabezado */}
-    <header class="mt-8">
-      <span class="receta-cat">{data.categoria}</span>
+      <span class="receta-cat mt-6">{data.categoria}</span>
       <h1
         class="mt-3 font-display text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl"
       >
         {data.title}
       </h1>
-      <p class="mt-4 text-lg leading-relaxed text-muted">{data.descripcion}</p>
-
-      {/* Badges de restricción */}
-      <div class="mt-6 flex flex-wrap gap-2">
-        {data.restricciones.celiaca && <span class="receta-badge">Sin gluten</span>}
-        {data.restricciones.lactosa && <span class="receta-badge">Sin lactosa</span>}
-        {data.restricciones.diabetes && (
-          <span class="receta-badge">Apto diabetes</span>
-        )}
-        {necesitaVerificar && (
-          <span class="receta-badge receta-badge--warn">Verificar sustitución</span>
-        )}
-      </div>
-
-      {/* Tiempo y porciones */}
-      <dl class="receta-meta mt-8">
-        <div>
-          <dt>Preparación</dt>
-          <dd>{data.tiempo_prep} min</dd>
-        </div>
-        <div>
-          <dt>Cocción</dt>
-          <dd>{data.tiempo_coccion === 0 ? "Sin cocción" : `${data.tiempo_coccion} min`}</dd>
-        </div>
-        <div>
-          <dt>Total</dt>
-          <dd>{total} min</dd>
-        </div>
-        <div>
-          <dt>Porciones</dt>
-          <dd>{data.porciones}</dd>
-        </div>
-        <div>
-          <dt>Dificultad</dt>
-          <dd>{data.dificultad}</dd>
-        </div>
-      </dl>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+        {data.descripcion}
+      </p>
     </header>
 
-    {/* Aviso de verificación, antes de los ingredientes */}
-    {
-      necesitaVerificar && (
-        <aside class="receta-verificar mt-10" role="note">
-          <p class="receta-verificar__title">
+    {/* ── Cuerpo: sidebar ficha + contenido ── */}
+    <div class="receta-body">
+      <aside class="receta-aside" aria-label="Ficha de la receta">
+        <div class="receta-ficha">
+          <div class="receta-ficha__cover">
+            <RecetaCover categoria={data.categoria} size="chip" />
+          </div>
+
+          <dl class="receta-ficha__datos">
+            <div>
+              <dt>Total</dt>
+              <dd>{total} min</dd>
+            </div>
+            <div>
+              <dt>Preparación</dt>
+              <dd>{data.tiempo_prep} min</dd>
+            </div>
+            <div>
+              <dt>Cocción</dt>
+              <dd>
+                {data.tiempo_coccion === 0
+                  ? "Sin cocción"
+                  : `${data.tiempo_coccion} min`}
+              </dd>
+            </div>
+            <div>
+              <dt>Porciones</dt>
+              <dd>{data.porciones}</dd>
+            </div>
+            <div>
+              <dt>Dificultad</dt>
+              <dd>{data.dificultad}</dd>
+            </div>
+          </dl>
+
+          <div class="receta-ficha__badges">
+            {data.restricciones.celiaca && (
+              <span class="receta-badge">Sin gluten</span>
+            )}
+            {data.restricciones.lactosa && (
+              <span class="receta-badge">Sin lactosa</span>
+            )}
+            {data.restricciones.diabetes && (
+              <span class="receta-badge">Sin azúcar añadida</span>
+            )}
+            {necesitaVerificar && (
+              <span class="receta-badge receta-badge--warn">Verificar</span>
+            )}
+          </div>
+
+          <button type="button" class="receta-print" id="receta-print">
             <svg
               viewBox="0 0 24 24"
-              class="h-5 w-5"
+              class="h-4 w-4"
               aria-hidden="true"
               fill="none"
               stroke="currentColor"
@@ -104,43 +208,222 @@ const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diab
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z" />
             </svg>
-            Esta receta tiene ingredientes que requieren verificación
-          </p>
-          <p class="receta-verificar__lead">
-            Lee las notas antes de preparar. Verifica:
-          </p>
-          <ul class="receta-verificar__list">
-            {data.verificar!.map((v) => (
-              <li>{v}</li>
+            Imprimir
+          </button>
+        </div>
+
+        {/* Navegación de secciones (anclas + scroll-spy) */}
+        <nav class="receta-toc" aria-label="Secciones de la receta">
+          <p class="receta-toc__heading">En esta receta</p>
+          <ol class="receta-toc__list">
+            {toc.map((h, i) => (
+              <li>
+                <a href={`#${h.slug}`} class="receta-toc__link" data-id={h.slug}>
+                  <span class="receta-toc__num">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span class="receta-toc__label">{h.text}</span>
+                </a>
+              </li>
             ))}
-          </ul>
-        </aside>
-      )
-    }
+          </ol>
+        </nav>
+      </aside>
 
-    {/* Nota médica destacada */}
-    {
-      data.notas_medicas && (
-        <aside class="receta-medica mt-10">
-          <p class="receta-medica__eyebrow">Nota médica</p>
-          <p class="receta-medica__body">{data.notas_medicas}</p>
-        </aside>
-      )
-    }
+      <div class="receta-main">
+        {/* Aviso de verificación */}
+        {
+          necesitaVerificar && (
+            <aside class="receta-verificar" role="note">
+              <p class="receta-verificar__title">
+                <svg
+                  viewBox="0 0 24 24"
+                  class="h-5 w-5"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                </svg>
+                Esta receta tiene ingredientes que requieren verificación
+              </p>
+              <p class="receta-verificar__lead">
+                Lee las notas antes de preparar. Verifica:
+              </p>
+              <ul class="receta-verificar__list">
+                {data.verificar!.map((v) => (
+                  <li>{v}</li>
+                ))}
+              </ul>
+            </aside>
+          )
+        }
 
-    {/* Cuerpo markdown */}
-    <div class="receta-prose mt-12">
-      <Content />
+        {/* Nota médica */}
+        {
+          data.notas_medicas && (
+            <aside class="receta-medica">
+              <p class="receta-medica__eyebrow">Nota médica</p>
+              <p class="receta-medica__body">{data.notas_medicas}</p>
+            </aside>
+          )
+        }
+
+        {/* Cuerpo markdown */}
+        <div class="receta-prose">
+          <Content />
+        </div>
+
+        {/* ── Beneficios (card con fundamento) ── */}
+        {
+          data.beneficios?.puntos.length && (
+            <section id="beneficios" class="receta-card receta-card--beneficios">
+              <div class="receta-card__head">
+                <span class="receta-card__icon" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M9 2h6M10 2v5.5L5.2 17a2 2 0 0 0 1.8 3h10a2 2 0 0 0 1.8-3L14 7.5V2M8 14h8" />
+                  </svg>
+                </span>
+                <div>
+                  <h2 class="receta-card__title">Beneficios</h2>
+                  <p class="receta-card__sub">Por qué este plato te cae bien</p>
+                </div>
+              </div>
+
+              {data.beneficios.intro && (
+                <p class="receta-card__intro">{data.beneficios.intro}</p>
+              )}
+
+              <ul class="receta-benef__grid">
+                {data.beneficios.puntos.map((b) => (
+                  <li class="receta-benef__cell">
+                    <span class="receta-benef__icon" aria-hidden="true">
+                      <Icon name={b.icono ?? "lucide:check"} />
+                    </span>
+                    <p class="receta-benef__punto">{b.punto}</p>
+                    <p class="receta-benef__detalle">{b.detalle}</p>
+                    {b.fuente &&
+                      (b.fuente_url ? (
+                        <a
+                          class="receta-benef__fuente receta-benef__fuente--link"
+                          href={b.fuente_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {b.fuente}
+                        </a>
+                      ) : (
+                        <p class="receta-benef__fuente">{b.fuente}</p>
+                      ))}
+                  </li>
+                ))}
+              </ul>
+
+              <p class="receta-card__disclaimer">
+                Información con fines educativos, basada en evidencia nutricional
+                general. No reemplaza el consejo de tu médico o nutricionista.
+              </p>
+            </section>
+          )
+        }
+
+        {/* ── Notas (card con diseño) ── */}
+        {
+          data.notas && (
+            <section id="notas" class="receta-card receta-card--notas">
+              <div class="receta-card__head">
+                <span class="receta-card__icon" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <path d="M14 2v6h6M8 13h8M8 17h5" />
+                  </svg>
+                </span>
+                <h2 class="receta-card__title">Notas</h2>
+              </div>
+              <p class="receta-card__body">{data.notas}</p>
+            </section>
+          )
+        }
+
+        {data.fuente_inspiracion && (
+          <p class="receta-fuente">Inspiración: {data.fuente_inspiracion}</p>
+        )}
+      </div>
     </div>
 
-    {data.fuente_inspiracion && (
-      <p class="receta-fuente mt-12">Inspiración: {data.fuente_inspiracion}</p>
-    )}
+    {/* ── Navegación entre recetas (anterior / siguiente) ── */}
+    <nav class="receta-nav" aria-label="Más recetas">
+      <a
+        href={`/recetas/${anterior.slug}/`}
+        class="receta-nav__link receta-nav__link--prev"
+        rel="prev"
+      >
+        <span class="receta-nav__icon" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </span>
+        <span class="receta-nav__text">
+          <span class="receta-nav__eyebrow">Anterior</span>
+          <span class="receta-nav__title">{anterior.title}</span>
+          <span class="receta-nav__cat">{anterior.categoria}</span>
+        </span>
+      </a>
+      <a
+        href={`/recetas/${siguiente.slug}/`}
+        class="receta-nav__link receta-nav__link--next"
+        rel="next"
+      >
+        <span class="receta-nav__text">
+          <span class="receta-nav__eyebrow">Siguiente</span>
+          <span class="receta-nav__title">{siguiente.title}</span>
+          <span class="receta-nav__cat">{siguiente.categoria}</span>
+        </span>
+        <span class="receta-nav__icon" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </span>
+      </a>
+    </nav>
 
-    {/* CTA final */}
-    <div class="receta-cta mt-16">
+    {/* ── CTA final (ancho completo) ── */}
+    <div class="receta-cta">
       <p class="receta-cta__text">
         <span class="receta-brand"
           ><span class="receta-brand__ok">OK</span><span class="receta-brand__root"
@@ -157,6 +440,35 @@ const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diab
 </Base>
 
 <style>
+  /* ── Layout general ── */
+  .receta-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 64px 24px;
+  }
+  @media (min-width: 1024px) {
+    .receta-wrap {
+      padding: 96px 24px;
+    }
+  }
+  .receta-head {
+    margin-bottom: 40px;
+  }
+  .receta-body {
+    display: block;
+  }
+  @media (min-width: 1024px) {
+    .receta-body {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+  }
+  .receta-main {
+    min-width: 0;
+  }
+
   /* ── Breadcrumb ── */
   .receta-crumbs {
     display: flex;
@@ -181,26 +493,12 @@ const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diab
     color: var(--color-primary);
     text-decoration-color: currentColor;
   }
-  /* Links dentro del cuerpo markdown — mismo estilo canónico. */
-  .receta-prose :global(a) {
-    color: var(--color-ink);
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-underline-offset: 3px;
-    transition:
-      color 150ms var(--ease-soft),
-      text-decoration-color 150ms var(--ease-soft);
-  }
-  .receta-prose :global(a:hover),
-  .receta-prose :global(a:focus-visible) {
-    color: var(--color-primary);
-    text-decoration-color: currentColor;
-  }
   .receta-crumbs [aria-current="page"] {
     color: var(--color-ink);
   }
 
   .receta-cat {
+    display: block;
     font-family: var(--font-sans);
     font-weight: 600;
     font-size: 0.75rem;
@@ -209,11 +507,148 @@ const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diab
     color: var(--color-primary);
   }
 
-  /* ── Portada ── */
-  .receta-banner {
-    overflow: hidden;
-    border-radius: 1.5rem;
+  /* ── Sidebar: ficha + TOC ── */
+  .receta-aside {
+    margin-bottom: 40px;
+  }
+  @media (min-width: 1024px) {
+    .receta-aside {
+      position: sticky;
+      top: 96px;
+      align-self: start;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      scrollbar-width: none;
+      margin-bottom: 0;
+    }
+    .receta-aside::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .receta-ficha {
+    background: #fff;
     border: 1px solid var(--color-line);
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+  }
+  .receta-ficha__cover {
+    width: 64px;
+    margin-bottom: 1rem;
+  }
+  .receta-ficha__datos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.875rem 1rem;
+    margin: 0;
+  }
+  .receta-ficha__datos dt {
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+  }
+  .receta-ficha__datos dd {
+    margin: 0.15rem 0 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    color: var(--color-ink);
+  }
+  .receta-ficha__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .receta-print {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    justify-content: center;
+    margin-top: 1.25rem;
+    padding: 0.6rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-line);
+    background: #fff;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    color: var(--color-ink);
+    cursor: pointer;
+    transition:
+      border-color 150ms var(--ease-soft),
+      color 150ms var(--ease-soft);
+  }
+  .receta-print:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  /* ── TOC ── */
+  .receta-toc {
+    margin-top: 1.75rem;
+  }
+  .receta-toc__heading {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+  }
+  .receta-toc__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .receta-toc__link {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.375rem 0 0.375rem 0.625rem;
+    border-left: 2px solid transparent;
+    text-decoration: none;
+    transition:
+      border-color 200ms var(--ease-soft),
+      color 200ms var(--ease-soft);
+  }
+  .receta-toc__num {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+    transition: color 200ms var(--ease-soft);
+  }
+  .receta-toc__label {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+    line-height: 1.4;
+    transition: color 200ms var(--ease-soft);
+  }
+  .receta-toc__link:hover .receta-toc__label {
+    color: var(--color-ink);
+  }
+  .receta-toc__link.is-active {
+    border-left-color: var(--color-primary);
+  }
+  .receta-toc__link.is-active .receta-toc__num {
+    color: var(--color-primary);
+  }
+  .receta-toc__link.is-active .receta-toc__label {
+    color: var(--color-ink);
+    font-weight: 600;
   }
 
   /* ── Badges ── */
@@ -232,39 +667,13 @@ const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diab
     border: 1px solid #f5d88a;
   }
 
-  /* ── Meta (tiempo / porciones) ── */
-  .receta-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem 2rem;
-    padding: 1.25rem 1.5rem;
-    background: #fff;
-    border: 1px solid var(--color-line);
-    border-radius: 1rem;
-    margin-inline: 0;
-  }
-  .receta-meta dt {
-    font-family: var(--font-sans);
-    font-size: 0.6875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-muted);
-  }
-  .receta-meta dd {
-    margin: 0.25rem 0 0;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.125rem;
-    color: var(--color-ink);
-  }
-
   /* ── Aviso de verificación ── */
   .receta-verificar {
     background: #fff8e7;
     border: 1px solid #f5d88a;
     border-radius: 1rem;
     padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
   }
   .receta-verificar__title {
     display: flex;
@@ -290,12 +699,13 @@ const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diab
     color: #7a5208;
   }
 
-  /* ── Nota médica (mismo trato que datos sensibles en /privacidad) ── */
+  /* ── Nota médica ── */
   .receta-medica {
     border-left: 3px solid var(--color-primary);
     background: var(--root-violet-soft);
     border-radius: 0 0.75rem 0.75rem 0;
     padding: 20px 24px;
+    margin-bottom: 2rem;
   }
   .receta-medica__eyebrow {
     font-family: var(--font-sans);
@@ -308,7 +718,6 @@ const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diab
   .receta-medica__body {
     margin-top: 0.5rem;
     font-family: var(--font-sans);
-    font-weight: 400;
     font-size: 15px;
     line-height: 1.6;
     color: var(--color-ink);
@@ -323,6 +732,7 @@ const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diab
     letter-spacing: -0.01em;
     color: var(--color-ink);
     margin-top: 2.5rem;
+    scroll-margin-top: 96px;
   }
   .receta-prose :global(h2:first-child) {
     margin-top: 0;
@@ -341,8 +751,7 @@ const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diab
     color: var(--color-ink-2);
     margin-top: 1rem;
   }
-  .receta-prose :global(ul),
-  .receta-prose :global(ol) {
+  .receta-prose :global(ul) {
     margin-top: 1rem;
     padding-left: 1.5rem;
     font-family: var(--font-sans);
@@ -361,11 +770,322 @@ const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diab
     color: var(--color-ink);
   }
 
+  /* Pasos numerados: la única <ol> del cuerpo es "Preparación". */
+  .receta-prose :global(ol) {
+    list-style: none;
+    counter-reset: paso;
+    margin-top: 1.25rem;
+    padding-left: 0;
+  }
+  .receta-prose :global(ol > li) {
+    counter-increment: paso;
+    position: relative;
+    padding-left: 3rem;
+    min-height: 2rem;
+    margin-top: 1rem;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-ink-2);
+  }
+  .receta-prose :global(ol > li::before) {
+    content: counter(paso);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    background: var(--color-primary);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.875rem;
+  }
+
+  /* Ingredientes con checkbox (lista <ul> de la sección #ingredientes) */
+  .receta-prose :global(ul.receta-ingredientes) {
+    padding-left: 0;
+    list-style: none;
+  }
+  .receta-prose :global(ul.receta-ingredientes > li) {
+    position: relative;
+    padding-left: 2rem;
+    cursor: pointer;
+    user-select: none;
+    transition: color 150ms var(--ease-soft);
+  }
+  .receta-prose :global(ul.receta-ingredientes > li::before) {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.28em;
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 0.4rem;
+    border: 1.5px solid var(--color-line);
+    background: #fff;
+    transition:
+      background-color 150ms var(--ease-soft),
+      border-color 150ms var(--ease-soft);
+  }
+  .receta-prose :global(ul.receta-ingredientes > li.is-checked) {
+    color: var(--color-faint);
+    text-decoration: line-through;
+    text-decoration-color: var(--color-line);
+  }
+  .receta-prose :global(ul.receta-ingredientes > li.is-checked::before) {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+  .receta-prose :global(ul.receta-ingredientes > li.is-checked::after) {
+    content: "";
+    position: absolute;
+    left: 0.4rem;
+    top: 0.5em;
+    width: 0.32rem;
+    height: 0.6rem;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  /* ── Cards de Beneficios y Notas ── */
+  .receta-card {
+    margin-top: 2.5rem;
+    scroll-margin-top: 96px;
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: 1.25rem;
+    padding: 1.75rem;
+  }
+  .receta-card--beneficios {
+    background: var(--root-violet-soft);
+    border-color: color-mix(in srgb, var(--color-primary) 18%, transparent);
+  }
+  .receta-card__head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .receta-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    background: var(--color-primary);
+    color: #fff;
+    flex: none;
+  }
+  .receta-card--notas .receta-card__icon {
+    background: var(--color-ink);
+  }
+  .receta-card__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+  .receta-card__sub {
+    margin-top: 0.15rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+  }
+  .receta-card__intro {
+    margin-top: 1.25rem;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--color-ink-2);
+  }
+  .receta-benef__grid {
+    list-style: none;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+  @media (min-width: 640px) {
+    .receta-benef__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .receta-benef__cell {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 14%, transparent);
+    border-radius: 1rem;
+    padding: 1.25rem;
+  }
+  .receta-benef__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    margin-bottom: 0.875rem;
+    background: var(--root-violet-soft);
+    color: var(--color-primary);
+  }
+  .receta-benef__icon :global(svg) {
+    width: 1.35rem;
+    height: 1.35rem;
+    stroke-width: 1.75;
+  }
+  .receta-benef__punto {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    line-height: 1.3;
+    color: var(--color-ink);
+  }
+  .receta-benef__detalle {
+    margin-top: 0.4rem;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-ink-2);
+    flex: 1;
+  }
+  .receta-benef__fuente {
+    display: block;
+    margin-top: 0.875rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-line);
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    line-height: 1.45;
+    color: var(--color-faint);
+  }
+  .receta-benef__fuente--link {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 2px;
+    transition:
+      color 150ms var(--ease-soft),
+      text-decoration-color 150ms var(--ease-soft);
+  }
+  .receta-benef__fuente--link:hover,
+  .receta-benef__fuente--link:focus-visible {
+    color: var(--color-primary);
+    text-decoration-color: currentColor;
+  }
+  .receta-card__disclaimer {
+    margin-top: 1.25rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--color-faint);
+  }
+  .receta-card__body {
+    margin-top: 1rem;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-ink-2);
+  }
+
   .receta-fuente {
+    margin-top: 3rem;
     font-family: var(--font-sans);
     font-size: 0.8125rem;
     font-style: italic;
     color: var(--color-faint);
+  }
+
+  /* ── Navegación entre recetas ── */
+  .receta-nav {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 4rem;
+  }
+  @media (min-width: 640px) {
+    .receta-nav {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .receta-nav__link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: 1.25rem;
+    text-decoration: none;
+    transition:
+      border-color 150ms var(--ease-soft),
+      transform 150ms var(--ease-soft);
+  }
+  .receta-nav__link:hover,
+  .receta-nav__link:focus-visible {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+  .receta-nav__link--next {
+    text-align: right;
+    justify-content: flex-end;
+  }
+  .receta-nav__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: none;
+    border-radius: 9999px;
+    background: var(--root-violet-soft);
+    color: var(--color-primary);
+    transition:
+      background-color 150ms var(--ease-soft),
+      color 150ms var(--ease-soft);
+  }
+  .receta-nav__icon svg {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+  .receta-nav__link:hover .receta-nav__icon,
+  .receta-nav__link:focus-visible .receta-nav__icon {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .receta-nav__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+  .receta-nav__eyebrow {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+  }
+  .receta-nav__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.3;
+    color: var(--color-ink);
+  }
+  .receta-nav__cat {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--color-primary);
   }
 
   /* ── CTA final ── */
@@ -379,6 +1099,7 @@ const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diab
     border: 1px solid var(--color-line);
     border-radius: 1.5rem;
     padding: 3rem 1.5rem;
+    margin-top: 4rem;
   }
   .receta-cta__text {
     max-width: 40ch;
@@ -388,7 +1109,6 @@ const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diab
     line-height: 1.35;
     color: var(--color-ink);
   }
-  /* OKroot wordmark — mirrors the navbar logo (OK 800 violet · root 500 ink). */
   .receta-brand {
     letter-spacing: -0.04em;
   }
@@ -400,4 +1120,90 @@ const description = `${data.descripcion} Sin gluten, sin lactosa, apta para diab
     font-weight: 500;
     color: var(--color-ink);
   }
+
+  /* ── Impresión ── */
+  @media print {
+    .receta-aside,
+    .receta-cta,
+    .receta-nav,
+    .receta-crumbs {
+      display: none !important;
+    }
+    .receta-body {
+      display: block;
+    }
+    .receta-wrap {
+      padding: 0;
+    }
+  }
 </style>
+
+<script>
+  // ── Checkbox de ingredientes ──
+  // La sección #ingredientes del markdown trae una <ul>. La convertimos en lista
+  // marcable; el estado persiste en localStorage por receta + índice.
+  const article = document.querySelector<HTMLElement>(".receta-wrap");
+  const slug = article?.dataset.slug ?? "";
+  const ingH = document.getElementById("ingredientes");
+  if (ingH) {
+    let el = ingH.nextElementSibling;
+    while (el && el.tagName !== "UL") el = el.nextElementSibling;
+    if (el) {
+      el.classList.add("receta-ingredientes");
+      el.querySelectorAll("li").forEach((li, i) => {
+        const key = `receta:${slug}:ing:${i}`;
+        const checked = localStorage.getItem(key) === "1";
+        if (checked) li.classList.add("is-checked");
+        // Checkbox semantics so AT announces the checked/unchecked state, not
+        // just "button" with no state (the visual is the .is-checked strike).
+        li.setAttribute("role", "checkbox");
+        li.setAttribute("tabindex", "0");
+        li.setAttribute("aria-checked", checked ? "true" : "false");
+        const toggle = () => {
+          const on = li.classList.toggle("is-checked");
+          li.setAttribute("aria-checked", on ? "true" : "false");
+          localStorage.setItem(key, on ? "1" : "0");
+        };
+        li.addEventListener("click", toggle);
+        li.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggle();
+          }
+        });
+      });
+    }
+  }
+
+  // ── Botón imprimir ──
+  document
+    .getElementById("receta-print")
+    ?.addEventListener("click", () => window.print());
+
+  // ── Scroll-spy del TOC ──
+  // Observa los destinos a los que apunta el TOC: ## del markdown + las cards
+  // (#beneficios, #notas) que viven fuera de .receta-prose.
+  const links = document.querySelectorAll<HTMLAnchorElement>(".receta-toc__link");
+  const heads = [...links]
+    .map((l) => (l.dataset.id ? document.getElementById(l.dataset.id) : null))
+    .filter((el): el is HTMLElement => el !== null);
+  if (heads.length && links.length) {
+    links[0].classList.add("is-active");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            links.forEach((link) =>
+              link.classList.toggle(
+                "is-active",
+                link.dataset.id === entry.target.id,
+              ),
+            );
+          }
+        });
+      },
+      { rootMargin: "-20% 0px -70% 0px", threshold: 0 },
+    );
+    heads.forEach((h) => observer.observe(h));
+  }
+</script>

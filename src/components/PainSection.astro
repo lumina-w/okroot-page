@@ -138,6 +138,16 @@ const PAINS = [
         </article>
       </div>
     </div>
+
+    {/* Affordance de swipe (solo móvil). En desktop es scroll-pin, así que se
+        oculta a partir de 1024px. Icono SVG, no glifo, por las reglas de copy.
+        Se desvanece tras el primer arrastre (ver script). */}
+    <div class="pain-hint lg:hidden" data-pain-hint aria-hidden="true">
+      <span>Desliza para ver más</span>
+      <svg class="pain-hint-ico" width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M7 7l5 5-5 5M13 7l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
   </div>
 </section>
 
@@ -197,8 +207,34 @@ const PAINS = [
     }
   }
 
+  /* Mobile swipe hint */
+  .pain-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding-inline: 20px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--root-purple);
+    transition: opacity 0.35s var(--ease-soft);
+  }
+  .pain-hint.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .pain-hint-ico {
+    animation: painSwipeNudge 1.5s var(--ease-soft) infinite;
+  }
+  @keyframes painSwipeNudge {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(6px); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .pain-card { transition: none; }
+    .pain-hint-ico { animation: none; }
   }
 </style>
 
@@ -211,6 +247,16 @@ const PAINS = [
     const track = root.querySelector<HTMLElement>("[data-pain-track]");
     if (!pin || !stage || !track) return;
     const cards = Array.from(track.children) as HTMLElement[];
+
+    // Móvil: ocultar el hint de swipe en cuanto el usuario arrastra el carrusel.
+    const hint = root.querySelector<HTMLElement>("[data-pain-hint]");
+    if (hint) {
+      stage.addEventListener(
+        "scroll",
+        () => hint.classList.add("is-hidden"),
+        { once: true, passive: true },
+      );
+    }
 
     const wide = window.matchMedia("(min-width: 1024px)");
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");

@@ -20,6 +20,30 @@ ingredientes:
   - "2 cucharadas de cilantro fresco picado"
   - "Sal al gusto"
   - "Pimienta negra al gusto"
+notas: "Receta 100% libre de gluten, lactosa y azúcar, sin necesidad de declaraciones ni sustituciones. La yuca aporta carbohidrato de digestión moderada: si tienes diabetes, cuida el tamaño de la porción y combínala siempre con la proteína del huevo y la grasa buena del aguacate, que ayudan a que la glucosa suba más despacio."
+beneficios:
+  intro: "Un desayuno donde la proteína del huevo y la grasa del aguacate y el aceite de oliva acompañan al carbohidrato de la yuca, una combinación que se asocia a una subida de glucosa más gradual."
+  puntos:
+    - icono: "lucide:egg"
+      punto: "Huevos: saciedad y menos pico de glucosa"
+      detalle: "Un desayuno con huevo se asocia a mayor saciedad y a una respuesta de glucosa posterior más baja frente a un desayuno alto en carbohidratos refinados."
+      fuente: "Ensayo cruzado, Nutrients (2020)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7432073/"
+    - icono: "lucide:leaf"
+      punto: "Aguacate: grasa que cuida el corazón"
+      detalle: "La grasa monoinsaturada del aguacate se asocia a una reducción del colesterol total y del colesterol LDL, factores de riesgo cardiovascular."
+      fuente: "Revisión sistemática y metaanálisis, Nutrients (2023)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10387226/"
+    - icono: "lucide:droplet"
+      punto: "Aceite de oliva: aliado cardiovascular"
+      detalle: "Un mayor consumo de aceite de oliva, dentro de un patrón mediterráneo, se asocia a menor riesgo de eventos cardiovasculares."
+      fuente: "Estudio PREDIMED, J Am Coll Cardiol (2014)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4030221/"
+    - icono: "lucide:salad"
+      punto: "Combinar macros modera la glucosa"
+      detalle: "Acompañar el carbohidrato con proteína y grasa ayuda a moderar la respuesta de glucosa, en parte porque enlentece el vaciado gástrico."
+      fuente: "Revisión, Nutrients (2022)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9541715/"
 fuente_inspiracion: "Receta original OKroot"
 publicada: true
 ---
@@ -48,7 +72,3 @@ publicada: true
 - **Yuca:** si usas yuca congelada, no necesitas pelarla; ve directo a cocinarla en agua.
 - **Vegetales:** suma cebolla morada en pluma o pimentón picado a los huevos para más color y sabor.
 - **Picante:** una pizca de ají fresco picado va muy bien con la yuca.
-
-## Notas
-
-Receta 100% libre de gluten, lactosa y azúcar, sin necesidad de declaraciones ni sustituciones. La yuca aporta carbohidrato de digestión moderada: si tienes diabetes, cuida el tamaño de la porción y combínala siempre con la proteína del huevo y la grasa buena del aguacate, que ayudan a que la glucosa suba más despacio.

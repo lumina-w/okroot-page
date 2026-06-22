@@ -51,8 +51,11 @@
   --color-danger-solid: #c44a4a;
 
   /* ── Type ── */
-  --font-display: "Bricolage Grotesque", sans-serif;
-  --font-sans: "Plus Jakarta Sans", sans-serif;
+  /* --ff-display / --ff-sans are injected by Astro's <Font> component
+     (see astro.config.mjs experimental.fonts + Base.astro). They carry the
+     self-hosted family plus a size-adjusted fallback stack for low CLS. */
+  --font-display: var(--ff-display, "Bricolage Grotesque", sans-serif);
+  --font-sans: var(--ff-sans, "Plus Jakarta Sans", sans-serif);
 
   /* ── Motion ── */
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);

@@ -27,6 +27,24 @@ notas_medicas: >
   viene con fibra, pero sigue siendo azúcar. Si tenés diabetes, moderá la
   porción y consultá con tu médico o nutricionista la cantidad adecuada para
   tu caso.
+beneficios:
+  intro: "Un postre frío hecho solo con fruta y cacao puro, sin azúcar añadida, que aporta potasio, fibra y compuestos vegetales con respaldo en estudios de nutrición."
+  puntos:
+    - icono: "lucide:heart"
+      punto: "Cacao puro con flavanoles"
+      detalle: "El cacao sin azúcar es rico en flavanoles, compuestos vegetales que en ensayos clínicos se asocian a una mejor función del endotelio y a una reducción de la presión arterial, sobre todo en personas con cifras elevadas."
+      fuente: "Revisión sistemática y metaanálisis, American Journal of Clinical Nutrition (2023)"
+      fuente_url: "https://ajcn.nutrition.org/article/S0002-9165(23)02692-8/fulltext"
+    - icono: "lucide:banana"
+      punto: "Potasio del banano"
+      detalle: "El banano es una fuente natural de potasio, mineral cuya mayor ingesta dietética se asocia en metaanálisis con una reducción de la presión arterial sistólica y diastólica."
+      fuente: "Metaanálisis dosis-respuesta, Journal of the American Heart Association (2020)"
+      fuente_url: "https://www.ahajournals.org/doi/10.1161/JAHA.119.015719"
+    - icono: "lucide:apple"
+      punto: "Azúcar dentro de la fruta entera"
+      detalle: "El azúcar del banano viene acompañado de su fibra y matriz natural. La evidencia indica que las fuentes de fructosa procedentes de la fruta entera ayudan a moderar la respuesta de la glucosa frente al azúcar libre, aunque conviene cuidar la porción."
+      fuente: "Revisión sistemática y metaanálisis, BMJ (2018)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6781605/"
 fuente_inspiracion: "Receta original OKroot"
 publicada: true
 ---
@@ -51,7 +69,3 @@ publicada: true
 - **Banano:** es el corazón de la receta y no se reemplaza sin perder la textura. Para menos azúcar, usa banano apenas maduro, no muy pintón.
 - **Cacao:** el cacao puro 100% en polvo es libre, sin trazas de azúcar.
 - **Extras:** un puñado de almendras picadas o un toque de canela suman sabor sin azúcar. No usamos maní.
-
-## Notas
-
-El banano maduro es el único endulzante de este helado y aporta fructosa natural. Mientras más maduro, más dulce y más azúcar tiene. La fructosa de la fruta entera eleva la glucosa más lento que el azúcar porque viene con fibra, pero sigue siendo azúcar. Si tienes diabetes, modera la porción y consulta con tu médico o nutricionista la cantidad adecuada para tu caso.

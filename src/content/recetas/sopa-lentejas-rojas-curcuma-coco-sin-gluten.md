@@ -23,6 +23,30 @@ ingredientes:
   - "2 cucharadas de aceite de oliva"
   - "Cilantro fresco para servir"
   - "Sal y pimienta al gusto"
+notas: "Receta 100% libre de gluten, lactosa y azúcar, sin necesidad de declaraciones. Las lentejas rojas son naturalmente libres de gluten y aportan proteína vegetal y fibra, una buena combinación para mantener la glucosa estable. La leche de coco reemplaza la crema de leche sin sumar lactosa."
+beneficios:
+  intro: "Un plato a base de lentejas, verduras y especias: combina fibra y proteína vegetal de índice glucémico bajo con la cúrcuma como aromático."
+  puntos:
+    - icono: "lucide:bean"
+      punto: "Glucosa más estable"
+      detalle: "Las lentejas son de índice glucémico bajo y su fibra y proteína se asocian a una respuesta de glucosa más moderada después de comer."
+      fuente: "Revisión sobre lentejas y glucosa posprandial, Nutrients (2022)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8877848/"
+    - icono: "lucide:soup"
+      punto: "Más saciedad"
+      detalle: "En estudios con comidas controladas, los platos a base de legumbres aumentaron la sensación de saciedad y se asociaron a una menor ingesta de energía después."
+      fuente: "Ensayo cruzado aleatorizado, Food & Nutrition Research (2016)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC5073301/"
+    - icono: "lucide:heart"
+      punto: "Apoya el colesterol"
+      detalle: "El consumo regular de legumbres distintas de la soya se asocia a una reducción del colesterol total y LDL en ensayos controlados."
+      fuente: "Metaanálisis de ensayos aleatorizados, CMAJ (2009)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC2888631/"
+    - icono: "lucide:flame"
+      punto: "Cúrcuma con curcumina"
+      detalle: "La cúrcuma aporta curcumina, un polifenol que se ha estudiado por sus propiedades antiinflamatorias y antioxidantes."
+      fuente: "Revisión sobre curcumina y salud humana, Foods (2017)"
+      fuente_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC5664031/"
 fuente_inspiracion: "Sabores del Caribe colombiano"
 publicada: true
 ancho: true
@@ -56,7 +80,3 @@ ancho: true
 - **Caldo:** si usas caldo en vez de agua, prepáralo en casa o verifica la etiqueta. Muchos caldos comerciales en cubo o en polvo llevan gluten oculto como espesante o saborizante.
 - **Más cuerpo:** un trozo de jengibre fresco rallado junto con el ajo le da calidez extra.
 - **Picante:** una pizca de ají en polvo o pimienta de cayena combina bien con el coco.
-
-## Notas
-
-Receta 100% libre de gluten, lactosa y azúcar, sin necesidad de declaraciones. Las lentejas rojas son naturalmente libres de gluten y aportan proteína vegetal y fibra, una buena combinación para mantener la glucosa estable. La leche de coco reemplaza la crema de leche sin sumar lactosa.
