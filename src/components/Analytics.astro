@@ -54,4 +54,19 @@
   if (consent && consent.split("=")[1] === "true") {
     window.okrootLoadGA4();
   }
+
+  // SPA (ClientRouter): gtag('config') solo cuenta el primer load. En cada
+  // navegación posterior enviamos un page_view manual con la nueva ruta.
+  let firstLoad = true;
+  document.addEventListener("astro:page-load", () => {
+    if (firstLoad) {
+      firstLoad = false;
+      return;
+    }
+    window.gtag?.("event", "page_view", {
+      page_path: location.pathname,
+      page_location: location.href,
+      page_title: document.title,
+    });
+  });
 </script>

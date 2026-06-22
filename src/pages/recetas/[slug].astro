@@ -1139,6 +1139,8 @@ const breadcrumbSchema = {
 </style>
 
 <script>
+  // Re-inicializa en la carga inicial y tras cada navegación SPA.
+  document.addEventListener("astro:page-load", () => {
   // ── Checkbox de ingredientes ──
   // La sección #ingredientes del markdown trae una <ul>. La convertimos en lista
   // marcable; el estado persiste en localStorage por receta + índice.
@@ -1206,4 +1208,5 @@ const breadcrumbSchema = {
     );
     heads.forEach((h) => observer.observe(h));
   }
+  });
 </script>

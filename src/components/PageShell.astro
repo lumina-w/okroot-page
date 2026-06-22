@@ -270,6 +270,8 @@ const hasToc = Array.isArray(toc) && toc.length > 0;
 
 <script>
   // Activa el item del sidebar según la sección visible. Vanilla IntersectionObserver.
+  // Corre en la carga inicial y tras cada navegación SPA (astro:page-load).
+  document.addEventListener("astro:page-load", () => {
   const sections = document.querySelectorAll<HTMLElement>("section[id]");
   const links = document.querySelectorAll<HTMLAnchorElement>(".toc-link");
 
@@ -295,4 +297,5 @@ const hasToc = Array.isArray(toc) && toc.length > 0;
 
     sections.forEach((section) => observer.observe(section));
   }
+  });
 </script>

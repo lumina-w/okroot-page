@@ -502,16 +502,19 @@ const TOC = [
 <script>
   // Revocar / cambiar preferencias: borra la cookie de consentimiento y recarga.
   // Al recargar, Analytics.astro ya no carga GA4 y el banner vuelve a aparecer.
-  function clearConsentAndReload() {
-    document.cookie =
-      "okroot_cookie_consent=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    location.reload();
-  }
+  // Re-inicializa en cada navegación SPA (astro:page-load).
+  document.addEventListener("astro:page-load", () => {
+    function clearConsentAndReload() {
+      document.cookie =
+        "okroot_cookie_consent=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      location.reload();
+    }
 
-  document
-    .getElementById("revoke-analytics")
-    ?.addEventListener("click", clearConsentAndReload);
-  document
-    .getElementById("change-prefs")
-    ?.addEventListener("click", clearConsentAndReload);
+    document
+      .getElementById("revoke-analytics")
+      ?.addEventListener("click", clearConsentAndReload);
+    document
+      .getElementById("change-prefs")
+      ?.addEventListener("click", clearConsentAndReload);
+  });
 </script>

@@ -1,16 +1,7 @@
 ---
-import {
-  EARLY_ACCESS_SPOTS,
-  FREE_UNTIL_ISO,
-  FREE_UNTIL_LABEL,
-  isFreeWindowOpen,
-} from "@/lib/consts";
+import { EARLY_ACCESS_SPOTS } from "@/lib/consts";
 
 const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra"];
-
-// Aviso de acceso gratis por tiempo limitado. Se calcula en build: si la fecha
-// ya pasó, no se renderiza.
-const freeOpen = isFreeWindowOpen();
 ---
 
 <section id="lista-de-espera" class="px-5 py-12 sm:px-6 lg:py-20">
@@ -76,16 +67,6 @@ const freeOpen = isFreeWindowOpen();
             )
           }
 
-          {
-            freeOpen && (
-              <p
-                class="mx-auto mt-5 max-w-[460px] text-[14px] leading-relaxed"
-                style="color:var(--root-mute)"
-              >
-                Los primeros usuarios entran <strong style="color:var(--root-purple)">gratis hasta el <time datetime={FREE_UNTIL_ISO}>{FREE_UNTIL_LABEL}</time></strong>. Después, el acceso pasa a ser un plan pago. Si entras ahora, conservas el beneficio de early user.
-              </p>
-            )
-          }
         </div>
 
         <form data-wl-form class="mx-auto mt-9 max-w-[460px]" novalidate>
@@ -196,6 +177,8 @@ const freeOpen = isFreeWindowOpen();
   // Minimal Supabase waitlist insert via PostgREST — no SDK, zero bundle cost.
   // The anon key is public by design; Row Level Security protects the table
   // (anon may INSERT only, never SELECT).
+  // Re-inicializa en la carga inicial y tras cada navegación SPA.
+  document.addEventListener("astro:page-load", () => {
   const root = document.querySelector<HTMLElement>("[data-waitlist]");
   if (root) {
     const form = root.querySelector<HTMLFormElement>("[data-wl-form]")!;
@@ -354,6 +337,7 @@ const freeOpen = isFreeWindowOpen();
       }
     });
   }
+  });
 </script>
 
 <style>

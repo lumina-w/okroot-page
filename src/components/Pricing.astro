@@ -68,6 +68,8 @@ const anualPorMes = Math.round(pro.anual.cop / 12);
           </button>
         </div>
 
+        {/* Precios: crossfade entre mensual y anual al cambiar de tab */}
+        <div class="precio-pro__switch">
         {/* Precio mensual */}
         <div class="precio-pro__mensual">
           <div class="precio-card__price">
@@ -90,6 +92,7 @@ const anualPorMes = Math.round(pro.anual.cop / 12);
               anualPorMes,
             )} al mes
           </p>
+        </div>
         </div>
 
         <p class="precio-card__incluye">Todo lo de Gratis, y además:</p>
@@ -199,14 +202,41 @@ const anualPorMes = Math.round(pro.anual.cop / 12);
     opacity: 0.9;
   }
 
-  /* Mostrar solo el precio del periodo activo (JS flipea data-billing) */
-  .precio-pro__mensual,
-  .precio-pro__anual {
+  /* Crossfade mensual <-> anual al cambiar de tab. El periodo activo va en
+     flujo (define la altura y es el fallback sin JS); el inactivo se superpone
+     y se desvanece, así la transición es suave en vez de un corte seco. */
+  .precio-pro__switch {
+    position: relative;
     margin-top: 0.25rem;
   }
+  .precio-pro__mensual,
+  .precio-pro__anual {
+    transition:
+      opacity 220ms var(--ease-soft),
+      transform 260ms var(--ease-soft);
+  }
+  /* Inactivo: superpuesto, transparente, sin interacción. */
   #precio-pro[data-billing="anual"] .precio-pro__mensual,
   #precio-pro[data-billing="mensual"] .precio-pro__anual {
-    display: none;
+    position: absolute;
+    inset: 0 0 auto 0;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+  }
+  /* Activo: en flujo y visible. */
+  #precio-pro[data-billing="anual"] .precio-pro__anual,
+  #precio-pro[data-billing="mensual"] .precio-pro__mensual {
+    position: relative;
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .precio-pro__mensual,
+    .precio-pro__anual {
+      transition: none;
+    }
   }
 
   .precio-card__price {
@@ -287,10 +317,12 @@ const anualPorMes = Math.round(pro.anual.cop / 12);
 
 <script>
   // Toggle mensual / anual del plan Pro. Flipea `data-billing` en la card; el
-  // CSS decide qué precio se ve. aria-pressed refleja el estado para AT.
-  const card = document.getElementById("precio-pro");
-  const btns = card?.querySelectorAll<HTMLButtonElement>(".precio-toggle__btn");
-  if (card && btns?.length) {
+  // CSS decide qué precio se ve (crossfade). aria-pressed refleja el estado
+  // para AT. Corre tras cada navegación SPA (ClientRouter) además de la carga.
+  document.addEventListener("astro:page-load", () => {
+    const card = document.getElementById("precio-pro");
+    const btns = card?.querySelectorAll<HTMLButtonElement>(".precio-toggle__btn");
+    if (!card || !btns?.length) return;
     const sync = () => {
       const activo = card.dataset.billing;
       btns.forEach((b) =>
@@ -304,5 +336,5 @@ const anualPorMes = Math.round(pro.anual.cop / 12);
       }),
     );
     sync();
-  }
+  });
 </script>

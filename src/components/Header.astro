@@ -16,7 +16,7 @@ const NAV_LINKS = [
 const LOGIN_URL = `${APP_URL}/login`;
 ---
 
-<header class="sticky top-0 z-50 px-5 py-4 sm:px-6">
+<header class="sticky top-0 z-50 px-5 py-4 sm:px-6" transition:persist>
   <nav
     aria-label="Navegación principal"
     class="site-header__bar mx-auto flex h-14 w-full max-w-[1200px] items-center justify-between rounded-full border px-5 transition-all duration-300"
@@ -307,6 +307,10 @@ const LOGIN_URL = `${APP_URL}/login`;
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+    // El header se persiste entre navegaciones SPA (transition:persist), así que
+    // este script corre una sola vez. Tras cada navegación el scroll vuelve
+    // arriba: reseteamos el frost según la nueva posición.
+    document.addEventListener("astro:after-swap", onScroll);
   }
 
   // Menú móvil: toggle del panel + estado accesible.

@@ -11,20 +11,6 @@ export const PORTFOLIO_URL = "https://wavival.dev";
 // Set to 0 to hide the scarcity line entirely.
 export const EARLY_ACCESS_SPOTS = 17;
 
-// Acceso gratis para early users hasta esta fecha; después es pago.
-// `FREE_UNTIL_ISO` alimenta el atributo <time datetime>; `FREE_UNTIL_LABEL` es
-// el texto visible. Dejar la fecha en pasado oculta el aviso automáticamente
-// (ver `isFreeWindowOpen`).
-export const FREE_UNTIL_ISO = "2026-07-30";
-export const FREE_UNTIL_LABEL = "30 de julio de 2026";
-
-// El aviso de gratis-por-tiempo-limitado solo se muestra mientras la ventana
-// siga abierta. Comparación por fecha (no hora) para evitar parpadeos de zona.
-export const isFreeWindowOpen = (now: Date = new Date()): boolean => {
-  const end = new Date(`${FREE_UNTIL_ISO}T23:59:59-05:00`); // hora Colombia
-  return now <= end;
-};
-
 // ── Precios ──────────────────────────────────────────────────────────────
 // Modelo Free + Pro. `free` es gratis para siempre (con límites); `pro` es el
 // plan de pago, con prueba gratis de `pruebaDias` días. Editá estos números y
