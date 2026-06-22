@@ -114,6 +114,9 @@ const faqSchema = {
     // drive the height, and only flip the `open` attribute at the right moment
     // (kept open through the close so its content stays in the layout). Pure
     // vanilla, no deps. Reduced-motion → instant toggle.
+    // Re-ejecuta tras cada navegación SPA (ClientRouter); los listeners viven en
+    // los <summary>, que se reemplazan en el swap, así que basta re-enganchar.
+    document.addEventListener("astro:page-load", () => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     document
       .querySelectorAll<HTMLDetailsElement>("#preguntas details")
@@ -162,6 +165,7 @@ const faqSchema = {
           }
         });
       });
+    });
   </script>
 
   <style>

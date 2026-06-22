@@ -1,12 +1,13 @@
 ---
 // Consent banner for analytics cookies (GA4). Astro puro, sin dependencias.
 //
-// GA4 NUNCA se carga en el <head>. Solo se inyecta vía loadGA4() y solo si el
-// usuario lo acepta. La preferencia se guarda en la cookie okroot_cookie_consent
-// (true / false), que se lee en cada carga para decidir si cargar GA4.
+// GA4 NUNCA se carga en el <head>. Solo se inyecta vía window.okrootLoadGA4()
+// (definida en Analytics.astro) y solo si el usuario lo acepta. La preferencia
+// se guarda en la cookie okroot_cookie_consent (true / false), que se lee en
+// cada carga para decidir si cargar GA4.
 //
-// [GA4-ID] es un placeholder: reemplazar por el ID real (G-XXXXXXXXXX) antes de
-// publicar. Mientras siga entre corchetes, loadGA4() no hace ninguna petición.
+// El measurement ID vive en la env var PUBLIC_GA_ID (la lee Analytics.astro). Si
+// no está definida, okrootLoadGA4() no hace ninguna petición.
 ---
 
 <div id="cookie-banner" class="cookie-banner" role="region" aria-label="Aviso de cookies" hidden transition:persist>
@@ -166,6 +167,9 @@
     document.cookie = `${CONSENT_COOKIE}=${value}; Max-Age=${oneYear}; Path=/; SameSite=Lax; Secure`;
   }
 
+  // Re-engancha tras cada navegación SPA (ClientRouter): el banner se re-renderiza
+  // en cada swap, así que los listeners de sus botones hay que volver a ponerlos.
+  document.addEventListener("astro:page-load", () => {
   const banner = document.getElementById("cookie-banner");
   if (banner) {
     const dismiss = () => {
@@ -197,4 +201,5 @@
       banner.hidden = false;
     }
   }
+  });
 </script>
