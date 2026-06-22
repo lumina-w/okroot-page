@@ -1,0 +1,510 @@
+---
+import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
+import Base from "@/layouts/Base.astro";
+import RecetaCover from "@/components/RecetaCover.astro";
+
+// Solo recetas publicadas. Orden estable por título para un build determinista.
+const todas = (await getCollection("recetas", ({ data }) => data.publicada))
+  .map((r) => r.data)
+  .sort((a, b) => a.title.localeCompare(b.title, "es"));
+
+// Hero editorial: la receta marcada `destacada`. El resto se agrupa por categoría.
+const destacada = todas.find((r) => r.destacada);
+const resto = todas.filter((r) => !r.destacada);
+
+const totalMin = (r: (typeof todas)[number]) =>
+  r.tiempo_prep + r.tiempo_coccion;
+const requiereVerificar = (r: (typeof todas)[number]) =>
+  Array.isArray(r.verificar) && r.verificar.length > 0;
+
+// Orden del recorrido del día. Agrupamos el resto en estas secciones; solo se
+// renderiza la sección si tiene al menos una receta.
+const ORDEN = [
+  "Desayuno",
+  "Almuerzo",
+  "Cena",
+  "Snack",
+  "Postre",
+  "Bebida",
+] as const;
+
+const grupos = ORDEN.map((cat) => ({
+  cat,
+  recetas: resto.filter((r) => r.categoria === cat),
+})).filter((g) => g.recetas.length > 0);
+
+const title = "Recetas · OKroot";
+const description =
+  "Recetas verificadas para celiaquía, diabetes tipo 2 e intolerancia a la lactosa, al mismo tiempo. Sin gluten, sin lactosa y aptas para diabetes.";
+---
+
+<Base title={title} description={description}>
+  <section class="mx-auto w-full max-w-[1100px] px-5 py-16 sm:px-6 lg:py-24">
+    {/* Encabezado */}
+    <header class="max-w-3xl reveal">
+      <div class="eyebrow">Recetas</div>
+      <h1
+        class="mt-5 font-display text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl"
+      >
+        Recetas <span class="text-primary">verificadas</span> para tus tres
+        condiciones.
+      </h1>
+      <p class="mt-5 mb-4 text-lg leading-relaxed text-muted">
+        Cada receta está validada para celiaquía, diabetes tipo 2 e
+        intolerancia a la lactosa, al mismo tiempo. No en silos.
+      </p>
+    </header>
+
+    {/* ── Banner de garantía: todas las recetas cumplen las 3 condiciones ── */}
+    <ul class="receta-garantia reveal mt-12" aria-label="Garantía de todas las recetas">
+      <li>
+        <Icon name="lucide:check" />
+        Sin gluten
+      </li>
+      <li>
+        <Icon name="lucide:check" />
+        Sin lactosa
+      </li>
+      <li>
+        <Icon name="lucide:check" />
+        Sin azúcar añadida
+      </li>
+    </ul>
+
+    {/* ── Receta destacada (hero editorial) ── */}
+    {
+      destacada && (
+        <a
+          href={`/recetas/${destacada.slug}/`}
+          class="receta-hero reveal mt-12"
+        >
+          <div class="receta-hero__media">
+            <RecetaCover categoria={destacada.categoria} size="hero" />
+            <span class="receta-hero__flag">Receta destacada</span>
+          </div>
+          <div class="receta-hero__body">
+            <span class="receta-cat">{destacada.categoria}</span>
+            <h2 class="receta-hero__title">{destacada.title}</h2>
+            <p class="receta-hero__desc">{destacada.descripcion}</p>
+            <ul class="receta-meta receta-meta--hero">
+              <li>{totalMin(destacada)} min</li>
+              <li>{destacada.dificultad}</li>
+              <li>
+                {destacada.porciones}{" "}
+                {destacada.porciones === 1 ? "porción" : "porciones"}
+              </li>
+              {requiereVerificar(destacada) && (
+                <li class="receta-meta__warn">Verificar sustitución</li>
+              )}
+            </ul>
+            <div class="receta-hero__foot">
+              <span class="receta-hero__cta">Ver receta</span>
+            </div>
+          </div>
+        </a>
+      )
+    }
+
+    {/* ── Navegación rápida por categoría (anclas) ── */}
+    <nav class="receta-nav reveal mt-14" aria-label="Ir a una categoría">
+      {
+        grupos.map((g) => (
+          <a href={`#cat-${g.cat}`} class="receta-pill">
+            {g.cat}
+            <span class="receta-pill__count">{g.recetas.length}</span>
+          </a>
+        ))
+      }
+    </nav>
+
+    {/* ── Lista agrupada por categoría (recetario) ── */}
+    {
+      grupos.map((g) => (
+        <section id={`cat-${g.cat}`} class="receta-grupo reveal mt-14">
+          <div class="receta-grupo__head">
+            <h2 class="receta-grupo__title">{g.cat}</h2>
+            <span class="receta-grupo__count">
+              {g.recetas.length}{" "}
+              {g.recetas.length === 1 ? "receta" : "recetas"}
+            </span>
+          </div>
+          <ul class="receta-lista">
+            {g.recetas.map((r) => (
+              <li>
+                <a href={`/recetas/${r.slug}/`} class="receta-fila">
+                  <span class="receta-fila__chip">
+                    <RecetaCover categoria={r.categoria} size="chip" />
+                  </span>
+                  <span class="receta-fila__body">
+                    <span class="receta-fila__title">{r.title}</span>
+                    <span class="receta-fila__desc">{r.descripcion}</span>
+                  </span>
+                  <ul class="receta-meta receta-fila__meta">
+                    <li>{totalMin(r)} min</li>
+                    <li>{r.dificultad}</li>
+                    <li>
+                      {r.porciones}{" "}
+                      {r.porciones === 1 ? "porción" : "porciones"}
+                    </li>
+                    {requiereVerificar(r) && (
+                      <li class="receta-meta__warn">Verificar</li>
+                    )}
+                  </ul>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+
+    {/* ── CTA final ── */}
+    <div class="receta-cta reveal mt-20">
+      <p class="receta-cta__text">
+        <span class="receta-brand"
+          ><span class="receta-brand__ok">OK</span><span class="receta-brand__root"
+            >root</span
+          ></span
+        > verifica automáticamente los ingredientes de cualquier producto según
+        tu perfil.
+      </p>
+      <a href="/#lista-de-espera" class="btn btn-primary btn-lg">
+        Quiero acceso anticipado
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ── Hero destacado ── */
+  .receta-hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: 1.75rem;
+    text-decoration: none;
+    transition:
+      border-color 0.2s var(--ease-soft),
+      box-shadow 0.2s var(--ease-soft),
+      transform 0.2s var(--ease-soft);
+  }
+  .receta-hero:hover {
+    border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+    box-shadow: 0 24px 60px -28px color-mix(in srgb, var(--color-primary) 55%, transparent);
+    transform: translateY(-2px);
+  }
+  @media (min-width: 768px) {
+    .receta-hero {
+      grid-template-columns: 1.1fr 1fr;
+    }
+  }
+  .receta-hero__media {
+    position: relative;
+  }
+  .receta-hero__flag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 2;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 9999px;
+    background: var(--color-ink);
+    color: #fff;
+  }
+  .receta-hero__body {
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem;
+  }
+  @media (min-width: 768px) {
+    .receta-hero__body {
+      padding: 2.5rem;
+    }
+  }
+  .receta-hero__title {
+    margin-top: 0.5rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.875rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+  .receta-hero__desc {
+    margin-top: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+  .receta-hero__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 1.75rem;
+  }
+  .receta-hero__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--color-primary);
+  }
+
+  /* ── Banner de garantía ── */
+  .receta-garantia {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+  }
+  .receta-garantia > li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 9999px;
+    background: var(--root-violet-soft);
+    border: 1px solid color-mix(in srgb, var(--color-primary) 18%, transparent);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--color-primary);
+  }
+  .receta-garantia :global(svg) {
+    width: 1rem;
+    height: 1rem;
+    stroke-width: 2.5;
+  }
+
+  /* ── Navegación de categorías (anclas) ── */
+  .receta-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    /* Sticky bajo el navbar (header: top-0 + py-4 + barra h-14 → ~4.5rem). */
+    position: sticky;
+    top: 4.5rem;
+    z-index: 40;
+    /* Fondo translúcido para que el contenido pase por debajo limpio. */
+    margin-inline: -0.75rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--color-cream) 82%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .receta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--color-ink);
+    background: #fff;
+    border: 1px solid var(--color-line);
+    text-decoration: none;
+    transition:
+      background-color 0.2s var(--ease-soft),
+      color 0.2s var(--ease-soft),
+      border-color 0.2s var(--ease-soft);
+  }
+  .receta-pill:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+  .receta-pill__count {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-muted);
+  }
+  .receta-pill:hover .receta-pill__count {
+    color: var(--color-primary);
+  }
+
+  /* ── Grupo de categoría ── */
+  .receta-grupo {
+    /* navbar (~4.5rem) + nav sticky de categorías (~3.5rem) */
+    scroll-margin-top: 8.5rem;
+  }
+  .receta-grupo__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.875rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .receta-grupo__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+  .receta-grupo__count {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+  }
+
+  /* ── Lista de filas ── */
+  .receta-lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .receta-lista > li + li {
+    border-top: 1px solid var(--color-line);
+  }
+  .receta-fila {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0.75rem;
+    border-radius: 1rem;
+    text-decoration: none;
+    transition:
+      background-color 0.2s var(--ease-soft),
+      transform 0.2s var(--ease-soft);
+  }
+  .receta-fila:hover {
+    background: var(--root-violet-soft);
+    transform: translateX(2px);
+  }
+  .receta-fila__chip {
+    display: block;
+    width: 56px;
+    flex: none;
+  }
+  .receta-fila__body {
+    min-width: 0;
+  }
+  .receta-fila__title {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+  .receta-fila__desc {
+    display: block;
+    margin-top: 0.2rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--color-muted);
+    /* Una sola línea con elipsis para mantener filas parejas */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .receta-fila__meta {
+    grid-column: 2;
+  }
+  /* En desktop la meta va alineada a la derecha en su propia columna */
+  @media (min-width: 768px) {
+    .receta-fila {
+      grid-template-columns: auto 1fr auto;
+    }
+    .receta-fila__meta {
+      grid-column: auto;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+      text-align: right;
+    }
+  }
+
+  /* ── Meta (tiempo · dificultad · porciones) ── */
+  .receta-meta {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+  }
+  .receta-meta > li {
+    display: inline-flex;
+    align-items: center;
+  }
+  /* Separador "·" entre ítems */
+  .receta-meta > li + li::before {
+    content: "·";
+    margin-right: 0.5rem;
+    color: var(--color-line);
+  }
+  .receta-meta__warn {
+    color: #92610a;
+    font-weight: 600;
+  }
+  .receta-meta--hero {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+  }
+
+  /* ── CTA final ── */
+  .receta-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+    background: var(--root-violet-soft);
+    border: 1px solid var(--color-line);
+    border-radius: 1.5rem;
+    padding: 3rem 1.5rem;
+  }
+  .receta-cta__text {
+    max-width: 40ch;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.375rem;
+    line-height: 1.35;
+    color: var(--color-ink);
+  }
+  /* OKroot wordmark — mirrors the navbar logo (OK 800 violet · root 500 ink). */
+  .receta-brand {
+    letter-spacing: -0.04em;
+  }
+  .receta-brand__ok {
+    font-weight: 800;
+    color: var(--color-primary);
+  }
+  .receta-brand__root {
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  .receta-cat {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+  }
+</style>

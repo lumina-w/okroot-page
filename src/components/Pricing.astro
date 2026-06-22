@@ -1,0 +1,196 @@
+---
+import {
+  PRICING,
+  FREE_UNTIL_ISO,
+  FREE_UNTIL_LABEL,
+  isFreeWindowOpen,
+} from "@/lib/consts";
+
+const freeOpen = isFreeWindowOpen();
+
+// Formato de miles en español (14900 → "14.900"). Sin decimales: son enteros.
+const cop = (n: number) => new Intl.NumberFormat("es-CO").format(n);
+const { mensual, anual, beneficios } = PRICING;
+
+// Equivalente mensual del plan anual, para mostrar el ahorro de forma concreta.
+const anualPorMes = Math.round(anual.cop / 12);
+---
+
+<section id="precios" class="px-5 py-12 sm:px-6 lg:py-20">
+  <div class="mx-auto w-full max-w-[1200px]">
+    {/* Encabezado */}
+    <header class="reveal mx-auto max-w-2xl text-center">
+      <div class="eyebrow">Precios</div>
+      <h2
+        class="mt-5 font-display text-3xl font-bold leading-tight tracking-tight text-ink sm:text-4xl"
+      >
+        Un precio justo, cuando llegue el momento.
+      </h2>
+      {
+        freeOpen && (
+          <p class="mt-4 text-lg leading-relaxed text-muted">
+            Los primeros usuarios entran{" "}
+            <strong class="text-purple">
+              gratis hasta el{" "}
+              <time datetime={FREE_UNTIL_ISO}>{FREE_UNTIL_LABEL}</time>
+            </strong>
+            . Después, eliges el plan que más te sirva. Sin letra pequeña.
+          </p>
+        )
+      }
+    </header>
+
+    {/* Planes */}
+    <div class="precios-grid reveal mt-12">
+      {/* Mensual */}
+      <article class="precio-card">
+        <h3 class="precio-card__name">Mensual</h3>
+        <div class="precio-card__price">
+          <span class="precio-card__amount">${cop(mensual.cop)}</span>
+          <span class="precio-card__unit">{PRICING.moneda.cop} / mes</span>
+        </div>
+        <p class="precio-card__usd">Aprox. ${mensual.usd} {PRICING.moneda.usd}</p>
+        <ul class="precio-card__list">
+          {beneficios.map((b) => <li>{b}</li>)}
+        </ul>
+        <a href="/#lista-de-espera" class="btn btn-primary btn-lg w-full">
+          Quiero acceso anticipado
+        </a>
+      </article>
+
+      {/* Anual (destacado) */}
+      <article class="precio-card precio-card--destacado">
+        <span class="precio-card__flag">Mejor precio · ahorra {anual.ahorroPct}%</span>
+        <h3 class="precio-card__name">Anual</h3>
+        <div class="precio-card__price">
+          <span class="precio-card__amount">${cop(anual.cop)}</span>
+          <span class="precio-card__unit">{PRICING.moneda.cop} / año</span>
+        </div>
+        <p class="precio-card__usd">
+          Aprox. ${anual.usd} {PRICING.moneda.usd} · equivale a ${cop(anualPorMes)} al mes
+        </p>
+        <ul class="precio-card__list">
+          {beneficios.map((b) => <li>{b}</li>)}
+        </ul>
+        <a href="/#lista-de-espera" class="btn btn-primary btn-lg w-full">
+          Quiero acceso anticipado
+        </a>
+      </article>
+    </div>
+
+    <p class="reveal mt-6 text-center text-[13px] text-faint">
+      Precios de lanzamiento. Si entras como early user, conservas el beneficio
+      gratuito hasta la fecha indicada.
+    </p>
+  </div>
+</section>
+
+<style>
+  .precios-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    max-width: 760px;
+    margin-inline: auto;
+  }
+  @media (min-width: 768px) {
+    .precios-grid {
+      grid-template-columns: repeat(2, 1fr);
+      align-items: start;
+    }
+  }
+
+  .precio-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: 1.5rem;
+    padding: 2rem 1.75rem;
+  }
+  .precio-card--destacado {
+    border-color: var(--color-primary);
+    background: var(--root-violet-soft);
+    box-shadow: 0 24px 60px -30px color-mix(in srgb, var(--color-primary) 60%, transparent);
+  }
+  .precio-card__flag {
+    position: absolute;
+    top: -0.75rem;
+    left: 1.75rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 9999px;
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .precio-card__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-ink);
+  }
+  .precio-card__price {
+    margin-top: 1rem;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .precio-card__amount {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 2.5rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+  .precio-card__unit {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-muted);
+  }
+  .precio-card__usd {
+    margin-top: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--color-faint);
+  }
+  .precio-card__list {
+    list-style: none;
+    margin: 1.5rem 0 2rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+  }
+  .precio-card__list li {
+    position: relative;
+    padding-left: 1.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    color: var(--color-ink-2);
+  }
+  /* Check de marca como viñeta (no glifo de flecha) */
+  .precio-card__list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 9999px;
+    background: var(--color-primary);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
+      center / 0.7rem no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
+      center / 0.7rem no-repeat;
+  }
+</style>

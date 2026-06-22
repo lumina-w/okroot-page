@@ -1,5 +1,25 @@
 ---
 import ScannerIllo from "@/components/ScannerIllo.astro";
+
+/* Steps for the narrow right column. Icons are inlined below by index so each
+   keeps its own SVG; this array only carries the copy. */
+const STEPS = [
+  {
+    n: "01",
+    title: "Fotografía",
+    body: "Abres la app y escaneas la etiqueta de cualquier producto. Sin escribir nada.",
+  },
+  {
+    n: "02",
+    title: "Análisis IA",
+    body: "La IA lee los ingredientes y los compara contra tu perfil. No es una base de datos: razona sobre nombres técnicos y trazas ocultas.",
+  },
+  {
+    n: "03",
+    title: "Respuesta instantánea",
+    body: "OK verde o NO rojo, con la razón específica. Sabes por qué, no solo qué.",
+  },
+] as const;
 ---
 
 <section
@@ -24,134 +44,166 @@ import ScannerIllo from "@/components/ScannerIllo.astro";
       </h2>
     </div>
 
-    {/* Showcase + steps */}
-    <div class="mt-14 grid gap-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-stretch">
-      {/* Scanner showcase — ScannerIllo is now the panel itself (no wrapper box) */}
-      <div class="reveal flex items-center">
-        <ScannerIllo />
+    {/* Bento: demo dominates (left), steps stack in a narrow column (right) */}
+    <div class="mt-14 grid gap-5 lg:grid-cols-[1.15fr_0.85fr] lg:items-stretch">
+      {/* Demo showcase — the proof, given the most weight */}
+      <div class="reveal flex items-center justify-center">
+        <div class="w-full max-w-[420px]">
+          <ScannerIllo />
+        </div>
       </div>
 
-      {/* Steps */}
-      <div class="grid gap-5 sm:grid-cols-2">
-        {/* StepCard 01 */}
-        <div
-          class="reveal flex flex-col gap-5 rounded-3xl border bg-white p-8"
-          style="border-color:var(--root-line);--reveal-delay:0ms"
-        >
-          <div class="flex items-center justify-between">
+      {/* Steps — narrow vertical stack */}
+      <div class="flex flex-col gap-4">
+        {STEPS.map((step, i) => (
+          <article
+            class="reveal flex items-start gap-4 rounded-3xl border bg-white p-6"
+            style={`border-color:var(--root-line);--reveal-delay:${i * 100}ms`}
+          >
             <div
-              class="flex h-12 w-12 items-center justify-center rounded-2xl"
+              class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl"
               style="background:var(--root-violet-soft);color:var(--root-violet)"
             >
-              <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden>
-                <rect x="5" y="10" width="22" height="16" rx="3" stroke="currentColor" stroke-width="1.8" />
-                <circle cx="16" cy="18" r="4.5" stroke="currentColor" stroke-width="1.8" />
-                <path d="M12 10l1.8-3h4.4L20 10" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
-              </svg>
+              {i === 0 && (
+                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden>
+                  <rect x="5" y="10" width="22" height="16" rx="3" stroke="currentColor" stroke-width="1.8" />
+                  <circle cx="16" cy="18" r="4.5" stroke="currentColor" stroke-width="1.8" />
+                  <path d="M12 10l1.8-3h4.4L20 10" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                </svg>
+              )}
+              {i === 1 && (
+                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden>
+                  <path d="M16 4c.6 5.6 2.4 7.4 8 8-5.6.6-7.4 2.4-8 8-.6-5.6-2.4-7.4-8-8 5.6-.6 7.4-2.4 8-8Z" fill="currentColor" />
+                  <path d="M25 19c.3 2.4 1.1 3.2 3.5 3.5-2.4.3-3.2 1.1-3.5 3.5-.3-2.4-1.1-3.2-3.5-3.5 2.4-.3 3.2-1.1 3.5-3.5Z" fill="currentColor" />
+                </svg>
+              )}
+              {i === 2 && (
+                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden>
+                  <circle cx="16" cy="16" r="11" stroke="currentColor" stroke-width="1.8" />
+                  <path d="M11 16.5l3.2 3.2L21 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              )}
             </div>
-            <span
-              class="font-display text-sm font-bold tracking-[0.04em]"
-              style="color:var(--root-faint)"
-            >
-              01
-            </span>
-          </div>
-          <h3
-            class="font-display text-[22px] font-bold leading-tight tracking-[-0.025em]"
-            style="color:var(--root-ink)"
-          >
-            Fotografía
-          </h3>
-          <p class="text-[15.5px] leading-relaxed" style="color:var(--root-mute)">
-            Abres la app y escaneas la etiqueta de cualquier producto. Sin escribir nada.
-          </p>
-        </div>
 
-        {/* StepCard 02 */}
-        <div
-          class="reveal flex flex-col gap-5 rounded-3xl border bg-white p-8"
-          style="border-color:var(--root-line);--reveal-delay:100ms"
-        >
-          <div class="flex items-center justify-between">
-            <div
-              class="flex h-12 w-12 items-center justify-center rounded-2xl"
-              style="background:var(--root-violet-soft);color:var(--root-violet)"
-            >
-              {/* AI sparkle — the analysis reasons over the label */}
-              <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden>
-                <path d="M16 4c.6 5.6 2.4 7.4 8 8-5.6.6-7.4 2.4-8 8-.6-5.6-2.4-7.4-8-8 5.6-.6 7.4-2.4 8-8Z" fill="currentColor" />
-                <path d="M25 19c.3 2.4 1.1 3.2 3.5 3.5-2.4.3-3.2 1.1-3.5 3.5-.3-2.4-1.1-3.2-3.5-3.5 2.4-.3 3.2-1.1 3.5-3.5Z" fill="currentColor" />
-              </svg>
+            <div class="flex-1">
+              <div class="flex items-baseline justify-between gap-3">
+                <h3
+                  class="font-display text-[19px] font-bold leading-tight tracking-[-0.025em]"
+                  style="color:var(--root-ink)"
+                >
+                  {step.title}
+                </h3>
+                <span
+                  class="font-display text-sm font-bold tracking-[0.04em]"
+                  style="color:var(--root-faint)"
+                >
+                  {step.n}
+                </span>
+              </div>
+              <p
+                class="mt-2 text-[15px] leading-relaxed"
+                style="color:var(--root-mute)"
+                set:html={
+                  i === 1
+                    ? 'La IA lee los ingredientes y los compara contra <strong style="color:var(--root-ink)">tu perfil</strong>. No es una base de datos: razona sobre nombres técnicos y trazas ocultas.'
+                    : i === 2
+                      ? '<span style="color:var(--root-violet);font-weight:700">OK verde</span> o <span style="color:var(--root-danger);font-weight:700">NO rojo</span>, con la razón específica. Sabes por qué, no solo qué.'
+                      : step.body
+                }
+              />
             </div>
-            <span
-              class="font-display text-sm font-bold tracking-[0.04em]"
-              style="color:var(--root-faint)"
-            >
-              02
-            </span>
-          </div>
-          <h3
-            class="font-display text-[22px] font-bold leading-tight tracking-[-0.025em]"
-            style="color:var(--root-ink)"
-          >
-            Análisis IA
-          </h3>
-          <p class="text-[15.5px] leading-relaxed" style="color:var(--root-mute)">
-            La IA lee los ingredientes y los compara contra{" "}
-            <strong style="color:var(--root-ink)">tu perfil</strong>. No es una base de
-            datos: razona sobre nombres técnicos y trazas ocultas.
-          </p>
-        </div>
+          </article>
+        ))}
+      </div>
+    </div>
 
-        {/* StepCard 03 */}
-        <div
-          class="reveal flex flex-col gap-5 rounded-3xl border bg-white p-8"
-          style="border-color:var(--root-line);--reveal-delay:200ms"
-        >
-          <div class="flex items-center justify-between">
-            <div
-              class="flex h-12 w-12 items-center justify-center rounded-2xl"
-              style="background:var(--root-violet-soft);color:var(--root-violet)"
-            >
-              <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden>
-                <circle cx="16" cy="16" r="11" stroke="currentColor" stroke-width="1.8" />
-                <path d="M11 16.5l3.2 3.2L21 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </div>
-            <span
-              class="font-display text-sm font-bold tracking-[0.04em]"
-              style="color:var(--root-faint)"
-            >
-              03
-            </span>
-          </div>
-          <h3
-            class="font-display text-[22px] font-bold leading-tight tracking-[-0.025em]"
-            style="color:var(--root-ink)"
-          >
-            Respuesta instantánea
-          </h3>
-          <p class="text-[15.5px] leading-relaxed" style="color:var(--root-mute)">
-            <span style="color:var(--root-violet);font-weight:700">OK verde</span> o{" "}
-            <span style="color:var(--root-danger);font-weight:700">NO rojo</span>, con la razón
-            específica. Sabes por qué, no solo qué.
-          </p>
-        </div>
+    {/* Differentiator — full-width banner: the moat gets its own band */}
+    <div
+      class="diff reveal relative mt-5 overflow-hidden rounded-3xl p-8 text-white sm:p-10"
+      style="background:linear-gradient(155deg,#9433ea 0%,#581c87 100%)"
+    >
+      <div
+        aria-hidden
+        class="pointer-events-none absolute -right-16 -top-20 h-[280px] w-[280px] rounded-full"
+        style="background:radial-gradient(circle, rgba(255,255,255,0.16), transparent 70%)"
+      >
+      </div>
 
-        {/* Differentiator note */}
-        <div
-          class="reveal flex flex-col justify-center gap-2 rounded-3xl p-7 text-white"
-          style="background:linear-gradient(155deg,#9433ea 0%,#581c87 100%);--reveal-delay:300ms"
-        >
+      <div
+        class="relative z-10 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center"
+      >
+        {/* Copy */}
+        <div class="max-w-[520px]">
           <div class="text-[11px] font-bold uppercase tracking-[0.18em] opacity-80">
             El diferenciador
           </div>
-          <p class="text-[15.5px] font-semibold leading-snug">
-            Restricciones compuestas: valida celiaquía + diabetes + lactosa al mismo tiempo.{" "}
-            <span style="color:#e9d4ff">No en silos.</span>
+          <h3
+            class="mt-3 font-display text-[26px] font-extrabold leading-tight tracking-[-0.03em] sm:text-[30px]"
+          >
+            Restricciones compuestas, una sola respuesta.
+          </h3>
+          <p class="mt-3 text-[15.5px] leading-snug" style="color:#e9d4ff">
+            Valida celiaquía, diabetes y lactosa al mismo tiempo. No en silos.
           </p>
+        </div>
+
+        {/* Visual proof: tres restricciones + una respuesta */}
+        <div class="flex flex-wrap items-center gap-2.5">
+          <span class="diff-chip reveal" style="--reveal-delay:120ms">celiaquía</span>
+          <span class="diff-op" aria-hidden>+</span>
+          <span class="diff-chip reveal" style="--reveal-delay:220ms">diabetes</span>
+          <span class="diff-op" aria-hidden>+</span>
+          <span class="diff-chip reveal" style="--reveal-delay:320ms">lactosa</span>
+          <span class="diff-op" aria-hidden>=</span>
+          <span class="diff-result reveal" style="--reveal-delay:440ms">
+            <span class="diff-result__mark" aria-hidden>✓</span>
+            una respuesta
+          </span>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .diff-chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    white-space: nowrap;
+  }
+  .diff-op {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: #e9d4ff;
+  }
+  .diff-result {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem 0.5rem 0.6rem;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f3d2c;
+    background: #4ade80;
+    white-space: nowrap;
+  }
+  .diff-result__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 9999px;
+    background: rgba(15, 61, 44, 0.18);
+    font-size: 12px;
+  }
+</style>

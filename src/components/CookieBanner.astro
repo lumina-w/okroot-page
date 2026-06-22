@@ -23,10 +23,10 @@
       </a>
     </div>
     <div class="cookie-banner__actions">
-      <button type="button" class="cookie-btn cookie-btn--secondary" data-action="reject">
+      <button type="button" class="btn btn-ghost btn-sm" data-action="reject">
         Solo necesarias
       </button>
-      <button type="button" class="cookie-btn cookie-btn--primary" data-action="accept">
+      <button type="button" class="btn btn-primary btn-sm" data-action="accept">
         Aceptar analytics
       </button>
     </div>
@@ -89,18 +89,22 @@
     color: rgb(180, 178, 174);
   }
   .cookie-banner__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+    display: inline-block;
     margin-top: 10px;
     font-size: 14px;
     font-weight: 600;
     color: var(--root-cream);
     text-decoration: underline;
-    text-underline-offset: 2px;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition:
+      color 150ms var(--ease-soft),
+      text-decoration-color 150ms var(--ease-soft);
   }
-  .cookie-banner__link:hover {
+  .cookie-banner__link:hover,
+  .cookie-banner__link:focus-visible {
     color: #fff;
+    text-decoration-color: currentColor;
   }
 
   .cookie-banner__actions {
@@ -116,53 +120,28 @@
     }
   }
 
-  .cookie-btn {
+  /* Botones del sistema .btn. En móvil ocupan el ancho; en desktop, auto. */
+  .cookie-banner__actions .btn {
     flex: 1;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s var(--ease-soft);
   }
   @media (min-width: 640px) {
-    .cookie-btn {
+    .cookie-banner__actions .btn {
       flex: 0 0 auto;
     }
   }
-  /* Primario y secundario con peso visual similar (sin dark patterns). */
-  .cookie-btn--primary {
-    order: 1;
-    background: var(--color-primary);
+  /* La secundaria (.btn-ghost) vive sobre fondo oscuro: contorno claro, igual
+     que adaptamos los links del footer. Mantiene la forma del sistema .btn. */
+  .cookie-banner__actions :global(.btn-ghost) {
     color: #fff;
-    border: 1px solid var(--color-primary);
+    border: 1px solid rgba(255, 255, 255, 0.25);
   }
-  .cookie-btn--primary:hover {
-    background: var(--color-primary-hover);
-  }
-  .cookie-btn--secondary {
-    order: 2;
-    background: transparent;
-    color: var(--root-cream);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-  .cookie-btn--secondary:hover {
+  .cookie-banner__actions :global(.btn-ghost:hover) {
+    color: #fff;
     background: rgba(255, 255, 255, 0.08);
-  }
-  /* Móvil: primario arriba, secundario abajo. Desktop: secundario izq, primario der. */
-  @media (min-width: 640px) {
-    .cookie-btn--secondary {
-      order: 1;
-    }
-    .cookie-btn--primary {
-      order: 2;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cookie-banner__card,
-    .cookie-btn {
+    .cookie-banner__card {
       transition: none;
     }
   }

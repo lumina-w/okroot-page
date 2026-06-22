@@ -1,7 +1,16 @@
 ---
-import { EARLY_ACCESS_SPOTS } from "@/lib/consts";
+import {
+  EARLY_ACCESS_SPOTS,
+  FREE_UNTIL_ISO,
+  FREE_UNTIL_LABEL,
+  isFreeWindowOpen,
+} from "@/lib/consts";
 
 const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra"];
+
+// Aviso de acceso gratis por tiempo limitado. Se calcula en build: si la fecha
+// ya pasó, no se renderiza.
+const freeOpen = isFreeWindowOpen();
 ---
 
 <section id="lista-de-espera" class="px-5 py-12 sm:px-6 lg:py-20">
@@ -66,6 +75,17 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
               </div>
             )
           }
+
+          {
+            freeOpen && (
+              <p
+                class="mx-auto mt-5 max-w-[460px] text-[14px] leading-relaxed"
+                style="color:var(--root-mute)"
+              >
+                Los primeros usuarios entran <strong style="color:var(--root-purple)">gratis hasta el <time datetime={FREE_UNTIL_ISO}>{FREE_UNTIL_LABEL}</time></strong>. Después, el acceso pasa a ser un plan pago. Si entras ahora, conservas el beneficio de early user.
+              </p>
+            )
+          }
         </div>
 
         <form data-wl-form class="mx-auto mt-9 max-w-[460px]" novalidate>
@@ -124,14 +144,18 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
                 ))
               }
 
-              {/* "Otra" free-text — full width, revealed only when "Otra" is checked */}
-              <div data-wl-other-wrap hidden class="sm:col-span-2">
+            </div>
+
+            {/* "Otra" free-text — smooth height reveal when "Otra" is checked */}
+            <div data-wl-other-wrap class="wl-other-wrap">
+              <div class="wl-other-inner">
                 <label for="wl-other" class="sr-only">¿Cuál?</label>
                 <input
                   id="wl-other"
                   name="other_condition"
                   type="text"
                   maxlength="80"
+                  disabled
                   placeholder="¿Cuál? Cuéntanos tu restricción"
                   class="w-full rounded-2xl px-4 py-3 text-[14.5px] outline-none transition-colors focus:border-[var(--root-violet)]"
                   style="background:#fff;border:2px solid var(--root-line-strong);color:var(--root-ink)"
@@ -195,10 +219,28 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
           label.style.borderColor = cb.checked ? "var(--root-violet)" : "var(--root-line)";
         }
         if (cb.value === "Otra") {
-          otherWrap.hidden = !cb.checked;
-          if (cb.checked) {
-            otherInput.focus();
+          const open = cb.checked;
+          otherInput.disabled = !open;
+          if (open) {
+            otherWrap.classList.add("is-open");
+            // Reveal overflow + focus only AFTER the expand finishes, so the
+            // input's focus ring isn't clipped by the inner overflow:hidden.
+            const reveal = () => {
+              otherWrap.classList.add("is-done");
+              otherInput.focus();
+            };
+            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+              reveal();
+            } else {
+              otherWrap.addEventListener("transitionend", function onEnd(ev) {
+                if (ev.propertyName !== "grid-template-rows") return;
+                otherWrap.removeEventListener("transitionend", onEnd);
+                reveal();
+              });
+            }
           } else {
+            // Drop is-done first (re-clip) before the collapse animates.
+            otherWrap.classList.remove("is-done", "is-open");
             otherInput.value = "";
           }
         }
@@ -214,7 +256,7 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
 
     async function insertWaitlist(row: WaitlistRow) {
       if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-        console.warn("[OKRoot] Supabase no configurado. Submit simulado.", row);
+        console.warn("[OKroot] Supabase no configurado. Submit simulado.", row);
         return;
       }
       const res = await fetch(`${SUPABASE_URL}/rest/v1/okroot-waitlist`, {
@@ -304,7 +346,7 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
         success.setAttribute("tabindex", "-1");
         success.focus();
       } catch (err) {
-        console.error("[OKRoot] waitlist submit failed", err);
+        console.error("[OKroot] waitlist submit failed", err);
         showError("Algo falló. Intenta de nuevo en un momento.");
         submit.disabled = false;
         submit.textContent = "Quiero comer sin adivinar";
@@ -313,3 +355,35 @@ const CONDITIONS = ["Celiaquía", "Diabetes", "Intolerancia a la lactosa", "Otra
     });
   }
 </script>
+
+<style>
+  /* "Otra" free-text reveal — animate height via the grid-rows 0fr→1fr trick
+     (height:auto isn't transitionable). The inner clips with overflow:hidden. */
+  .wl-other-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+      grid-template-rows 0.32s var(--ease-soft),
+      opacity 0.32s var(--ease-soft);
+  }
+  .wl-other-wrap.is-open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  .wl-other-inner {
+    overflow: hidden;
+    min-height: 0;
+    padding-top: 0.625rem;
+  }
+  /* Once expanded, stop clipping so the input's focus ring can show fully. */
+  .wl-other-wrap.is-done .wl-other-inner {
+    overflow: visible;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wl-other-wrap {
+      transition: none;
+    }
+  }
+</style>

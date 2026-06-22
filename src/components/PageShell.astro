@@ -18,21 +18,7 @@ const hasToc = Array.isArray(toc) && toc.length > 0;
     <div class="ps-wrap">
       {/* Encabezado — ancho completo, encima del grid */}
       <div class="ps-header">
-        <a href="/" class="ps-back">
-          <svg
-            viewBox="0 0 24 24"
-            class="h-4 w-4 rotate-180"
-            aria-hidden
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M5 12h14M13 6l6 6-6 6" />
-          </svg>
-          Volver al inicio
-        </a>
+        <a href="/" class="ps-back">Volver al inicio</a>
 
         <span class="ps-eyebrow">{eyebrow}</span>
         <h1 class="ps-title">{title}</h1>
@@ -66,24 +52,7 @@ const hasToc = Array.isArray(toc) && toc.length > 0;
     </div>
   ) : (
     <div class="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 lg:px-10 lg:py-24">
-      <a
-        href="/"
-        class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-accent"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          class="h-4 w-4 rotate-180"
-          aria-hidden
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M5 12h14M13 6l6 6-6 6" />
-        </svg>
-        Volver al inicio
-      </a>
+      <a href="/" class="ps-back">Volver al inicio</a>
 
       <span class="mt-8 block text-sm font-semibold uppercase tracking-wide text-primary">
         {eyebrow}
@@ -97,7 +66,7 @@ const hasToc = Array.isArray(toc) && toc.length > 0;
         </p>
       )}
 
-      <div class="mt-12">
+      <div class="ps-content mt-12">
         <slot />
       </div>
     </div>
@@ -120,19 +89,41 @@ const hasToc = Array.isArray(toc) && toc.length > 0;
   .ps-header {
     margin-bottom: 48px;
   }
+  /* Link de texto canónico (fondo claro): tinta → hover violeta + subrayado. */
   .ps-back {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+    display: inline-block;
     font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 600;
-    color: var(--color-primary);
-    text-decoration: none;
-    transition: color 200ms var(--ease-soft);
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition:
+      color 150ms var(--ease-soft),
+      text-decoration-color 150ms var(--ease-soft);
   }
-  .ps-back:hover {
-    color: var(--color-accent);
+  .ps-back:hover,
+  .ps-back:focus-visible {
+    color: var(--color-primary);
+    text-decoration-color: currentColor;
+  }
+
+  /* Links dentro del contenido (páginas legales) — mismo estilo canónico.
+     Excluye .btn para no pisar los botones que viven dentro del contenido. */
+  .ps-content :global(a:not(.btn)) {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition:
+      color 150ms var(--ease-soft),
+      text-decoration-color 150ms var(--ease-soft);
+  }
+  .ps-content :global(a:not(.btn):hover),
+  .ps-content :global(a:not(.btn):focus-visible) {
+    color: var(--color-primary);
+    text-decoration-color: currentColor;
   }
   .ps-eyebrow {
     display: block;
@@ -160,6 +151,27 @@ const hasToc = Array.isArray(toc) && toc.length > 0;
     font-size: 18px;
     line-height: 1.6;
     color: var(--color-muted);
+  }
+  /* Links dentro del intro (mailto, etc.) — mismo estilo canónico. */
+  .ps-intro :global(a),
+  :global(.ps-intro-link) {
+    font-weight: 600;
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition:
+      color 150ms var(--ease-soft),
+      text-decoration-color 150ms var(--ease-soft);
+  }
+  /* Variante sin TOC: el intro no es .ps-intro, así que el link del introHtml
+     lleva la clase .ps-intro-link para recibir el mismo estilo canónico. */
+  .ps-intro :global(a:hover),
+  .ps-intro :global(a:focus-visible),
+  :global(.ps-intro-link:hover),
+  :global(.ps-intro-link:focus-visible) {
+    color: var(--color-primary);
+    text-decoration-color: currentColor;
   }
 
   /* ── Cuerpo ── */

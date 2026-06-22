@@ -1,11 +1,15 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
+import icon from "astro-icon";
 import { fileURLToPath } from "node:url";
 
 // Static marketing site served at the okroot.co domain root.
 export default defineConfig({
   site: "https://okroot.co",
+  // astro-icon inlines Iconify SVGs at build time (no runtime JS) — compatible
+  // with the strict `script-src 'self'` CSP. Icons live in @iconify-json/lucide.
+  integrations: [icon()],
   // Bundle every <script> to an external hashed file so the strict
   // `script-src 'self'` CSP in netlify.toml allows them (no inline scripts).
   build: {

@@ -2,23 +2,39 @@
 const FAQS = [
   {
     q: "¿Necesito descargarla?",
-    a: "No. Se instala directo desde el navegador, sin pasar por la App Store ni Play Store.",
+    a: "No. Se instala directo desde el navegador y queda como un ícono en tu pantalla de inicio, igual que cualquier app. Sin pasar por la App Store ni Play Store, y sin ocupar el espacio de una descarga tradicional.",
+  },
+  {
+    q: "¿Qué tan confiable es el análisis?",
+    a: "Lee la etiqueta tal como está e identifica ingredientes técnicos y trazas que suelen pasarse por alto. Aun así es una ayuda para decidir, no un reemplazo del criterio de tu médico ni de revisar la etiqueta cuando tengas una duda seria.",
+  },
+  {
+    q: "¿Y si el producto no tiene etiqueta?",
+    a: "Hoy funciona sobre la etiqueta de ingredientes. Cuando no hay etiqueta, como en productos a granel, fruta suelta o un plato de restaurante, todavía no hay nada que leer. Es una de las cosas que queremos resolver más adelante.",
+  },
+  {
+    q: "¿Funciona con etiquetas en español?",
+    a: "Sí. Está pensada para etiquetas en español y para los productos que encuentras en Colombia. Más idiomas y mercados llegan después, a medida que crecemos.",
   },
   {
     q: "¿Funciona sin internet?",
-    a: "Sí. El diario es 100% offline y sincroniza solo cuando vuelves a tener señal.",
-  },
-  {
-    q: "¿Es gratis?",
-    a: "El early access es gratuito para quienes están en la lista de espera.",
-  },
-  {
-    q: "¿Qué pasa con mis datos de salud?",
-    a: "Tu perfil vive en tu dispositivo. No lo vendemos ni lo compartimos.",
+    a: "Sí. Tu diario y tu perfil viven en tu dispositivo, así que puedes registrar y consultar aunque te quedes sin señal. Cuando vuelves a tener conexión, todo se sincroniza solo, sin que tengas que hacer nada.",
   },
   {
     q: "¿Solo funciona para las tres condiciones?",
-    a: "Hoy: celiaquía, diabetes tipo 2 e intolerancia a la lactosa. Más condiciones vienen en el roadmap.",
+    a: "Hoy está afinada para celiaquía, diabetes tipo 2 e intolerancia a la lactosa, las restricciones con las que arrancamos. Más condiciones y combinaciones están en el roadmap, y tu feedback en early access ayuda a priorizar cuáles llegan primero.",
+  },
+  {
+    q: "¿Es gratis?",
+    a: "El early access es gratuito para quienes están en la lista de espera. Más adelante habrá un plan de pago, pero entrar ahora te asegura acceso sin costo durante esta etapa y precio preferente cuando lancemos.",
+  },
+  {
+    q: "¿Qué pasa con mis datos de salud?",
+    a: "Tu perfil de restricciones vive en tu dispositivo, no en un servidor abierto. No vendemos ni compartimos tus datos con terceros: son tuyos y se usan solo para darte respuestas más precisas cuando escaneas un producto.",
+  },
+  {
+    q: "Me anoté, ¿cuándo entro?",
+    a: "Vamos abriendo cupos por tandas. Te escribimos al correo en cuanto sea tu turno, sin que tengas que estar pendiente. Mientras tanto, no necesitas hacer nada más.",
   },
 ];
 
@@ -35,25 +51,27 @@ const faqSchema = {
 ---
 
 <section id="preguntas" class="py-24 lg:py-32" style="background:var(--root-cream-warm)">
-  <div class="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
-    <div class="reveal text-center">
-      <div class="eyebrow">Preguntas frecuentes</div>
-      <h2
-        class="mt-5 font-display font-extrabold leading-[1.02] tracking-[-0.04em]"
-        style="font-size:clamp(1.875rem, 4vw, 3rem);color:var(--root-ink)"
-      >
-        Antes de que preguntes
-      </h2>
-    </div>
-
-    <div class="mt-12 flex flex-col gap-3.5">
-      {FAQS.map(({ q, a }, i) => (
-        <details
-          class="reveal group rounded-2xl border bg-white p-5 sm:p-6"
-          style={`border-color:var(--root-line);--reveal-delay:${i * 60}ms`}
+  <div class="mx-auto w-full max-w-[1100px] px-5 sm:px-8">
+    {/* Bento board: un solo panel con líneas internas (gap 1px sobre fondo
+        line) en vez de columnas sueltas. Header tile + FAQs + CTA de contacto
+        cierran un rectángulo. */}
+    <div class="faq-bento reveal">
+      {/* Tile de encabezado, ancho completo */}
+      <div class="faq-bento__intro">
+        <div class="eyebrow">Preguntas frecuentes</div>
+        <h2
+          class="mt-4 font-display font-extrabold leading-[1.02] tracking-[-0.04em]"
+          style="font-size:clamp(1.875rem, 4vw, 2.75rem);color:var(--root-ink)"
         >
+          Lo que más nos preguntan
+        </h2>
+      </div>
+
+      {/* Tiles de pregunta */}
+      {FAQS.map(({ q, a }) => (
+        <details class="faq-bento__item group">
           <summary
-            class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-[17px] font-semibold tracking-[-0.01em]"
+            class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-[16.5px] font-semibold tracking-[-0.01em]"
             style="color:var(--root-ink)"
           >
             {q}
@@ -66,12 +84,26 @@ const faqSchema = {
             </span>
           </summary>
           <div class="faq-answer">
-            <div class="pt-3 text-[15.5px] leading-relaxed" style="color:var(--root-mute)">
+            <div class="pt-3 text-[15px] leading-relaxed" style="color:var(--root-mute)">
               {a}
             </div>
           </div>
         </details>
       ))}
+
+      {/* Tile de cierre: contacto. Acento violeta para cerrar el bento. */}
+      <a href="/contacto" class="faq-bento__cta">
+        <div>
+          <div class="faq-bento__cta-eyebrow">¿No está tu duda?</div>
+          <div class="faq-bento__cta-title">Escríbenos</div>
+        </div>
+        <span class="faq-bento__cta-ico" aria-hidden>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" stroke-width="1.8" />
+            <path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+      </a>
     </div>
   </div>
   <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
@@ -131,4 +163,74 @@ const faqSchema = {
         });
       });
   </script>
+
+  <style>
+    /* Bento board: las celdas comparten líneas de 1px (el gap deja ver el fondo
+       `line`), así el conjunto se lee como un solo panel, no columnas sueltas. */
+    .faq-bento {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      background: var(--root-line);
+      border: 1px solid var(--root-line);
+      border-radius: 28px;
+      overflow: hidden;
+    }
+    .faq-bento > * {
+      background: #fff;
+    }
+    @media (min-width: 768px) {
+      .faq-bento {
+        grid-template-columns: 1fr 1fr;
+      }
+      .faq-bento__intro {
+        grid-column: 1 / -1;
+      }
+    }
+
+    .faq-bento__intro {
+      padding: 2.25rem 2rem;
+    }
+    .faq-bento__item {
+      padding: 1.4rem 1.6rem;
+    }
+    .faq-bento__item summary {
+      list-style: none;
+    }
+    .faq-bento__item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    /* Tile de cierre — acento violeta (mayor especificidad que `> *`) */
+    .faq-bento > .faq-bento__cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.4rem 1.6rem;
+      text-decoration: none;
+      background: var(--root-violet-soft);
+      transition: background 0.2s var(--ease-soft);
+    }
+    .faq-bento > .faq-bento__cta:hover {
+      background: var(--root-violet-mist);
+    }
+    .faq-bento__cta-eyebrow {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--root-faint);
+    }
+    .faq-bento__cta-title {
+      margin-top: 0.15rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--root-violet);
+    }
+    .faq-bento__cta-ico {
+      display: flex;
+      flex-shrink: 0;
+      color: var(--root-violet);
+    }
+  </style>
 </section>

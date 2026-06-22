@@ -15,6 +15,20 @@ import { PORTFOLIO_URL } from "@/lib/consts";
     Para añadir más casos: duplica un <article class="cases-card"> dentro del
     track. El scroll horizontal se activa solo en cuanto haya overflow real.
   */}
+  {/* Encabezado de sección */}
+  <div class="mx-auto mb-12 w-full max-w-[1200px] px-5 sm:px-8 lg:mb-16 lg:px-10">
+    <div class="reveal max-w-[620px]">
+      <div class="eyebrow">Casos de éxito</div>
+      <h2
+        class="mt-5 font-display font-extrabold leading-[1.04] tracking-[-0.04em]"
+        style="font-size:clamp(2rem, 4.5vw, 3.25rem);color:var(--root-ink)"
+      >
+        De no poder comer tranquila a comer{" "}
+        <span style="font-style:italic;color:var(--root-violet)">sin miedo</span>.
+      </h2>
+    </div>
+  </div>
+
   <div class="cases-pin relative z-10" data-cases-pin>
     <div class="cases-stage" data-cases-stage>
       <div class="cases-track" data-cases-track>
@@ -31,7 +45,7 @@ import { PORTFOLIO_URL } from "@/lib/consts";
             >
               <img
                 src="/valentina.webp"
-                alt="Valentina Ramírez, fundadora de OKRoot"
+                alt="Valentina Ramírez, fundadora de OKroot"
                 width={720}
                 height={720}
                 loading="lazy"
@@ -107,7 +121,7 @@ import { PORTFOLIO_URL } from "@/lib/consts";
               class="mt-4 font-display font-extrabold leading-[1.05] tracking-[-0.035em]"
               style="font-size:clamp(1.75rem, 3.6vw, 2.75rem);color:var(--root-ink)"
             >
-              Construí OKroot porque ninguna app{" "}
+              Construí <span style="color:var(--root-violet)">OK</span>root porque ninguna app{" "}
               <span style="font-style:italic;color:var(--root-violet)">
                 resolvía lo que yo necesitaba.
               </span>
@@ -119,7 +133,8 @@ import { PORTFOLIO_URL } from "@/lib/consts";
             >
               <p>
                 Soy celíaca, diabética e intolerante a la lactosa. Busqué una app que combinara las
-                tres restricciones. No existía. Así que la construí.
+                tres restricciones.{" "}
+                <strong style="color:var(--root-ink)">No existía. Así que la construí.</strong>
               </p>
               <p>
                 OKroot no es un experimento de wellness. Es una{" "}

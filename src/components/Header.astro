@@ -7,8 +7,9 @@ import { APP_URL } from "@/lib/consts";
 // no se toca.
 const NAV_LINKS = [
   { href: "/#como-funciona", label: "Cómo funciona" },
-  { href: "/#funcionalidades", label: "Recetas" },
+  { href: "/recetas/", label: "Recetas" },
   { href: "/#casos-de-exito", label: "Casos de éxito" },
+  { href: "/#precios", label: "Precios" },
   { href: "/#preguntas", label: "Preguntas" },
 ];
 
@@ -22,7 +23,7 @@ const LOGIN_URL = `${APP_URL}/login`;
     style="background:#fff;border-color:var(--root-line)"
   >
     {/* Logo — tipográfico puro, un solo bloque */}
-    <a href="/" class="nav-logo" aria-label="OKRoot, inicio">
+    <a href="/" class="nav-logo" aria-label="OKroot, inicio">
       <span class="nav-logo__ok">OK</span><span class="nav-logo__root">root</span>
     </a>
 
@@ -44,7 +45,7 @@ const LOGIN_URL = `${APP_URL}/login`;
       <a
         href={LOGIN_URL}
         rel="noopener noreferrer"
-        aria-label="Iniciar sesión en OKRoot"
+        aria-label="Iniciar sesión en OKroot"
         class="nav-login"
       >
         Iniciar sesión
@@ -86,7 +87,7 @@ const LOGIN_URL = `${APP_URL}/login`;
     <a
       href={LOGIN_URL}
       rel="noopener noreferrer"
-      aria-label="Iniciar sesión en OKRoot"
+      aria-label="Iniciar sesión en OKroot"
       class="nav-login nav-mobile__login"
     >
       Iniciar sesión
@@ -123,11 +124,17 @@ const LOGIN_URL = `${APP_URL}/login`;
     font-weight: 400;
     font-size: 14px;
     color: var(--color-ink);
-    text-decoration: none;
-    transition: color 200ms var(--ease-soft);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition:
+      color 150ms var(--ease-soft),
+      text-decoration-color 150ms var(--ease-soft);
   }
-  .nav-link:hover {
+  .nav-link:hover,
+  .nav-link:focus-visible {
     color: var(--color-primary);
+    text-decoration-color: currentColor;
   }
 
   /* ── Iniciar sesión ── */
@@ -138,12 +145,18 @@ const LOGIN_URL = `${APP_URL}/login`;
     font-family: var(--font-sans);
     font-weight: 500;
     font-size: 14px;
-    color: var(--color-primary);
-    text-decoration: none;
-    transition: color 200ms var(--ease-soft);
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition:
+      color 150ms var(--ease-soft),
+      text-decoration-color 150ms var(--ease-soft);
   }
-  .nav-login:hover {
-    color: var(--color-primary-hover);
+  .nav-login:hover,
+  .nav-login:focus-visible {
+    color: var(--color-primary);
+    text-decoration-color: currentColor;
   }
 
   /* ── Hamburguesa → X ── */
@@ -256,11 +269,17 @@ const LOGIN_URL = `${APP_URL}/login`;
     font-weight: 500;
     font-size: 16px;
     color: var(--color-ink);
-    text-decoration: none;
-    transition: color 200ms var(--ease-soft);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition:
+      color 150ms var(--ease-soft),
+      text-decoration-color 150ms var(--ease-soft);
   }
-  .nav-mobile__link:hover {
+  .nav-mobile__link:hover,
+  .nav-mobile__link:focus-visible {
     color: var(--color-primary);
+    text-decoration-color: currentColor;
   }
   .nav-mobile__sep {
     border: none;

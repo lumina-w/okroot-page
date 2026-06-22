@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   OKRoot DESIGN SYSTEM — SINGLE SOURCE OF TRUTH
+   OKroot DESIGN SYSTEM — SINGLE SOURCE OF TRUTH
    ───────────────────────────────────────────────────────────────────────────
    1. @theme        — every brand color/font/easing. Change a value HERE and it
                       updates every Tailwind utility (bg-primary, text-faint…)
@@ -408,6 +408,37 @@ body::after {
     badge-breathe 2.5s ease-in-out 3.9s infinite;
 }
 
+/* NO badge — same spring/breathe but baseline rotate(4deg), and lands BEFORE
+   the OK badge (3.0s vs 3.4s) so the sequence reads "No" → "OK". */
+@keyframes badge-in-alt {
+  0% {
+    opacity: 0;
+    transform: rotate(4deg) translateY(8px) scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: rotate(4deg) translateY(-1px) scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(4deg) translateY(0) scale(1);
+  }
+}
+@keyframes badge-breathe-alt {
+  0%,
+  100% {
+    transform: rotate(4deg) scale(1);
+  }
+  50% {
+    transform: rotate(4deg) scale(1.03);
+  }
+}
+.animate-badge-alt {
+  animation:
+    badge-in-alt 0.5s var(--ease-soft) 3s both,
+    badge-breathe-alt 2.5s ease-in-out 3.5s infinite;
+}
+
 /* Orchestrated hero load — staggered via inline animation-delay */
 .load-rise {
   opacity: 0;
@@ -453,6 +484,11 @@ body::after {
   .animate-badge {
     opacity: 1;
     transform: rotate(-4deg);
+    animation: none;
+  }
+  .animate-badge-alt {
+    opacity: 1;
+    transform: rotate(4deg);
     animation: none;
   }
   .load-rise {
