@@ -149,3 +149,52 @@ Set `PUBLIC_SUPABASE_URL` / `PUBLIC_SUPABASE_ANON_KEY` in Netlify env vars (Site
 settings → Environment variables) and run `supabase/waitlist.sql` against the
 project, or the production waitlist form silently drops signups (see
 Configuration constants above).
+
+## Database
+
+No app database, no migration tool. The only table is `okroot-waitlist` in
+Supabase, defined by the single hand-written script `supabase/waitlist.sql`
+(schema + Row Level Security policy). To change the schema, edit that file and
+re-run it against the Supabase project by hand — there is no migrations
+directory or CLI-managed history to keep in sync.
+
+## Git
+
+**Branches:** `<type>/<kebab-case-description>` with a Conventional Commits
+type, e.g. `fix/corrupt-lockfile-yargs`, `chore/remove-vendored-frontend-design-skill`.
+Two early PRs used `claude/<slug>` instead; that pattern isn't the current
+convention.
+
+**Commits:** Conventional Commits (`fix:`, `chore:`, `docs:`...) for the
+subject line, evidenced by recent merged PR titles. History on `main` is
+squashed to a single commit, so this is inferred from PR titles rather than a
+deep `git log`.
+
+**Never push directly to `main`.** Netlify deploys to production
+(`okroot.co`) on every push to `main` (`netlify.toml` + CI both trigger on
+it). All changes go through a PR.
+
+## Commands allowed without confirmation
+
+`npm run dev|build|preview|lint`, read-only git (`status`, `log`, `diff`,
+`branch -a`), `ls`, `find`, `grep`, `cat`.
+
+## Never do
+
+- Push or merge directly to `main` (triggers a production deploy).
+- Commit `.env` or real Supabase/GA4 values — only `.env.example` placeholders
+  belong in the repo.
+- Add English copy or English routes (see UI copy rules above).
+- Add a runtime dependency for something CSS/vanilla JS already covers (this
+  site is deliberately zero-framework-runtime beyond Astro's islands).
+- Run destructive commands (`rm -rf`, `git reset --hard`, `git push --force`)
+  without explicit confirmation.
+
+## Done criteria
+
+- `npm run lint` (`astro check`) passes with no errors.
+- `npm run build` completes (this is also the only real content-schema
+  validator, for `src/content/recetas/*.md`).
+- CI's `build` job (`.github/workflows/ci.yml`) mirrors both of the above;
+  `astro check` and `npm audit` are `continue-on-error` there, so they don't
+  block merge, but don't ship new lint errors regardless.
